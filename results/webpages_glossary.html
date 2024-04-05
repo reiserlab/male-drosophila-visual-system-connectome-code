@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cell Type Explorer Glossary</title>
+    <link rel="stylesheet" href="styles/chota.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        /* Center the main content and add maximum width */
+        .container {
+            max-width: 1400px; /* or any other max-width you prefer */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* This adds some padding within the container */
+            padding-right: 1rem; /* This adds some padding within the container */
+        }
+
+        /* Nested container for glossary content */
+            .glossary-content {
+                max-width: 1000px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+        .nav-right a:link, .nav-right a:visited {
+            color: #007bff; /* Blue color for links */
+            text-decoration: none; /* Optional: removes underline from links */
+        }
+
+        .nav-right a:hover {
+            color: #0056b3; /* Darker blue color on hover */
+            text-decoration: underline; /* Optional: adds underline on hover */
+        }
+
+        .nav-right a:active {
+            color: #004299; /* Even darker blue color when the link is clicked */
+        }
+
+        .col.is-center h1 {
+            margin-top: 20px !important;
+            margin-bottom: 0px !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .col.is-center h2 {
+            margin-top: 0px !important;
+            margin-bottom: 20px !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .glossary-item {
+            margin-bottom: 25px; /* Adds space between glossary items */
+        }
+
+        .glossary-item p {
+            margin: 0 0 0px 0; /* Reduces space around the paragraph and adds space below */
+        }
+
+        .glossary-item p:first-child strong {
+            display: block; /* Ensures the keyword/abbreviation is on its own line */
+        }
+
+        .glossary-item p:nth-child(2) {
+            margin-left: 40px; /* Indents the explanation */
+        }
+
+        /* If you find you need to adjust the styling specifically for short items, you can add styles here. For example: */
+        .glossary-item-short p {
+            margin: 0 0 25px 0; /* Removes margin */
+        }
+
+
+        .glossary-item-special {
+            margin-bottom: 25px; /* Adds space between glossary items */
+        }
+
+        .glossary-item-special p {
+            margin: 0; /* Removes margin */
+        }
+
+        .glossary-item-special p:first-child {
+            margin-bottom: 5px; /* Adds a little space above the explanation */
+        }
+
+        .glossary-item-special p:first-child strong {
+            font-weight: bold;
+            display: inline; /* Keeps the abbreviation and explanation on the same line */
+        }
+
+        .glossary-item-special p:nth-child(2) {
+            margin-left: 40px; /* Indents the explanation */
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="nav">
+            <div class="nav-right">
+                <a href="index.html">Home</a>
+                <a href="navigation.html">Navigation</a>
+                <a href="webpages_glossary.html">Glossary</a>
+                <a href="https://www.youtube.com/@HHMIJanelia/featured">YouTube</a>
+                <a href="https://neuprint-cns.janelia.org/">neuPrint</a>
+            </div>
+
+
+        <div class="glossary-content">
+
+            <header class="row">
+                <div class="col is-center">
+                    <h1>Optic Lobe Connectome - Cell Type Explorer</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col is-center">
+                    <h2>Glossary</h2>
+                </div>
+            </header>
+
+            <div class="glossary-item">
+                <p><strong>(cell type) (L)</strong></p>
+                <p style="margin-left: 20px;">Instance name for cell types with cells that have somas in both hemispheres but synapse 
+                    (at least partially) within the right optic lobe. '_L' specifies the left hemisphere soma location.</p>
+            </div>
+            
+            <div class="glossary-item">
+                <p><strong>(cell type) (R)</strong></p>
+                <p style="margin-left: 20px;">Instance name for cell types with cells that have somas in both hemispheres but synapse 
+                    (at least partially) within the right optic lobe. '_R' specifies the right hemisphere soma location.
+                </p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>(cell type)_unclear</strong></p>
+                <p style="margin-left: 20px;">Type name for neurons that are not fully decided to belong to a specific (existing) cell type. 
+                    This includes for example atypical instances of a type that appear to result from developmental errors or cells that could 
+                    not be typed due to insufficient reconstruction quality (mainly some R7 and R8 photoreceptors). The “cell type” often 
+                    resembles an existing type name. These neurons are not listed as separate types (no “titular cells”), but mentioned in 
+                    the list of  inputs and outputs. Their instance names are (cell type)_unclear_[L|R].</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>(cell type)_TBD</strong></p>
+                <p style="margin-left: 20px;">Placeholder names intended to be replaced by systematic names when the full brain reconstruction 
+                    is available (used for a few cell types outside the main optic lobe groups such as ascending or central neurons).</p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>5HT</strong> - serotonin</p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>ACh</strong> - acetylcholine</p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>AME</strong> - Accessory medulla</p>
+            </div>  
+            
+            <div class="glossary-item">
+                <p><strong>Cell size</strong></p>
+                <p style="margin-left: 20px;">The median number of columns innervated by an individual cell of the cell type, calculated per optic lobe region.</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Column</strong></p>
+                <p style="margin-left: 20px;">Anatomical unit (to see how it is derived, see Methods/Column ROIs).</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Columnar completeness</strong></p>
+                <p style="margin-left: 20px;">The proportion of all columns of an optic lobe region innervated by the cell type.</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Coverage factor</strong></p>
+                <p style="margin-left: 20px;">The mean of the number of cells of the cell type that synapse within an individual column, calculated per optic lobe region. </p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>Dop</strong> - dopamine</p>
+            </div>  
+
+            <div class="glossary-item-short">
+                <p><strong>GABA</strong> - &gamma;-Aminobutyric acid</p>
+            </div>  
+
+            <div class="glossary-item-short">
+                <p><strong>Glu</strong> - glutamate</p>
+            </div>  
+
+            <div class="glossary-item-short">
+                <p><strong>His</strong> - histamine</p>
+            </div>  
+
+            <div class="glossary-item">
+                <p><strong>Inputs</strong></p>
+                <p style="margin-left: 20px;">All pre-synaptic connecting cell types within the optic lobe upstream from the titular cell type. </p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>La</strong> - lamina</p>
+            </div>  
+
+            <div class="glossary-item-special">
+                <p><strong>LO(n)</strong> - Lobula</p>
+                <p style="margin-left: 20px;">n = layer number, e.g. LO1 = Lobula layer 1. </p>
+            </div>
+
+            <div class="glossary-item-special">
+                <p><strong>LOP(n)</strong> - Lobula plate</p>
+                <p style="margin-left: 20px;">n = layer number, e.g. LOP1 = Lobula plate layer 1. </p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>ME(n)</strong> - Medulla</p>
+            </div>
+
+            <div class="glossary-item-special">
+                <p><strong>M(n)</strong> - Medulla layers</p>
+                <p style="margin-left: 20px;">n = layer number, e.g. M1 = Medulla layer 1. </p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Number of post synapses (Population spatial coverage)</strong></p>
+                <p style="margin-left: 20px;">The total 'post' synapses of the titular cell type for each optic lobe region.</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Number of pre synapses (Population spatial coverage)</strong></p>
+                <p style="margin-left: 20px;">The total 'pre' synapses (t-bars) of the titular cell type for each optic lobe region. 
+                    (Compare to "Number of output connections")</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Number of output connections (Population spatial coverage)</strong></p>
+                <p style="margin-left: 20px;">The total connections downstream from the titular cell type for each optic lobe region. 
+                    As one t-bar can have many output connections this number is greater than the "Number of pre synapses".</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>NT</strong></p>
+                <p style="margin-left: 20px;"> Predicted neurotransmitter.</p>
+            </div>
+
+            <div class="glossary-item-short">
+                <p><strong>OA</strong> - octopamine</p>
+            </div>  
+
+            <div class="glossary-item">
+                <p><strong>Outputs</strong></p>
+                <p style="margin-left: 20px;">All post-synaptic connecting cell types within the optic lobe downstream from the titular cell type.</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Other</strong></p>
+                <p style="margin-left: 20px;">Main grouping for cell types that cannot be allocated to OL_intrinsic, OL_connecting, VCN or VPN categories.</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Pre median</strong></p>
+                <p style="margin-left: 20px;">Median of presynaptic sites of the titular cell in the optic lobe region and layer (when applicable).</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Post median</strong></p>
+                <p style="margin-left: 20px;">Median of postsynaptic sites of the titular cell in the optic lobe region and layer (when applicable).</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Type</strong></p>
+                <p style="margin-left: 20px;">Cell type name or instance name for cell types with cells that have somas in both hemispheres that synapse within the right optic lobe. </p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>Synapses</strong></p>
+                <p style="margin-left: 20px;">Total number of synapses between cell types.</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>%</strong></p>
+                <p style="margin-left: 20px;">Percentage of the total input/output synapses to/from the titular cell type from/to the designated cell type (on row).</p>
+            </div>
+
+            <div class="glossary-item">
+                <p><strong>% cumu.</strong></p>
+                <p style="margin-left: 20px;">Cumulative percentage of the total input/output synapses to/from the titular cell type from/to the designated cell type (on row).</p>
+            </div>
+        </div>
+
+        <footer class="row">
+            <div class="col">
+                <hr class="h1-divider">
+            </div>
+        </footer>
+
+    </div>
+</body>
+</html>

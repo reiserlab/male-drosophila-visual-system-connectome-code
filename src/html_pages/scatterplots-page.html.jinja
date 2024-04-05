@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Optic Lobe Connectome </title>
+    <link rel="stylesheet" href="../styles/chota.min.css">
+    <style>
+
+            /* Center the main content and add maximum width */
+        body > .container {
+            max-width: 1400px; /* or any other max-width you prefer */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* This adds some padding within the container */
+            padding-right: 1rem; /* This adds some padding within the container */
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .counter{
+            font-size:80%;
+        }
+
+        col.is-center .header_1 {
+            margin-bottom: 0px !important;
+        }
+
+        .main-group-nt-pred{
+            font-weight: 500;
+            font-size: 1.2em;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 10px; 
+            }
+
+        .pad-left{
+            padding-left: 20px;
+        }
+
+        /* Apply a border under the entire header row */
+        .row thead tr {
+            border-bottom: 2px solid #000; /* Adjust color as needed */
+        }
+        
+        /* Ensure no border under td elements and the first th in the body rows */
+        .row tbody th, .row tbody td {
+            border-bottom: none;
+        }
+
+        .card {
+            margin-bottom: 50px;
+            width: 22%;
+            height: 100%;
+            overflow: hidden;
+            white-space: normal;
+        }
+
+        .card p {
+            margin-bottom: 5px;
+        }
+
+        .scatter {
+            /* position: relative; */
+            padding-top: 10px;
+            padding-left: 50px;
+        }
+
+        .scatter iframe{
+            width: 100%;
+            height: 100%;
+        }
+
+        .text-center td, .text-center thead th{
+            text-align:center;
+        }
+
+        .text-left td, .text-left thead th{
+            text-align:left;
+        }
+
+        .nav-right a:link {
+            color: #007bff; /* Blue color for links */
+            text-decoration: none; /* Optional: removes underline from links */
+        }
+
+        .nav-right a:visited {
+            color: #0056b3; /* Darker blue color for visited links */
+        }
+
+        .nav-right a:hover {
+            color: #0056b3; /* Darker blue color on hover */
+            text-decoration: underline; /* Optional: adds underline on hover */
+        }
+
+        .nav-right a:active {
+            color: #004299; /* Even darker blue color when the link is clicked */
+        }
+
+        .non-functional-link {
+            color: grey; /* Non-functional link color */
+            cursor: default;
+            text-decoration: none;
+        }
+
+        @media (max-width: 800px) {
+            .scatter {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .scatter {
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .scatter {
+                width: 50%;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="nav">
+            <div class="nav-right">
+                <a href="../index.html">Home</a>
+                <a href="../cell_types.html">Cell Types</a>
+                <a href="../webpages_glossary.html">Glossary</a>
+                <a href="https://www.youtube.com/@ReiserLab">YouTube</a>
+                <a href="https://neuprint.janelia.org/?dataset=optic-lobe:v1.0">neuPrint</a>
+            </div>
+        </nav>
+
+        <header class="row">
+            <div class="col">
+                <h1 class="is-center"><b>Male <i>Drosophila</i> Visual System Connectome - Cell Type Explorer</b></h1>
+                <h2 class="is-center" style="color: #8e8e8e">Population spatial coverage interactive plots - {{ roi_str }}</h2> 
+            </div>
+        </header>
+
+        <div class="col">
+            {% for idx in scatter_dict %}
+                <div class="row">
+
+                    <div class="card">
+                        <h3>Figure {{ idx+1 }}</h3>
+                        <p><b>X-axis:</b> {{ scatter_dict[idx]['xval'] }}</p>
+                        <p><b>Y-axis:</b> {{ scatter_dict[idx]['yval'] }}</p>
+                        <p><b>Colorscale:</b> {{ scatter_dict[idx]['colorscale'] }}</p>
+                    </div>
+
+                    <div class="col">
+                        <div class="scatter">{{ scatter_dict[idx]['fig'] }}</div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+   
+        <footer class="row">
+        <div class="col">
+            <hr class="h1-divider">
+            <i>Page updated:</i> {{ formattedDate }} | 
+            <em>Source</em>: {{ meta['dataset'] }} with UUID {{ meta['uuid'] }} | 
+            <em>Last database edit</em> {{ lastDataBaseEdit }}
+        </div>
+        </footer>
+     </div>
+</body>
+</html>

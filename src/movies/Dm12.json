@@ -1,0 +1,154 @@
+{
+  "_metadata":{"source": "MEi.json.jinja"},
+  "rois": {
+    "source": [
+      "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/roisSmoothedDecimated/",
+      "cache/blender/crossections"
+    ]
+
+    , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
+    , "LO": {"ids": ["LO(R)"], "sourceIndex": 0} 
+    , "LOP": {"ids": ["LOP(R)"], "sourceIndex": 0}
+    , "ME_layers": {"ids": ["ME_R_layer_03"], "sourceIndex": 1}
+    , "ME_columns": {"ids": ["ME_R_col_17_17", "ME_R_col_17_18", "ME_R_col_18_17", "ME_R_col_18_18", "ME_R_col_18_19", "ME_R_col_19_17", "ME_R_col_19_18", "ME_R_col_19_19", "ME_R_col_20_18", "ME_R_col_20_19"], "sourceIndex": 0}
+    , "Noninnervated_ME_layers": {"ids": ["ME_R_layer_01", "ME_R_layer_02", "ME_R_layer_04", "ME_R_layer_05", "ME_R_layer_06", "ME_R_layer_07", "ME_R_layer_08", "ME_R_layer_09", "ME_R_layer_10"], "sourceIndex": 1}
+  },
+  "neurons": {
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/segmentation/single-res-meshes"
+    , "id": [32045]
+    , "neighbors": [54419, 29977, 46479, 41738, 38945, 115444, 58441, 63931, 33671, 36339]
+    , "all": [42482, 30854, 32927, 40279, 39040, 103289, 52803, 32201, 34032, 38560, 33537, 55149, 45051, 57318, 35741, 49858, 36313, 36213, 38619, 51846, 33669, 38050, 40929, 36813, 33866, 34721, 39945, 32932, 39906, 66920, 35900, 277216, 51994, 548823, 53862, 34054, 48266, 31153, 42751, 48911, 58924, 55680, 40082, 37074, 34394, 70027, 47862, 66293, 31730, 540497, 39923, 42313, 33972, 48013, 51836, 34273, 38090, 39965, 48513, 28632, 32974, 33213, 39226, 47097, 40254, 29718, 65056, 40180, 30844, 61775, 32568, 35047, 47876, 48689, 31833, 56495, 58263, 37936, 50423, 207598, 43204, 32841, 31610, 242745, 40659, 31664, 43361, 56492, 49337, 38279, 41876, 31621, 46851, 47260, 47632, 40938, 43011, 30168, 39785, 49061, 38275, 40000, 29650, 39712, 47937, 47768, 45006, 30530, 39300, 28842, 47860, 28481, 57023, 35579, 47481, 37439, 46936, 58855, 28902, 36186, 32486, 30851, 44692, 27564, 30203, 44008] 
+  },
+  "synapses": {
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/synapses",
+    "pre": {"neurons": [32045], "type": "pre", "confidence": 0.5, "radius": 60.0},
+    "post": {"neurons": [32045], "type": "post", "confidence": 0.5, "radius": 40.0}
+  },
+  "animation": [
+    ["setValue", {"meshes": "rois.ME + rois.LO + rois.LOP", "alpha": 0.015}],
+    
+    ["setValue", {"meshes": "rois.ME", "color" : "#5D194D"}],
+    ["setValue", {"meshes": "rois.LO", "color" : "#7D111D"}],
+    ["setValue", {"meshes": "rois.LOP", "color" : "#BA4A5F"}],
+    ["setValue", {"meshes": "rois.ME_columns", "color" : "#7CFC00"}],
+    ["setValue", {"meshes": "rois.ME_columns", "alpha": 0.0}],
+
+    ["setValue", {"meshes": "rois.ME_layers", "color": "#7CFC00"}],
+    ["setValue", {"meshes": "rois.Noninnervated_ME_layers", "color": "#5D194D"}],
+    ["setValue", {"meshes": "neurons.id", "color": "#8F8F8F"}],
+    ["setValue", {"meshes": "synapses.pre", "color": "#003851"}],
+    ["setValue", {"meshes": "synapses.post", "color": "#683C03"}],
+
+    ["frameCamera", {"bound": "rois"}],
+    ["orbitCamera", {"axis": "y", "endingRelativeAngle": 45, "duration": 0}],
+    ["orbitCamera", {"axis": "x", "endingRelativeAngle": 5, "duration": 0}],
+
+    ["label", {"text": "Dm12 (32045)", "position": [0.02, 0.9], "color": "#8F8F8F", "size": 0.03, "duration": 34.0}],
+    ["label", {"text": "ME", "position": [0.6, 0.75], "color": "#5D194D", "size": 0.03, "duration": 3.0}],
+    ["label", {"text": "LO", "position": [0.7, 0.15], "color": "#7D111D", "size": 0.03, "duration": 3.0}],
+    ["label", {"text": "LOP", "position": [0.37, 0.15], "color": "#BA4A5F", "size": 0.03, "duration": 3.0}],
+
+    ["advanceTime", {"by": 2.0}],
+
+    
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 1.2, "duration": 4.0}],
+    
+
+  
+
+    ["fade", {"meshes": "rois.LO", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0} ],
+    ["fade", {"meshes": "rois.LOP", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0} ],
+    ["fade", {"meshes": "rois.ME", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0} ],
+    ["advanceTime", {"by" : 2.0}],
+    
+   
+
+    ["orbitCamera", {"localAxis": "y", "endingRelativeAngle": 90, "duration": 5.5}],
+    ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 7, "duration": 5.5}],
+    ["advanceTime", { "by" : 5.5 }],
+
+    ["label", {"text": "postynaptic sites (n=722)", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 3.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 2.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 1.0}],
+    ["advanceTime", {"by": 1.0}],
+
+    ["label", {"text": "presynaptic sites (n=184)", "position": [0.02, 0.81], "color": "#0070A4", "size": 0.03, "duration": 25}],
+    ["fade", {"meshes": "synapses.pre", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 2.5}],
+    ["label", {"text": "postsynaptic sites (n=722)", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 22.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 1.0}],
+
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.80,  "duration": 2.0}], 
+    ["fade", {"meshes": "rois.ME", "startingAlpha": 0.0, "endingAlpha":  0.015, "duration": 2.0} ],
+    ["advanceTime", {"by" : 2.5 }],
+
+    
+    ["fade", {"meshes": "rois.ME_layers","startingAlpha": 0.0, "endingAlpha": 0.1, "duration": 2.0}],
+    ["fade", {"meshes": "rois.Noninnervated_ME_layers", 
+      "startingAlpha": 0.0, "endingAlpha": 0.05, "duration": 2.0}],
+    
+    ["label", {"text": "Medulla layers", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 7.5}],
+    ["label", {"text": "1", "position": [0.02, 0.73], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "2", "position": [0.02, 0.69], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "3", "position": [0.02, 0.65], "color": "#7CFC00", "size": 0.033, "duration": 7.5}],
+    ["label", {"text": "4", "position": [0.02, 0.61], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "5", "position": [0.02, 0.57], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "6", "position": [0.02, 0.53], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "7", "position": [0.02, 0.49], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "8", "position": [0.02, 0.45], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "9", "position": [0.02, 0.41], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    ["label", {"text": "10", "position": [0.02, 0.37], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    
+    
+    ["advanceTime", {"by": 2.5}],
+
+    ["fade", {"meshes": "rois.Noninnervated_ME_layers", 
+      "startingAlpha": 0.05, "endingAlpha": 0.0, "duration": 2.0}],
+
+    ["advanceTime", {"by": 2.5}],
+
+    ["fade", {"meshes": "rois.ME_layers","startingAlpha": 0.1, "endingAlpha": 0.0, "duration": 2.0}],
+    ["advanceTime", {"by": 2.5}],
+
+    ["label", {"text": "ME columns (n=10)", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 10.0}],
+
+    
+   
+    ["fade", {"meshes": "rois.ME_columns", "startingAlpha": 0.00, "endingAlpha":  0.015, "duration": 2.0}],
+    
+
+     ["advanceTime", {"by" : 1.0}],
+    
+    ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": -90, "scale": 1.0, "duration": 4.0}],
+    ["advanceTime", {"by": 4.0}],
+    
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 0.75,  "duration": 2.0}],
+    
+    ["advanceTime", {"by" : 2.5}],
+
+    ["fade", {"meshes": "rois.ME_columns", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
+    ["advanceTime", {"by" : 3.5}],
+
+    ["fade", {"meshes": "synapses.pre", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 2.0}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 2.0}],
+    ["label", {"text": "Dm12 (n=137)", "position": [0.02, 0.9], "color": "#8F8F8F", "size": 0.03, "duration": 22.0}],
+
+    ["advanceTime", {"by": 2.0}],
+
+    ["fade", {"meshes": "neurons.neighbors", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 4.0, "stagger": "constant"}],
+    
+    ["advanceTime", {"by" : 3.0}],
+
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": 3.52}], 
+    ["advanceTime", {"by" : 1.0}],
+    
+    ["fade", {"meshes": "neurons.all", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 5.52, "stagger": "constant"}], 
+    ["advanceTime", {"by": 5.52}],
+    
+
+    ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 90, "scale": 1.0, "duration": 4.0}],
+    ["advanceTime", {"by" : 6.0 }]
+  ]
+}

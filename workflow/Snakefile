@@ -1,0 +1,31 @@
+include: "rules/fill-cache.smk"
+include: "rules/movies.smk"
+include: "rules/galleries.smk"
+include: "rules/summaries.smk"
+include: "rules/website.smk"
+
+## Begin of the rules:
+
+rule patterns:
+    output:
+        directory("results/patterns/")
+    log: stdout="logs/patterns.out.log", stderr="logs/patterns.err.log"
+    shell:
+        """
+        jupyter nbconvert --execute --to notebook --inplace src/patterns/make_in_out_html_pages.ipynb > {log.stdout} 2> {log.stderr}
+        jupyter nbconvert --clear-output --inplace src/patterns/make_in_out_html_pages.ipynb >> {log.stdout} 2>> {log.stderr}
+        """
+
+rule completeness:
+    output: touch("cache/flags/.completeness.done")
+    log: stdout="logs/completeness.out.log", stderr="logs/completeness.err.log"
+    shell:
+        """
+        jupyter nbconvert --execute --to notebook --inplace src/completeness/connection-completeness_named.ipynb > {log.stdout} 2> {log.stderr}
+        jupyter nbconvert --clear-output --inplace src/completeness/connection-completeness_named.ipynb >> {log.stdout} 2>> {log.stderr}
+        """
+
+rule weekly:
+    input:
+        rules.patterns.output,
+        rules.completeness.output

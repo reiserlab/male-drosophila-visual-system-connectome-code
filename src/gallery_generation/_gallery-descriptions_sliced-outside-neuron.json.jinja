@@ -1,0 +1,18 @@
+ "{{value['type']}}": {
+            "body_ids":
+                {{value['body_ids']}}
+          , "body_color":[{{value['body_color'] | join(', ')}} ]
+            {%- if type_of_plot=="Optic-Lobe" and view!="medulla_face_on" %}
+          , "slicer": [{
+                "location":[{{slicer['loc']['x']}}, {{slicer['loc']['y']}}, {{slicer['loc']['z']}}]
+              , "rotation": [{{slicer['rot']['x']}}, {{slicer['rot']['y']}}, {{slicer['rot']['z']}}]
+              , "thickness":[{{value['slice_width'] | abs }}]
+            }
+            ]
+            {%- endif %}
+          , "text": {
+                "text_string": "{%if title=="" or description=="Group"%}{{value['type']}} {%- if value['number_of_cells']>1 %} ({{value['number_of_cells']}}){%endif%}{%endif%}"
+              , "paper_position":{{value['text_position']}}
+              , "text_align": "{{value['text_align'] }}"
+            }
+        }

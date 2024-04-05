@@ -1,0 +1,43 @@
+__default__:
+    - '-P "reiser"'
+
+blendfile:
+    - "-n 5"
+
+blendanim:
+    - "-n 5"
+
+renderframes:
+    - "-gpu 'num=1'"
+    - "-q gpu_l4"
+
+addtext:
+    - "-gpu 'num=1"
+    - "-q gpu_short"
+
+galleryview:
+    - "-gpu 'num=1'"
+    - "-q gpu_short"
+
+vpnview:
+    - "-gpu 'num=1'"
+    - "-q gpu_short"
+
+all_optic_lobe_galleries:
+    - "-gpu 'num=1'"
+    - "-q gpu_short"
+
+all_optic_lobe_galleries_blend:
+    - "-gpu 'num=1'"
+    - "-q gpu_short"
+
+all_group_galleries:
+    - "-gpu 'num=1'"
+    - "-q gpu_short"
+
+all_group_galleries_blend:
+    - "-gpu 'num=1'"
+    - "-q gpu_short"
+
+generate_website:
+    - "-n 48"

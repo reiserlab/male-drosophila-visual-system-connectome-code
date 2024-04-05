@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ oli.name }} - Optic Lobe Connectome</title>
+    <link rel="stylesheet" href="styles/chota.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+            /* Center the main content and add maximum width */
+        body > .container {
+            max-width: 1400px; /* or any other max-width you prefer */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* This adds some padding within the container */
+            padding-right: 1rem; /* This adds some padding within the container */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery_video, .threeD_view {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            overflow: hidden; /* Add this line to prevent iframe overflow issues */
+        }
+        
+        .gallery_video iframe, .threeD_view iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .counter{
+            font-size:80%;
+        }
+
+        col.is-center .header_1 {
+            margin-bottom: 0px !important;
+        }
+
+        .main-group-nt-pred{
+            font-weight: 500;
+            font-size: 1.2em;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 10px; 
+            }
+
+        .pad-left{
+            padding-left: 20px;
+        }
+
+
+        /* Apply a border under the entire header row */
+        .row thead tr {
+            border-bottom: 2px solid #000; /* Adjust color as needed */
+        }
+        
+        /* Ensure no border under td elements and the first th in the body rows */
+        .row tbody th, .row tbody td {
+            border-bottom: none;
+        }
+
+        /* Apply increased padding to header cells in the <thead> */
+        .layer-stats-table thead th {
+            padding: 10px; /* More padding for the header cells */
+        }
+
+        /* Apply standard padding to all cells and row headers in the <tbody> */
+        .layer-stats-table tbody th,
+        .layer-stats-table tbody td {
+            padding: 3px; /* Less padding for body cells and row headers */
+        }
+
+
+        .card p {
+            margin-bottom: 5px; 
+        }
+
+        .ame-stats tbody th, .cb-stats tbody th, .me-stats tbody th {
+            color: transparent;
+        }
+
+        .text-center td, .text-center thead th{
+            text-align:center;
+        }
+
+        .text-left td, .text-left thead th{
+            text-align:left;
+        }
+
+        .connectivity-table tbody tr th,  .connectivity-table thead th.blank.level0{
+            display: none;
+        }
+        .connectivity-table {
+            padding-left: 10px;
+            text-align:left;
+        }
+        .connectivity-table tr th, .connectivity-table td {
+            padding-left: 0px; /* Adjust the left padding to create space on the left side of each cell */
+            padding-right: 20px; /* Adjust the right padding to create space on the right side of each cell */
+        }
+
+            /* Remove or reduce padding for the first th and td of each row */
+        .connectivity-table tr th:first-child, .connectivity-table td:first-child {
+            padding-left: 0px; /* Less padding on the left side for the first column */
+            padding-right: 10px; /* You can also adjust this if needed */
+        }
+
+        .nav-right a:link {
+            color: #007bff; /* Blue color for links */
+            text-decoration: none; /* Optional: removes underline from links */
+        }
+
+        .nav-right a:visited {
+            color: #0056b3; /* Darker blue color for visited links */
+        }
+
+        .nav-right a:hover {
+            color: #0056b3; /* Darker blue color on hover */
+            text-decoration: underline; /* Optional: adds underline on hover */
+        }
+
+        .nav-right a:active {
+            color: #004299; /* Even darker blue color when the link is clicked */
+        }
+
+        .connectivity-link:hover {
+            color: green; /* Lighter or different color on hover */
+            text-decoration: underline; /* Optional: adds underline on hover */
+        }
+
+        .non-functional-link {
+            color: grey; /* Non-functional link color */
+            cursor: default;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1400px) {
+            .connectivity-table {
+                font-size: 90%; /* Slightly smaller font size */
+                width: 100%;
+            }
+
+            /* Reduce padding for cells to save space */
+            .connectivity-table td, .connectivity-table th {
+                padding: 4px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .connectivity-table {
+                font-size: 70%; /* Slightly smaller font size */
+                width: 100%;
+            }
+
+            /* Reduce padding for cells to save space */
+            .connectivity-table td, .connectivity-table th {
+                padding: 3px;
+            }
+        }
+
+       @media (max-width: 1000px) {
+            .connectivity-table {
+                font-size: 50%; /* Slightly smaller font size */
+                width: 100%;
+            }
+
+            /* Reduce padding for cells to save space */
+            .connectivity-table td, .connectivity-table th {
+                padding: 2px;
+            }
+        }
+
+       @media (max-width: 800px) {
+            .connectivity-table {
+                font-size: 20%; /* Slightly smaller font size */
+                width: 100%;
+            }
+
+            /* Reduce padding for cells to save space */
+            .connectivity-table td, .connectivity-table th {
+                padding: 1px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .connectivity-table {
+                font-size: 10%; /* Even smaller font size */
+                width: 100%;
+            }
+
+            /* Further reduce padding */
+            .connectivity-table td, .connectivity-table th {
+                padding: 0px;
+            }
+            .row > [class^="col-"] {
+                width: 100%;
+                display: block;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .connectivity-table {
+                font-size: 50%; /* Just one table on top of each other */
+                width: 100%;
+            }
+
+            /* Minimal padding */
+            .connectivity-table td, .connectivity-table th {
+                padding: 1px;
+            }
+
+            /* Adjust or hide more columns as needed */
+            .connectivity-table .more-columns {
+                display: none;
+            }
+        }
+
+        a.txt_OL_intrinsic, span.txt_OL_intrinsic{color:#029e73}
+        a.txt_OL_connecting, span.txt_OL_connecting{color:#D55E00}
+        a.txt_VPN, span.txt_VPN{color:#0173b2}
+        a.txt_VCN, span.txt_VCN{color:#de8f05}
+        a.txt_other, span.txt_other{color:#cc78bc}
+        .txt_hemisphere{color:#888; font-size:80%}
+        .connectivity-table table td{padding-top:.3rem; padding-bottom:.1rem;}
+        .connectivity-table table th{vertical-align:bottom;}
+        .connectivity-table table tr:nth-child(2n) td {
+            background-color: #f8f8f8;
+        }
+        .connectivity-table .col2, .connectivity-table .col3, .connectivity-table .col4, .connectivity-table .col5{text-align:right;}
+        .hover_group:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="nav">
+            <div class="nav-right">
+                <a href="index.html">Home</a>
+                <a href="cell_types.html">Cell Types</a>
+                <a href="webpages_glossary.html">Glossary</a>
+                <a href="https://www.youtube.com/@ReiserLab">YouTube</a>
+                <a href="https://neuprint.janelia.org/?dataset=optic-lobe:v1.0">neuPrint</a>
+            </div>
+        </nav>
+
+        <header class="row">
+            <div class="col is-center">
+                <h1> <a href="{{ neuprint_deep_link }}" class="txt_{{oli.main_group}}">{{ oli.name_html }}</a>, <span class="counter">{{ n_cell_types }}</span></h1>
+            </div>
+        </header>
+
+
+        <div class="row">
+            <div class="col is-center">
+                <div class="main-group-nt-pred">
+                    Main group: <span class="txt_{{oli.main_group}}">{{ oli.main_group_name }}</span>; 
+                    Neurotransmitter consensus prediction: {{ nt_prediction }}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+            <h2 class="pad-left">Mean synapse counts per layer</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center pad-left layer-stats-table">{{ lay_stats_LA_html }}</div>
+            <div class="col-8 me-stats text-center layer-stats-table">{{ lay_stats_ME_html }}</div>
+        </div>
+        <div class="row">
+            <div class="col-8 text-center pad-left layer-stats-table">{{ lay_stats_LO_html }}</div>
+            <div class="ame-stats col-2 text-center layer-stats-table">{{ lay_stats_AME_html }}</div>
+        </div>
+        <div class="row">
+            <div class="col-8 text-center pad-left layer-stats-table">{{ lay_stats_LOP_html }}</div>
+            <div class="cb-stats col-2 text-center layer-stats-table">{{ lay_stats_CB_html }}</div>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+            <h2 class="pad-left">Neuron visualizations</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="threeD_view">
+                    <iframe scrolling="no" frameborder="0" src="{{ threeD_image_script }}"></iframe>
+                </div>
+            </div>
+            <div class="col">
+                <div class="gallery_video">
+                    <iframe frameborder="0" style="margin-left: 10px; padding:1px;border:1px solid black;" allowfullscreen src="https://www.youtube.com/embed/UegZ6rnYB3k?si=BcfuCuetJ_pY1RuQ"></iframe>  
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h2 id="CoverageHeader">Population spatial coverage</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for roi_key, roi in filtered_card_data.items() %}
+                <div class="col">
+                    <div class="card">
+                        {% set color = color_mapping_regions[roi['name']] if roi['name'] in color_mapping_regions else '#000000' %}
+                        
+                        {% set linkdict = {'Medulla': 'scatterplots/scatterplots-ME.html', 'Lobula': 'scatterplots/scatterplots-LO.html', 'Lobula Plate': 'scatterplots/scatterplots-LOP.html'} %}
+
+                        <header><h4 style="color: {{ color }};"><a href="{{ linkdict[roi['name']] }}">{{ roi['name'] }}</a></h4></header>
+                        <p>Number of post synapses: {{ roi['data']['n_post'] }}</p>
+                        <p>Number of pre synapses: {{ roi['data']['n_pre'] }}</p>
+                        <p>Number of output connections: {{ roi['data']['n_output_conn'] }}</p>
+                        <p>Coverage factor: {{ roi['data']['coverage_factor_trim'] }}</p>
+                        <p>Columnar completeness: {{ roi['data']['col_completeness'] }}</p>
+                        <p>Area completeness: {{ roi['data']['area_completeness'] }}</p>
+                        <p>Cell size (columns): {{ roi['data']['cell_size_cols'] }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        {% for image_tag in image_tags %}
+            <div class="row">
+                <div class="col">{{ image_tag }}</div>
+            </div>
+        {% endfor %}
+
+
+        <div class="row">
+            <div class="col">
+                <h2 id="OL-Connectivity-Header">Optic Lobe Connectivity</h2>
+                <div class="row">
+                    <div class="col-5 connectivity-table">
+                        <h3>Inputs</h4> 
+                        {% if in_vals_empty %}
+                            <p style="font-style: italic; text-align: center;">No inputs from the optic lobe</p>
+                        {% else %}
+                            {{ in_styled_html | safe }}
+                        {% endif %}
+                    </div>
+                    <div class="col-1" style="border-right: 1px solid #000;"></div>
+                    <div class="col-5 connectivity-table">
+                        <h3>Outputs</h4> 
+                        {% if out_vals_empty %}
+                            <p style="font-style: italic; text-align: center;">No outputs to the optic lobe</p>
+                        {% else %}
+                            {{ out_styled_html | safe }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+   
+        <footer class="row">
+        <div class="col">
+            <hr class="h1-divider">
+            <i>Pages Updated {{ formattedDate }}</i> | 
+            <em>Source</em>: {{ meta['dataset'] }} with UUID {{ meta['uuid'] }} | 
+            <em>Last database edit</em> {{ lastDataBaseEdit }}
+        </div>
+        </footer>
+     </div>
+</body>
+</html>

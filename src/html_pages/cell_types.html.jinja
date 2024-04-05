@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+    <title>Cell Type Index</title>
+    <link rel="stylesheet" href="styles/chota.min.css">
+    <style>
+
+        /* Center the main content and add maximum width */
+        body > .container {
+            max-width: 1400px; /* or any other max-width you prefer */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* This adds some padding within the container */
+            padding-right: 1rem; /* This adds some padding within the container */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .neuron_list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px 20px; /* Adjust gap between items */
+        }
+        .neuron-item {
+            padding: 5px;
+            font-size: 0.9em; /* Adjust font size as needed */
+            background: #f0f0f0; /* Light grey background */
+            border: 1px solid #ddd; /* Light grey border */
+            border-radius: 5px; /* Slightly rounded corners for aesthetics */
+            text-align: left;
+            max-width: 160px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff; /* Bootstrap primary link color */
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Medium screens (e.g., tablets) */
+        @media (min-width: 768px) {
+            .neuron-item {
+                font-size: 0.9em; /* Slightly smaller font for smaller screens */
+            }
+        }
+
+        /* Medium screens  */
+        @media (min-width: 1024px) {
+            .neuron-item {
+                font-size: 1em; /* Slightly larger font for larger screens */
+            }
+        }
+
+        /* Large screens  */
+        @media (min-width: 1920px) {
+            .neuron-item {
+                font-size: 1.1em; /* Slightly larger font for larger screens */
+            }
+        }
+
+        .group-name {
+            padding-top:15px;
+        }
+
+        .nav-right a:link, .nav-right a:visited {
+            color: #007bff; /* Blue color for links */
+            text-decoration: none; /* Optional: removes underline from links */
+        }
+
+        .nav-right a:hover {
+            color: #0056b3; /* Darker blue color on hover */
+            text-decoration: underline; /* Optional: adds underline on hover */
+        }
+
+        .nav-right a:active {
+            color: #004299; /* Even darker blue color when the link is clicked */
+        }
+
+        .col-OL_intrinsic{color:#029e73}
+        .col-OL_connecting{color:#D55E00}
+        .col-VPN{color:#0173b2}
+        .col-VCN{color:#de8f05}
+        .col-other{color:#cc78bc}
+
+        .bg-OL_intrinsic{background-color:#029e7322}
+        .bg-OL_connecting{background-color:#D55E0022}
+        .bg-VPN{background-color:#0173b222}
+        .bg-VCN{background-color:#de8f0522}
+        .bg-other{background-color:#cc78bc22}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="nav">
+            <div class="nav-right">
+                <a href="index.html">Home</a>
+                <a href="cell_types.html">Cell Types</a>
+                <a href="webpages_glossary.html">Glossary</a>
+                <a href="https://www.youtube.com/@ReiserLab">YouTube</a>
+                <a href="https://neuprint.janelia.org/?dataset=optic-lobe:v1.0">neuPrint</a>
+            </div>
+        </nav>
+        <header class="row">
+            <div class="col">
+                <h1 class="is-center"><b>Male <i>Drosophila</i> Visual System Connectome - Cell Type Explorer</b></h1>
+                <h2 class="is-center">Index</h2>
+            </div>
+        </header>
+
+        <section>
+        {%- for g_name, group in mylist.groupby(by='main_groups') %}
+        <div class="group-name col-{{g_name}}">
+            <h2>{{ full_group_names[g_name] }}</h2>
+        </div>
+        <div class="neuron_list"> <!-- Use the .neuron_list for grid layout -->
+            {% for idx, row in group.reset_index().iterrows() %}
+            <!-- Add bg-{{g_name}} class to apply background color based on the group -->
+            <div class="neuron-item bg-{{g_name}}"> 
+                <a href="{{ row['instance'] }}.html" class="col-{{g_name}} {{row['main_groups']}}">
+                {{ row['type'] }} ({{ row['instance'][-1:] }})
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+        </section>
+        {%- endfor %}
+
+        <hr>
+        <footer class="row">
+            <div class="col">
+                
+                <em>Pages Updated {{ formattedDate }}</em> | 
+                <em>Source</em>: {{ meta['dataset'] }} with UUID {{ meta['uuid'] }} | 
+                <em>Last database edit</em> {{ lastDataBaseEdit }}
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+

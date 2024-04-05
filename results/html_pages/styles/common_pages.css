@@ -1,0 +1,172 @@
+/*  common.css - MoinMoin Default Styles
+
+Copyright (c) 2001, 2002, 2003 by Juergen Hermann
+Modified by ReiserLab-LB for HHMI Janelia OL-connectome Cell Type Explorer 2024
+*/
+
+/* content styles */
+html {
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 1.25em;
+	color: #333;
+}
+
+body {
+    padding: 2em;
+}
+
+header{
+    float:right;
+    margin-bottom:0;
+    font-size: 1.25em;
+}
+
+/* links */
+a:link {
+    color: #700;
+	text-decoration: none;
+}
+a:visited {
+    color: #700;
+}
+a:hover {
+	color: #900;
+	background: #E8F0FF;
+}
+
+/* Headings */
+
+title{
+	margin: 0px 10px 10px 10px;
+	padding:10px 30px;
+	font-size: 2.5em;
+	line-height: 1em;
+}
+
+h1 {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	font-size: 2.8em;
+	line-height: 1.3em;
+}
+
+h2 {
+	text-align: center;
+	font-size: 1.8em;
+    line-height: 1.2em;
+}
+
+#NCells-Header {
+    padding-top:0em; 
+    padding-bottom:1.5em;
+}
+
+#GalleryHeader {
+    padding-top:1em; 
+    padding-bottom:1.5em;
+}
+
+#OL-Connectivity-Header {
+    padding-top:1em; 
+    padding-bottom:1.5em;
+}
+
+#CoverageHeader{
+    padding-top:1em; 
+    padding-bottom:3em;
+}
+
+code {
+	font-family: courier, monospace;
+}
+
+footer 
+{
+    margin-top: 2em;
+}
+
+.footnotes div {
+	width: 5em;
+	border-top: 1pt solid gray;
+}
+
+/* Divs */
+
+.gallery_image{
+    width:70%;
+    float:left;
+}
+
+.gallery_video{
+    padding-top: 200px;
+}
+
+.clearfix{
+    clear:both
+}
+
+.coverage_plots{
+    display: flex;
+    margin-top: 0.5em;
+    padding-bottom: 1.5em;
+    width:100%;
+}
+
+.larger_image{
+    flex: 33.33%;
+    padding: 25px;
+}
+
+.optic_lobe_connectivity{
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding-top: 1.5em;
+}
+
+.layer_tables_comb{
+    display: flex;
+    width: 100%;
+    flex-direction: row; 
+    align-items: stretch;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    justify-content: space-between;
+}
+
+.layer_table{
+    display:flex-inline;
+    font-size: 0.9em;
+    column-width: 1em;
+    row-gap: 0.7em;
+    text-align: center;
+}
+
+/* Tables */
+
+table{	
+    border-collapse: collapse;
+    text-align: left;
+    width: 80%;
+}
+
+th{
+    width: auto; 
+    height: auto; 
+    padding: 0.35em;
+	font-size: 1.1em;
+    white-space: nowrap;
+}
+
+td{
+    font-size: 1.1em;
+    padding: 0.5em;
+    height: auto;
+    width: auto;
+}
+
+tr{
+    height: auto;
+    width: auto;
+}

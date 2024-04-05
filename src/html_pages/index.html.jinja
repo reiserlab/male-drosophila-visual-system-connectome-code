@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+    <title>Cell Type Explorer Cover Page</title>
+    <link rel="stylesheet" href="styles/chota.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+
+            /* Center the main content and add maximum width */
+        body > .container {
+            max-width: 1400px; /* or any other max-width you prefer */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* This adds some padding within the container */
+            padding-right: 1rem; /* This adds some padding within the container */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .images-row {
+            display: flex;
+            justify-content: center; /* Adjust this if you want to align images differently */
+            flex-wrap: nowrap; /* Prevents the images from wrapping */
+            overflow-x: auto; /* Allows scrolling on small screens */
+         }
+
+        .images-row img {
+            height: auto; /* Maintains the aspect ratio of the images */
+        }
+
+        .images-row img:nth-child(3) {
+            margin-left: 10px;
+            padding: 45px;
+            flex: 1; /* Assigns a flex grow factor to the first and last images */
+            max-width: 30%; /* Adjusts maximum width as necessary */
+        }
+
+        .images-row img:nth-child(2){
+            flex: 1; /* Assigns a flex grow factor to the first and last images */
+            max-width: 30%; /* Adjusts maximum width as necessary */
+        }
+
+        .images-row img:nth-child(1){
+            padding: 70px;
+            flex: 1; /* Assigns a flex grow factor to the first and last images */
+            max-width: 35%; /* Adjusts maximum width as necessary */
+        }
+
+        .search-bar-container {
+            display: flex;
+            justify-content: center; /* Aligns items to the start of the container */
+            margin-top: 5rem;
+        }
+        .ui-widget {
+            margin-right: 10px; /* Adds some space between the search bar and the help icon */
+            justify-content: center;
+        }
+        #lines {
+            width: 300px; /* Makes the search bar narrower */
+            justify-content: center;
+        }
+        .help {
+            cursor: pointer;
+            display: inline-block; /* Ensures the question mark is treated as inline for alignment */
+            margin-left: -150px; /* Adjust the space between the search bar and the question mark */
+            vertical-align: middle; /* Aligns the question mark with the middle of the search bar */
+        }
+        .example-text {
+            margin-top: 2rem;
+            text-align: center; 
+        }
+
+        .nav-right a:link, .nav-right a:visited {
+            color: #007bff; /* Blue color for links */
+            text-decoration: none; /* Optional: removes underline from links */
+        }
+
+        .nav-right a:hover {
+            color: #0056b3; /* Darker blue color on hover */
+            text-decoration: underline; /* Optional: adds underline on hover */
+        }
+
+        .nav-right a:active {
+            color: #004299; /* Even darker blue color when the link is clicked */
+        }
+
+        .h1-divider {margin-top: 5rem}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="nav">
+                <div class="nav-right">
+                    <a href="index.html">Home</a>
+                    <a href="cell_types.html">Cell Types</a>
+                    <a href="webpages_glossary.html">Glossary</a>
+                    <a href="https://www.youtube.com/@HHMIJanelia/featured">YouTube</a>
+                    <a href="https://neuprint.janelia.org/?dataset=optic-lobe:v1.0">neuPrint</a>
+                </div>
+        </nav>
+
+       <header class="row">
+            <div class="col">
+                <h1 class="is-center"><b>Male <i>Drosophila</i> Visual System Connectome - Cell Type Explorer</b></h1>
+            </div>
+        </header>
+
+        <!-- Image Section -->
+        <div class="images-row">
+            <img src="images/OL_layers_EM.png" width="500" height="500" alt="EM data with layer outlines overlaid">
+            <img src="images/rois_shell.png" width="500" height="500" alt="Shell outline of drosophila brain and optic lobe regions">
+            <img src="images/im12_LCs.png" width="500" height="500" alt="Image of reconstructed LPC and LLPC neuron types from the drosophila right optic lobe connectome">
+        </div>
+
+        <!-- Search Bar Section -->
+        <div class="search-bar-container">
+            <div class="ui-widget">
+                <label for="lines"><b>Search by cell type:&nbsp;</b></label>
+                <input id="lines">
+                <label for="lines"><i>e.g. Tm2, LPT7, Dm9</i></label>
+            </div>
+        </div>
+
+        <div class="example-text">
+            <a href="cell_types.html"><b>View list of all available cell types here</b></a>
+        </div>
+
+        <div style="text-align: center;">
+            <b>View spatial coverage interactive plots:</b>
+            {% set links = {
+                'Medulla': 'scatterplots/scatterplots-ME.html',
+                'Lobula': 'scatterplots/scatterplots-LO.html',
+                'Lobula Plate': 'scatterplots/scatterplots-LOP.html'
+            } %}
+            {% for name, url in links.items() %}
+                <a href="{{ url }}"><b>{{ name }}</b></a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+
+        <script>
+            $(function() {
+                var availableTags = {{ available_tags | tojson }};
+                $("#lines").autocomplete({
+                    source: availableTags,
+                    select: function(event, ui) {
+                        window.location = ui.item.url;
+                    }
+                });
+            });
+            </script>
+            
+        <footer class="row">
+            <div class="col">
+                <hr class="h1-divider">
+            </div>
+        </footer>
+    </div>
+</body>
+</body>
+</html>
+

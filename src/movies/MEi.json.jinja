@@ -1,0 +1,172 @@
+{
+  "_metadata":{"source": "MEi.json.jinja"},
+  "rois": {
+    "source": [
+      "https://emdata6-novran.janelia.org/api/node/:master/roisSmoothedDecimated",
+      "cache/blender/crossections"
+    ]
+
+    , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
+    , "LO": {"ids": ["LO(R)"], "sourceIndex": 0} 
+    , "LOP": {"ids": ["LOP(R)"], "sourceIndex": 0}
+    {% if innervated_layers  | length %}, "ME_layers": {"ids": ["{{ innervated_layers | join('", "') }}"], "sourceIndex": 1}{% endif %}
+    {% if innervated_columns | length %}, "ME_columns": {"ids": ["{{ innervated_columns|join('", "') }}"], "sourceIndex": 0}{% endif %}
+    {% if innervated_layers  | length < 10 -%}
+    , "Noninnervated_ME_layers": {"ids": [
+    {%- set ns = namespace(iter=false) -%}
+    {%- for layer in range(1, 11) -%}
+    {%- if ("ME_R_layer_{:02d}".format(layer)) not in innervated_layers -%}
+        {%- if ns.iter %}, {% endif -%}
+        {%- set ns.iter = true -%}
+        "{{- "ME_R_layer_{:02d}".format(layer) -}}"
+    {%- endif -%}
+    {%- endfor -%}
+    ], "sourceIndex": 1}
+    {%- endif %}
+  },
+  "neurons": {
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v0.91/segmentation/single-res-meshes"
+    , "id": [{{star_neuron }}]
+    {% if neighbor_neurons | length %}, "neighbors": [{{neighbor_neurons| join(', ')}}]{% endif %}
+    {% if other_neurons | length %}, "all": [{{other_neurons| join(', ')}}] {% endif %}
+  },
+  "synapses": {
+    "source": "https://emdata6-novran.janelia.org/api/node/:master/synapses",
+    "pre": {"neurons": [{{star_neuron}}], "type": "pre", "confidence": 0.5, "radius": 60.0},
+    "post": {"neurons": [{{star_neuron}}], "type": "post", "confidence": 0.5, "radius": 40.0}
+  },
+  "animation": [
+    ["setValue", {"meshes": "rois.ME + rois.LO + rois.LOP", "alpha": 0.015}],
+    
+    ["setValue", {"meshes": "rois.ME", "color" : "#5D194D"}],
+    ["setValue", {"meshes": "rois.LO", "color" : "#7D111D"}],
+    ["setValue", {"meshes": "rois.LOP", "color" : "#BA4A5F"}],
+    {% if innervated_columns | length %}
+    ["setValue", {"meshes": "rois.ME_columns", "color" : "#7CFC00"}],
+    ["setValue", {"meshes": "rois.ME_columns", "alpha": 0.0}],
+    {% endif %}
+
+    {% if innervated_layers  | length %}["setValue", {"meshes": "rois.ME_layers", "color": "#7CFC00"}],{% endif %}
+    {% if innervated_layers | length < 10 -%}["setValue", {"meshes": "rois.Noninnervated_ME_layers", "color": "#5D194D"}],{% endif %}
+    ["setValue", {"meshes": "neurons.id", "color": "#8F8F8F"}],
+    ["setValue", {"meshes": "synapses.pre", "color": "#003851"}],
+    ["setValue", {"meshes": "synapses.post", "color": "#683C03"}],
+
+    ["frameCamera", {"bound": "rois"}],
+    ["orbitCamera", {"axis": "y", "endingRelativeAngle": 45, "duration": 0}],
+    ["orbitCamera", {"axis": "x", "endingRelativeAngle": 5, "duration": 0}],
+
+    ["label", {"text": "{{neuron_type}} ({{star_neuron}})", "position": [0.02, 0.9], "color": "#8F8F8F", "size": 0.03, "duration": 34.0}],
+    ["label", {"text": "ME", "position": [0.6, 0.75], "color": "#5D194D", "size": 0.03, "duration": 3.0}],
+    ["label", {"text": "LO", "position": [0.7, 0.15], "color": "#7D111D", "size": 0.03, "duration": 3.0}],
+    ["label", {"text": "LOP", "position": [0.37, 0.15], "color": "#BA4A5F", "size": 0.03, "duration": 3.0}],
+
+    ["advanceTime", {"by": 2.0}],
+
+    {% if innervated_columns | length %}
+    {% if innervated_columns | length <80%}
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 1.2, "duration": 4.0}],
+    {%else%}
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 0.6, "duration": 4.0}],
+    {%endif%}
+    {% endif %}
+
+  
+
+    ["fade", {"meshes": "rois.LO", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0} ],
+    ["fade", {"meshes": "rois.LOP", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0} ],
+    ["fade", {"meshes": "rois.ME", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0} ],
+    ["advanceTime", {"by" : 2.0}],
+    
+   
+
+    ["orbitCamera", {"localAxis": "y", "endingRelativeAngle": 90, "duration": 5.5}],
+    ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 7, "duration": 5.5}],
+    ["advanceTime", { "by" : 5.5 }],
+
+    ["label", {"text": "postynaptic sites (n={{post_count}})", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 3.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 2.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 1.0}],
+    ["advanceTime", {"by": 1.0}],
+
+    ["label", {"text": "presynaptic sites (n={{pre_count}})", "position": [0.02, 0.81], "color": "#0070A4", "size": 0.03, "duration": 25}],
+    ["fade", {"meshes": "synapses.pre", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 2.5}],
+    ["label", {"text": "postsynaptic sites (n={{post_count}})", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 22.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 1.0}],
+
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.80,  "duration": 2.0}], 
+    ["fade", {"meshes": "rois.ME", "startingAlpha": 0.0, "endingAlpha":  0.015, "duration": 2.0} ],
+    ["advanceTime", {"by" : 2.5 }],
+
+    
+    {% if innervated_layers  | length %}["fade", {"meshes": "rois.ME_layers","startingAlpha": 0.0, "endingAlpha": 0.1, "duration": 2.0}], {% endif %}
+    {% if innervated_layers | length < 10 -%}["fade", {"meshes": "rois.Noninnervated_ME_layers", 
+      "startingAlpha": 0.0, "endingAlpha": 0.05, "duration": 2.0}],{% endif %}
+    
+    ["label", {"text": "Medulla layers", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 7.5}],
+    {% for layer in range(1, 11) -%}
+    {%- if ("ME_R_layer_{:02d}".format(layer)) in innervated_layers -%}
+    ["label", {"text": "{{ layer }}", "position": [0.02, {{ "{:.2f}".format(0.77 - layer * 0.04)}}], "color": "#7CFC00", "size": 0.033, "duration": 7.5}],
+    {% else -%}
+    ["label", {"text": "{{ layer }}", "position": [0.02, {{ "{:.2f}".format(0.77 - layer  * 0.04)}}], "color": "#5D194D", "size":0.025, "duration": 7.5}],
+    {% endif -%}
+    {%- endfor %}
+    
+    ["advanceTime", {"by": 2.5}],
+
+    {% if innervated_layers | length < 10 -%}["fade", {"meshes": "rois.Noninnervated_ME_layers", 
+      "startingAlpha": 0.05, "endingAlpha": 0.0, "duration": 2.0}],{% endif %}
+
+    ["advanceTime", {"by": 2.5}],
+
+    {% if innervated_layers  | length %}["fade", {"meshes": "rois.ME_layers","startingAlpha": 0.1, "endingAlpha": 0.0, "duration": 2.0}],
+    ["advanceTime", {"by": 2.5}],{% endif %}
+
+    ["label", {"text": "ME columns (n={{number_of_columns}})", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 10.0}],
+
+    {% if innervated_columns | length %}
+    {% if innervated_columns | length<80 %}
+   
+    ["fade", {"meshes": "rois.ME_columns", "startingAlpha": 0.00, "endingAlpha":  0.015, "duration": 2.0}],
+    {% endif %}
+    {% endif %}
+
+     ["advanceTime", {"by" : 1.0}],
+    
+    ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": -90, "scale": 1.0, "duration": 4.0}],
+    ["advanceTime", {"by": 4.0}],
+   
+    {% if innervated_columns | length %} 
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 0.75,  "duration": 2.0}],
+    
+    ["advanceTime", {"by" : 2.5}],
+
+    {% if innervated_columns | length<200 %}["fade", {"meshes": "rois.ME_columns", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],{% endif %}
+    {% endif %}
+    ["advanceTime", {"by" : 3.5}],
+
+    ["fade", {"meshes": "synapses.pre", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 2.0}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 2.0}],
+    ["label", {"text": "{{neuron_type}} (n={{neuron_count}})", "position": [0.02, 0.9], "color": "#8F8F8F", "size": 0.03, "duration": 22.0}],
+
+    ["advanceTime", {"by": 2.0}],
+
+    {% if neighbor_neurons | length %}["fade", {"meshes": "neurons.neighbors", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 4.0, "stagger": "constant"}],{% endif %}
+    
+    ["advanceTime", {"by" : 3.0}],
+
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": {{1.0+(neuron_count-11)*0.02}}}], 
+    ["advanceTime", {"by" : 1.0}],
+    {% if other_neurons | length %}
+    ["fade", {"meshes": "neurons.all", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": {{3.0+(neuron_count-11)*0.02}}, "stagger": "constant"}], 
+    ["advanceTime", {"by": {{3.0+(neuron_count-11)*0.02}}}],
+    {% endif %}
+
+    ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 90, "scale": 1.0, "duration": 4.0}],
+    ["advanceTime", {"by" : 6.0 }]
+  ]
+}
+

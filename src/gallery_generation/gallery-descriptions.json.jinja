@@ -1,0 +1,105 @@
+{ "plot": {
+    "plot_type": "{{ type_of_plot }}"
+  , "group_name": "{{ type_or_group }}"
+  , "title": "{{ title }}"
+  , "view": "{{ view | default("whole_brain") }}"
+  , "scalebar": {
+        "type": "-"
+      , "length": "50"
+      , "location":[{{scalebar['loc']['x']}}, {{scalebar['loc']['y']}}, {{scalebar['loc']['z']}}]
+      {%if description!="Gallery"%}
+      , "text_location":[{{scalebar['txt_loc']['x']}}, {{scalebar['txt_loc']['y']}}, {{scalebar['txt_loc']['z']}}]
+      {%endif%}
+    }
+  {%if description=="Gallery"%}
+  , "slice_indicator": {
+        "text":{%if view=="Dorsal_slice"%}"D"{%elif view=="Ventral_slice"%}"V"{%else%}"E"{%endif%}}
+  {%endif%}
+  , "directory": "{{ directory }}"
+  , "rois":{
+        {% if type_of_plot=="Full-Brain" -%}
+         "OL(R)": {
+            "flat": [46000, 30000, 28000]
+          , "rotation": [-180, 0, -2]
+          , "color":[0.9, 0.9, 0.9, 1.0]
+          , "scale": 0.125
+        }
+      , "OL(L)": {
+            "flat": [46000, 30000, 28000]
+          , "rotation": [-180, 0, -2]
+          , "color":[0.9, 0.9, 0.9, 1.0]
+          , "scale": 0.125
+        }
+      , "CB": {
+            "flat": [46000, 30000, 28000]
+          , "rotation": [-180, 0, -2]
+          , "color":[0.9, 0.9, 0.9, 1.0]
+          , "scale": 0.125
+        } 
+        {%- for key, value in list_of_rois.items() %}
+      , "{{key}}": {{value | tojson}}
+        {% endfor -%}
+      {% elif type_of_plot=="Optic-Lobe" -%}
+      
+        "ME(R)": {"color":[0.05,0.05,0.05,0.05], "visible":false}
+      , "LO(R)": {"color":[1.0,0.0,0.0,1.0], "visible":false}
+      , "LOP(R)": {"color":[1.0,0.0,0.0,1.0], "visible":false}
+      {%- if view=="AME_slice" %}
+      , "AME(R)":{ "slice": [16844.9, 35175.5, 33221.5],  "rotation": [76.3578,-226.0,162.0], "thickness": 30, "color":[0.92, 0.94, 0.98, 1], "outline": [0.66, 0.88, 0.98, 1]}
+      {%- endif -%}
+      
+      {% for lay_num in range(1, 11) %}
+      {% if n_vis['npil']=='ME' and n_vis['lay']==lay_num or n_vis|length==0 -%}, "{{"ME_R_layer_%02d" % lay_num }}":{ {% if view!='medulla_face_on' -%} "slice": [{{slicer['loc']['x']}}, {{slicer['loc']['y']}}, {{slicer['loc']['z']}}],{%endif%}  "rotation": [{{slicer['rot']['x']}},{{slicer['rot']['y']}},{{slicer['rot']['z']}}], {%if view!='medulla_face_on'%}"thickness": 30,{%endif%} "color":{%if lay_num==1 or lay_num==3 or lay_num==5 or lay_num==7 or lay_num==9 or view=='medulla_face_on' %}{{neuropil_color[0]}}{%else%}{{neuropil_color[1]}}{%endif%}{%if view=='medulla_face_on'%} } {%endif%}{%if view!='medulla_face_on'%}, "outline": {{neuropil_color[2]}}}{%endif%}{%endif%}
+      {%- endfor %}
+      {% for lay_num in range(1, 8) %}
+      {% if n_vis['npil']=='LO' and n_vis['lay']==lay_num or n_vis|length==0 -%}, "{{"LO_R_layer_%01d" % lay_num }}":{ {% if view!='medulla_face_on' -%}"slice": [{{slicer['loc']['x']}}, {{slicer['loc']['y']}}, {{slicer['loc']['z']}}], {%endif%} "rotation": [{{slicer['rot']['x']}},{{slicer['rot']['y']}},{{slicer['rot']['z']}}],{%if view!='medulla_face_on'%} "thickness": 30,{%endif%}"color":{%if lay_num==1 or lay_num==3 or lay_num==5 or lay_num==7 or view=='medulla_face_on' %}{{neuropil_color[3]}}{%else%}{{neuropil_color[4]}}{%endif%}{%if view=='medulla_face_on'%} } {%endif%}{%if view!='medulla_face_on'%}, "outline": {{neuropil_color[5]}}}{%endif%}{%endif%}
+      {%- endfor %}
+      {% for lay_num in range(1, 5) %}
+      {% if n_vis['npil']=='LOP' and n_vis['lay']==lay_num or n_vis|length==0 -%}, "{{"LOP_R_layer_%01d" % lay_num}}":{ {% if view!='medulla_face_on' -%}"slice": [{{slicer['loc']['x']}}, {{slicer['loc']['y']}}, {{slicer['loc']['z']}}],{%endif%} "rotation": [{{slicer['rot']['x']}},{{slicer['rot']['y']}},{{slicer['rot']['z']}}], {%if view!='medulla_face_on'%}"thickness": 30,{%endif%} "color":{%if lay_num==1 or lay_num==3 or view=='medulla_face_on'%}{{neuropil_color[6]}}{%else%}{{neuropil_color[7]}}{%endif%}{%if view=='medulla_face_on'%} } {%endif%}{%if view!='medulla_face_on'%}, "outline": {{neuropil_color[8]}}}{%endif%}{%endif%}
+      {%- endfor %}
+      {%- endif %}
+    }
+
+  , "camera":{
+        "rotation": [{{camera['rot']['x']}}, {{camera['rot']['y']}}, {{camera['rot']['z']}}]
+      , "location": [{{camera['loc']['x']}}, {{camera['loc']['y']}}, {{camera['loc']['z']}}]
+      , "ortho_scale": {{camera['ortho']}}
+      , "resolution": [{{camera['res']['x']}}, {{camera['res']['y']}}]
+    }
+
+  , "neuron_types": {
+        {% for key, value in list_of_ids.items() -%}
+    {% if not loop.first%}, {%endif -%}
+        {% if value['slice_width'] > 0 %} {# slice width > 0 means  normal slicing #}
+          {% include "_gallery-descriptions_sliced-neuron.json.jinja"%}
+          {% elif value['slice_width'] < 0 %} {# slice width < 0 means  outside slicing #}
+          {% include "_gallery-descriptions_sliced-outside-neuron.json.jinja"%}
+          {% else %}{# slice width 0 means no slicing#}
+        "{{value['type'] }}": {
+            "body_ids":
+                {{value['body_ids']}}
+          , "body_color":[{{value['body_color'] | join(', ')}} ]
+            {%- if type_of_plot=="Optic-Lobe" and view!="medulla_face_on" and value['slice_width']!=0 %}
+          , "slicer": [{
+                "location":[{{slicer['loc']['x']}}, {{slicer['loc']['y']}}, {{slicer['loc']['z']}}]
+              , "rotation": [{{slicer['rot']['x']}}, {{slicer['rot']['y']}}, {{slicer['rot']['z']}}]
+              , "thickness":[{{value['slice_width']}}]
+            }
+              , {"roi": ["ME(R)", "LO(R)", "LOP(R)"], "keep": "intersection"}
+            ]
+            {%- endif %}
+          , "text": {
+                "text_string": "
+                  {%- if title=="" or description=="Group" or description=="flipbook" -%}
+                      {{value['type']}}
+                      {%- if value['number_of_cells']>1 %} ({{value['number_of_cells']}})
+                        {%-endif -%}
+                  {%- endif -%}"
+              , "paper_position":{{value['text_position']}}
+              , "text_align": "{{value['text_align'] }}"
+            }
+        }
+        {% endif %}
+        {%- endfor%}
+    }
+}}
