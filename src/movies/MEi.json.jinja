@@ -2,8 +2,8 @@
   "_metadata":{"source": "MEi.json.jinja"},
   "rois": {
     "source": [
-      "https://emdata6-novran.janelia.org/api/node/:master/roisSmoothedDecimated",
-      "cache/blender/crossections"
+        "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/roisSmoothedDecimated/"
+      , "cache/blender/crossections"
     ]
 
     , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
@@ -31,7 +31,7 @@
     {% if other_neurons | length %}, "all": [{{other_neurons| join(', ')}}] {% endif %}
   },
   "synapses": {
-    "source": "https://emdata6-novran.janelia.org/api/node/:master/synapses",
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/synapses/",
     "pre": {"neurons": [{{star_neuron}}], "type": "pre", "confidence": 0.5, "radius": 60.0},
     "post": {"neurons": [{{star_neuron}}], "type": "post", "confidence": 0.5, "radius": 40.0}
   },
