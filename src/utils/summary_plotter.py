@@ -1,21 +1,17 @@
-""" 
-Part of the summary figure plotting 
+"""
+Part of the summary figure plotting
 """
 from abc import ABC
-import warnings
 from itertools import pairwise
 from bisect import bisect
 
 import numpy as np
-import pandas as pd
 import scipy
 
 import plotly.graph_objects as go
-import plotly.io as pio   
+import plotly.io as pio
 
 from plotly.subplots import make_subplots
-
-from neuprint import fetch_custom
 
 from utils.ROI_calculus import load_layer_thre
 from utils.ol_color import OL_COLOR
@@ -139,41 +135,44 @@ class SummaryPlotter(ABC):
             colcnt = start_row + 1
             colcnt = colcnt if colcnt>1 else ""
             self.__fig.add_annotation(
-                    text=f'<b style="font-size:106%{col_str}">{self.__get_print_name(instance_sum.type_name)}</b>'
-                  , x=0
-                  , y=.56
-                  , yshift=0
-                  , font={'family': 'Arial', 'size':10}
-                  , xref=f"x{colcnt} domain"
-                  , yref=f"y{colcnt} domain"
-                  , yanchor='bottom'
-                  , xanchor='right'
-                  , showarrow=False
-                )
+                text=f'<b style="font-size:106%{col_str}">'\
+                    f'{self.__get_print_name(instance_sum.type_name)}</b>'
+              , x=0
+              , y=.56
+              , yshift=0
+              , font={'family': 'Arial', 'size':10}
+              , xref=f"x{colcnt} domain"
+              , yref=f"y{colcnt} domain"
+              , yanchor='bottom'
+              , xanchor='right'
+              , showarrow=False
+            )
             self.__fig.add_annotation(
-                    text=f'<span style="font-size:80%;color:#777">n=</span>{instance_sum.count}&nbsp;&nbsp;&nbsp;<b style="font-size:80%;{hem_col}">({instance_sum.hemisphere})</b>'
-                  , x=0
-                  , y=.28
-                  , yshift=0
-                  , font={'family': 'Arial', 'size':10}
-                  , xref=f"x{colcnt} domain"
-                  , yref=f"y{colcnt} domain"
-                  , yanchor='bottom'
-                  , xanchor='right'
-                  , showarrow=False
-                )
+                text=f'<span style="font-size:80%;color:#777">n=</span>'\
+                    f'{instance_sum.count}&nbsp;&nbsp;&nbsp;'\
+                    f'<b style="font-size:80%;{hem_col}">({instance_sum.hemisphere})</b>'
+              , x=0
+              , y=.28
+              , yshift=0
+              , font={'family': 'Arial', 'size':10}
+              , xref=f"x{colcnt} domain"
+              , yref=f"y{colcnt} domain"
+              , yanchor='bottom'
+              , xanchor='right'
+              , showarrow=False
+            )
             self.__fig.add_annotation(
-                    text=instance_sum.consensus_nt
-                  , x=0
-                  , y=0
-                  , yshift=0
-                  , font={'family': 'Arial', 'size':10}
-                  , xref=f"x{colcnt} domain"
-                  , yref=f"y{colcnt} domain"
-                  , yanchor='bottom'
-                  , xanchor='right'
-                  , showarrow=False
-                )
+                text=instance_sum.consensus_nt
+              , x=0
+              , y=0
+              , yshift=0
+              , font={'family': 'Arial', 'size':10}
+              , xref=f"x{colcnt} domain"
+              , yref=f"y{colcnt} domain"
+              , yanchor='bottom'
+              , xanchor='right'
+              , showarrow=False
+            )
 
 
     def __get_col_widths(self) -> list[float]:
@@ -520,7 +519,9 @@ class SummaryPlotter(ABC):
               , row=row_num, col=col_num
             )
         norm_max = instance.distribution['syn_dist'].max()
-        rel_hist_df = instance.distribution[(instance.distribution['roi']==roi_to_plot) & (instance.distribution['type']=='post')]
+        rel_hist_df = instance.distribution[
+            (instance.distribution['roi']==roi_to_plot) & (instance.distribution['type']=='post')
+        ]
         self.__fig.add_trace(
             go.Scatter(
                 x=rel_hist_df['depth']
@@ -533,7 +534,9 @@ class SummaryPlotter(ABC):
             )
           , row=row_num, col=col_num
         )
-        rel_hist_df = instance.distribution[(instance.distribution['roi']==roi_to_plot) & (instance.distribution['type']=='pre')]
+        rel_hist_df = instance.distribution[
+            (instance.distribution['roi']==roi_to_plot) & (instance.distribution['type']=='pre')
+        ]
         self.__fig.add_trace(
             go.Scatter(
                 x=rel_hist_df['depth']
@@ -562,11 +565,15 @@ class SummaryPlotter(ABC):
               , ticktext=tmp_tit
               , tickangle=-90
               , color='black'
-              , tickfont={'family': 'Arial', 'size': self.__axis_label_text_size, 'color': self.__axis_label_text_color}
+              , tickfont={
+                    'family': 'Arial'
+                  , 'size': self.__axis_label_text_size
+                  , 'color': self.__axis_label_text_color
+                }
               , row=row_num, col=col_num
             )
             start_last_row = len(self.__get_col_widths())*(len(self.__instances)-1)
-            colcnt = start_last_row + col_num 
+            colcnt = start_last_row + col_num
             colcnt = colcnt if colcnt>1 else ""
             self.__fig.add_annotation(
                 text=col_name
@@ -593,7 +600,7 @@ class SummaryPlotter(ABC):
               , row=row_num, col=col_num
             )
             start_last_row = len(self.__get_col_widths())*(len(self.__instances)-1)
-            colcnt = start_last_row + col_num 
+            colcnt = start_last_row + col_num
             colcnt = colcnt if colcnt>1 else ""
             self.__fig.add_annotation(
                 x=1
@@ -601,7 +608,11 @@ class SummaryPlotter(ABC):
               # , y=.5
               , text=f"{np.round(maxbar)}"
               , showarrow=False
-              , font={'family': 'Arial', 'size':self.__axis_label_text_size, 'color':self.__axis_label_text_color}
+              , font={
+                    'family': 'Arial'
+                  , 'size': self.__axis_label_text_size
+                  , 'color':self.__axis_label_text_color
+                }
               , xref=f"x{colcnt} domain"
               , yref=f"y{colcnt} domain"
               , yanchor='middle'
@@ -620,7 +631,7 @@ class SummaryPlotter(ABC):
         for ct in self.__instances:
             row_count += 1
             col_count = len(self.__col_syn)
-            
+
             col_count += 1
             self.__plot_hor_frac_bar(
                 instance=ct
@@ -659,7 +670,7 @@ class SummaryPlotter(ABC):
                 text = "NoName"
             else:
                 text = row['instance'][:-2]
-            
+
             styleadd = "color:#000;"
             if row['instance'][-1] == 'L':
                 styleadd = "color:#8b008b;"
@@ -684,7 +695,11 @@ class SummaryPlotter(ABC):
             self.__fig.add_annotation(
                 x=label_loc
               , y=y_diff
-              , text=f'<span style="{letter_spacing}{styleadd}"><b style="font-size:88%;color:{col_i[x_count]};">{x_count+1}</b>&#8239;{text[:6]}<span style="opacity:.7;">{text[6:7]}</span><span style="opacity:0.3">{text[7:8]}</span><span style="opacity:0;">{text[8:]}</span></span>'
+              , text=f'<span style="{letter_spacing}{styleadd}">'\
+                    f'<b style="font-size:88%;color:{col_i[x_count]};">{x_count+1}</b>'\
+                    f'&#8239;{text[:6]}<span style="opacity:.7;">{text[6:7]}</span>'\
+                    f'<span style="opacity:0.3">{text[7:8]}</span>'\
+                    f'<span style="opacity:0;">{text[8:]}</span></span>'
               , showarrow=False
               , font={'family': 'Arial', 'size':self.__data_text_size, 'color':'black'}
               , yanchor='bottom'
@@ -757,7 +772,11 @@ class SummaryPlotter(ABC):
             self.__fig.add_annotation(
                 x=label_loc
               , y=-y_diff
-              , text=f'<span style="{letter_spacing}{styleadd}"><b style="font-size:88%;color:{col_o[x_count]};">{x_count+1}</b>&#8239;{text[:6]}<span style="color:#999">{text[6:7]}</span><span style="color:#CCC">{text[7:8]}</span><span style="color:#FFF">{text[8:]}</span></span>'
+              , text=f'<span style="{letter_spacing}{styleadd}">'\
+                    f'<b style="font-size:88%;color:{col_o[x_count]};">{x_count+1}</b>'\
+                    f'&#8239;{text[:6]}<span style="color:#999">{text[6:7]}</span>'\
+                    f'<span style="color:#CCC">{text[7:8]}</span>'\
+                    f'<span style="color:#FFF">{text[8:]}</span></span>'
               , showarrow=False
               , font={'family': 'Arial', 'size':self.__data_text_size, 'color': 'black'}
               , yanchor='top'
@@ -813,7 +832,11 @@ class SummaryPlotter(ABC):
               , ticklen=3
               , color='black'
               , tickangle=-90
-              , tickfont={'family': 'Arial', 'size':self.__axis_label_text_size, 'color':self.__axis_label_text_color}
+              , tickfont={
+                    'family': 'Arial'
+                  , 'size': self.__axis_label_text_size
+                  , 'color':self.__axis_label_text_color
+                }
               , row=row_num, col=col_num
             )
             start_last_row = len(self.__get_col_widths())*(len(self.__instances)-1)
@@ -950,7 +973,11 @@ class SummaryPlotter(ABC):
               , y=sc_bar/div_fac/2+.1
               , text=f"{sc_bar}"
               , showarrow=False
-              , font={'family': 'Arial', 'size':self.__axis_label_text_size, 'color':self.__axis_label_text_color}
+              , font={
+                    'family': 'Arial'
+                  , 'size': self.__axis_label_text_size
+                  , 'color':self.__axis_label_text_color
+                }
               , yanchor='middle'
               , xanchor='right'
               , textangle=-90
@@ -974,7 +1001,12 @@ class SummaryPlotter(ABC):
         self.__fig.add_trace(
             go.Scatter(
                 x=temp_df['depth']
-              , y=scipy.signal.savgol_filter(temp_df['col_innervation']/div_fac, 5, 1, mode='interp')
+              , y=scipy.signal.savgol_filter(
+                    temp_df['col_innervation'] / div_fac
+                  , window_length=5
+                  , polyorder=1
+                  , mode='interp'
+                )
               , fill='tozeroy'
               , fillcolor=fill_color
               , mode='lines'
@@ -1009,11 +1041,15 @@ class SummaryPlotter(ABC):
               , ticktext=tmp_tit
               , tickangle=-90
               , color='black'
-              , tickfont={'family': 'Arial', 'size':self.__axis_label_text_size, 'color':self.__axis_label_text_color}
+              , tickfont={
+                    'family': 'Arial'
+                  , 'size': self.__axis_label_text_size
+                  , 'color': self.__axis_label_text_color
+                }
               , row=row_num, col=col_num
             )
             start_last_row = len(self.__get_col_widths())*(len(self.__instances)-1)
-            colcnt = start_last_row + col_num 
+            colcnt = start_last_row + col_num
             colcnt = colcnt if colcnt>1 else ""
             self.__fig.add_annotation(
                 text=col_name
@@ -1054,7 +1090,8 @@ class SummaryPlotter(ABC):
 
         #add column labels
         self.__fig.add_annotation(
-            text='<b style="font-size:106%">cell type</b><br>count&nbsp;<b style="font-size:80%">(R|L)</b><br>transmitter'
+            text='<b style="font-size:106%">cell type</b><br>'\
+              'count&nbsp;<b style="font-size:80%">(R|L)</b><br>transmitter'
           , align='right'
           , x=0
           , y=0
@@ -1085,8 +1122,10 @@ class SummaryPlotter(ABC):
         )
         self.__fig.add_annotation(
             text=f'top 5<br>'\
-                f'<span style="color:{col_i}">inputs to</span> <b style="font-size:106%">cell type</b><br>'\
-                f'<span style="color:{col_o}">outputs from</span> <b style="font-size:106%">cell type</b>'
+                f'<span style="color:{col_i}">inputs to</span> '\
+                '<b style="font-size:106%">cell type</b><br>'\
+                f'<span style="color:{col_o}">outputs from</span> '\
+                '<b style="font-size:106%">cell type</b>'
           , x=0.5
           , y=0
           , yshift=45

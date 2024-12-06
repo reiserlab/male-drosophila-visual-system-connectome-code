@@ -6,7 +6,7 @@ rule generate_website_cover:
         "results/html_pages/webpages_glossary.html"
     shell:
         """
-        jupyter execute --kernel_name='.venv' src/html_pages/make_index_and_cover_page.ipynb
+        jupyter execute --kernel_name='python3' src/html_pages/make_index_and_cover_page.ipynb
         """
 
 rule generate_website_scatter:
@@ -14,7 +14,7 @@ rule generate_website_scatter:
         touch("cache/html_pages/done/scatter.done")
     shell:
         """
-        jupyter execute --kernel_name='.venv' src/html_pages/make_scatterplot_html_pages.ipynb
+        jupyter execute --kernel_name='python3' src/html_pages/make_scatterplot_html_pages.ipynb
         """
 
 rule generate_website_individual:
@@ -23,7 +23,7 @@ rule generate_website_individual:
     threads: 48
     shell: 
         """
-        jupyter execute --kernel_name='.venv' src/html_pages/generate_html-pages_from_scratch.ipynb
+        jupyter execute --kernel_name='python3' src/html_pages/generate_html-pages_from_scratch.ipynb
         """
 
 rule generate_website:

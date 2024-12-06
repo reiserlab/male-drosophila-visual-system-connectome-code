@@ -1,23 +1,100 @@
-from pathlib import Path
-import os
-
 import numpy as np
 import pandas as pd
 from scipy import spatial
-import kneed
 import navis
+import warnings
 
-from dotenv import find_dotenv
-from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_synapses
 from utils.hex_hex import all_hex
+from utils.helper import get_data_path
+from queries.coverage_queries import fetch_pin_points
 
+def find_per_columnbin_spanned_no_cols(
+    syn_df
+  , roi_str='ME(R)'
+  , samp=2
+):
+    """
+    For each depth and neuron, count number of columns that synapses lie in.
+        Option to trim synapses.
+
+    Parameters
+    ----------
+    syn_df : pd.DataFrame
+        dataframe with 'bodyId', 'x', 'y', 'z' columns
+    roi_str : str
+        neuprint ROI, can only be ME(R), LO(R), LOP(R)
+    samp : int
+        sub-sampling factor for depth bins
+
+    Returns
+    -------
+    size_df : pd.DataFrame
+        'bodyId' : int
+            body ID of neuron
+        'bin' : int
+            depth bin of synapse after trimming
+        'size' : int
+            number of columns for remaining synapses
+    rank_thre : int
+        max. rank of columns to keep for each neuron, set to -1 if trim=False
+    cumsum_thre : float
+        cumulative fraction of synapses that is reached at that rank for the median,
+            set to -1 if trim=False
+    """
+
+    assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
+            f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
+
+    hex_df = find_hex_ids(syn_df, roi_str=roi_str)
+    depth_df = find_depth(syn_df, roi_str=roi_str, samp=samp)
+    syn_hex_df = pd.concat([
+            syn_df.reset_index(drop=True)
+          , hex_df[['hex1_id','hex2_id']]
+          , depth_df]
+      , axis=1)
+    #dummies
+    rank_thre = -1
+    cumsum_thre = -1
+    syn_hex_df['hex1_id'] = syn_hex_df['hex1_id'].astype(int)
+    syn_hex_df['hex2_id'] = syn_hex_df['hex2_id'].astype(int)
+    #size per bin is the number of columns for remaining synapses
+    size_df = syn_hex_df\
+        .groupby(['bodyId','bin'])\
+        .apply(count_hex_loc)\
+        .reset_index()
+
+    return size_df, rank_thre, cumsum_thre
+
+
+def count_hex_loc(group) -> pd.Series:
+    """
+    Helper function used in DataFrameGroupBy.apply to count columns
+
+    Parameters
+    ----------
+    group : pd.DataFrame
+        'hex1_id' : int
+            defines column
+        'hex2_id' : int
+            defines column
+
+    Returns
+    -------
+    output: pd.Series
+        'size': int
+            count how many different tuples (hex1_id, hex2_id) exist
+    """
+    _, idcs = np.unique(group[['hex1_id','hex2_id']].values, axis=0, return_index=True)
+    count_dict = {}
+    count_dict['size'] = idcs.shape[0]
+    return pd.Series(count_dict)
 
 
 def load_layer_thre(
     roi_str:str='ME(R)'
 ) -> np.ndarray:
     """
-    Load layer tresholds
+    Load layer thresholds
 
     Parameters
     ----------
@@ -33,7 +110,7 @@ def load_layer_thre(
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    data_path = _get_data_path(reason='cache')
+    data_path = get_data_path(reason='cache')
 
     roi_fn = data_path / f"{roi_str[:-3]}_layer_bdry.csv"
     if not roi_fn.is_file():
@@ -43,7 +120,7 @@ def load_layer_thre(
         roi_fn
       , header=None
     )
-    
+
     return np.squeeze(depth_bdry.values)
 
 
@@ -72,11 +149,11 @@ def find_mesh_layers(
         'layer' : int
             layer numbers (starting from 1 at the top) that the corresponding points xyz_df lie in
     """
-    
+
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
-    
-    data_path = _get_data_path(reason='cache')
+
+    data_path = get_data_path(reason='cache')
     layer_df = find_layers(xyz_df, roi_str=roi_str, samp=samp)
 
     layer_f = data_path / f"{roi_str[:-3]}_layer_1_L.obj"
@@ -88,9 +165,9 @@ def find_mesh_layers(
         layer_f = data_path / f"{roi_str[:-3]}_layer_{str(i+1)}_L.obj"
         layer_i = navis.Volume.from_file(layer_f)
         layer_df[navis.in_volume(xyz_df, layer_i)] = i+1
-    
+
     return layer_df
-    
+
 
 def find_layers(
     xyz_df
@@ -167,7 +244,7 @@ def find_depth(
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    _, n_bins, pins = load_pins(roi_str=roi_str)
+    _, _, n_bins, pins = load_pins(roi_str=roi_str)
 
     #fast way to find minimal distance between points in "pins" and "xyz_df"
     tree = spatial.KDTree(pins)
@@ -216,7 +293,7 @@ def load_depth_bins(
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
     #load depth pins
-    _, n_bins, _ = load_pins(roi_str=roi_str)
+    _, _, n_bins, _ = load_pins(roi_str=roi_str)
     n_bins_samp = int(np.floor((n_bins - 1) / samp)) + 1
     #binning in depth
     bin_edges = np.linspace(
@@ -232,8 +309,9 @@ def load_depth_bins(
 
 def load_pins(
     roi_str:str='ME(R)'
+  , ignore_cache:bool=False
   , suffix:str=''
-):
+) -> tuple[np.ndarray, pd.DataFrame, int, np.ndarray]:
     """
     Load columns/pins
 
@@ -241,6 +319,8 @@ def load_pins(
     ----------
     roi_str : str, default='ME(R)'
         neuprint ROI, can only be ME(R), LO(R), LOP(R)
+    ignore_cache : bool, default=False
+        When enabled, load the pin points from neuprint and overwrite the currently cached file.
     suffix: str, default=''
         allows to load files named {roi_str[:-3]}_col_center_pins{suffix}.pickle
 
@@ -250,6 +330,9 @@ def load_pins(
         integers that are in 1-1 correspondence with hex ids,
         the correspondence is given by the rank of the ascending
             ordering of all (hex1_id, hex2_id) in the ME
+    hex_ids : pd.DataFrame
+        Data frame containing the 'hex1_id' and 'hex2_id' values of
+         each of the columns in the ROI (roi_str).
     n_bins : int
         number of depth bins (same for all pins)
     pins : np.ndarray
@@ -261,28 +344,50 @@ def load_pins(
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    data_path = _get_data_path(reason='cache')
-    col_df = pd.read_pickle(
-        data_path / f"{roi_str[:-3]}_col_center_pins{suffix}.pickle"
-    )
+    if ignore_cache:
+        # fetch pin points from the database for the given roi
+        col_df = fetch_pin_points(roi_str=roi_str)
+        # remove columns that were not created
+        col_df = col_df.dropna()
+        # data frame of column ids
+        col_ids = col_df[['hex1_id', 'hex2_id']].drop_duplicates().reset_index().index.values
+        # data frame of hex ids
+        hex_ids = col_df[['hex1_id', 'hex2_id']].drop_duplicates().reset_index(drop='true')
+        # number of depth bins
+        n_bins = int(col_df.groupby(['hex1_id', 'hex2_id'])['x'].nunique().values.max())
+        # get xyz positions of columns nodes
+        pins = col_df[['x', 'y', 'z']].to_numpy()
+    else:
+        data_path = get_data_path(reason='cache')
+        cache_file = data_path / f"{roi_str[:-3]}_col_center_pins{suffix}.pickle"
+        if not cache_file.is_file():
+            warnings.warn("WARNING. Strongly recommended to NOT run this function. "
+                          "The required file does not exist, but should exist within the cache. "
+                          f"Generating the file {cache_file} from scratch. "
+                          "This will take a long time (>36 hours)."
+            )
+            # Create column pins from scratch. NOT RECOMMENDED.
+            create_column_pins()
+        # Read in data from pickle files in cache
+        col_df = pd.read_pickle(cache_file)
+        # remove columns that were not created
+        col_df = col_df.dropna()
+        col_ids = col_df.index.values
+        # data frame of hex ids
+        hex_ids = col_df[['hex1_id', 'hex2_id']].reset_index(drop=True)
+        # number of depth bins
+        n_bins = int((col_df.shape[1]-3)/3)
+        # get xyz positions of columns nodes
+        pins = col_df.iloc[:, 3:].values.reshape((-1, 3))
 
-    #remove columns that were not created
-    col_df = col_df.dropna()
-    col_ids = col_df.index.values
-
-    #number of depth bins
-    n_bins = int((col_df.shape[1]-3)/3)
-    #get xyz positions of columns nodes
-    pins = col_df.iloc[:, 3:].values.reshape((-1, 3))
-
-    return col_ids, n_bins, pins
+    return col_ids, hex_ids, n_bins, pins
 
 
 def find_neuron_hex_ids(
     syn_df
   , roi_str='ME(R)'
   , method='majority'
-):
+) -> pd.DataFrame:
     """
     Assign a single hex coordinate to a neuron, either based on where the majority of synapses lie
         or based on the center of mass (COM).
@@ -311,9 +416,9 @@ def find_neuron_hex_ids(
     """
 
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
-            f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
-
-    data_path = _get_data_path(reason='cache')
+        f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
+    assert method in ['majority', 'COM'],\
+        f"method must be 'majority' or 'COM', not {method}"
 
     if method=='majority':
         hex_df = find_hex_ids(syn_df, roi_str=roi_str)
@@ -324,7 +429,7 @@ def find_neuron_hex_ids(
                 .apply(lambda x:x.mode())\
                 .droplevel(1)
         )
-    elif method=='COM':
+    else:
         target_df = pd.DataFrame(syn_df.groupby('bodyId')[['x','y','z']].mean())
         hex_df = find_hex_ids(target_df, roi_str=roi_str)
         target_df['col_id'] = hex_df['col_id'].values
@@ -369,8 +474,7 @@ def find_hex_ids(
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    data_path = _get_data_path(reason='cache')
-    col_ids, n_bins, pins = load_pins(roi_str=roi_str)
+    col_ids, _, n_bins, pins = load_pins(roi_str=roi_str)
 
     #fast way to find minimal distance between points in "pins" and "xyz_df"
     tree = spatial.KDTree(pins)
@@ -419,16 +523,16 @@ def find_straight_hex_ids(
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    data_path = _get_data_path(reason='cache')
-    col_ids, n_bins, pins = load_pins(roi_str=roi_str, suffix=suffix)
+    col_ids, _, n_bins, pins = load_pins(roi_str=roi_str, ignore_cache=False, suffix=suffix)
     pin_interp = np.linspace(0,1,n_bins)
     for j in range(col_ids.shape[0]):
-        pins[j*n_bins:(j+1)*n_bins] = (1-pin_interp[:,np.newaxis])*pins[j*n_bins][np.newaxis,:] +\
-                                    pin_interp[:,np.newaxis]*pins[(j+1)*n_bins-1][np.newaxis,:]
+        pins[j*n_bins:(j+1)*n_bins] = \
+            (1 - pin_interp[:, np.newaxis]) * pins[j * n_bins][np.newaxis, :]\
+          + pin_interp[:, np.newaxis] * pins[(j + 1) * n_bins - 1][np.newaxis, :]
 
     #fast way to find minimal distance between points in "pins" and "xyz_df"
     tree = spatial.KDTree(pins)
-    _, minid = tree.query(xyz_df[['x','y','z']].values)
+    _, minid = tree.query(xyz_df[['x', 'y', 'z']].values)
 
     #load all hex ids
     col_df = all_hex()
@@ -441,41 +545,9 @@ def find_straight_hex_ids(
     return result_df
 
 
-def _get_data_path(
-    reason:str='data'
-) -> Path:
-    """
-    Get data path
-
-    Move from global variable to function.
-
-    Parameter
-    ---------
-    reason : str, default='data'
-        what the path will be used for. Currently supports 'data', 'cache', 'params'
-
-    Returns
-    -------
-    data_path : str
-        data path used throughout the functions of this file.
-    """
-    assert reason in ['data', 'cache', 'params'], f"path requested for unknonw {reason}"
-
-    if reason == 'data':
-        data_path = Path(find_dotenv()).parent / 'results' / 'eyemap'
-    elif reason == 'cache':
-        data_path = Path(find_dotenv()).parent / 'cache' / 'eyemap'
-    elif reason == 'params':
-        data_path = Path(find_dotenv()).parent / 'params'
-
-    data_path.mkdir(parents=True, exist_ok=True)
-    return data_path
-
-from utils.ROI_layers import create_ol_layer_boundaries, make_large_mesh
-
 def find_col_names(
     hex_df:pd.DataFrame
-):
+) -> pd.DataFrame:
     """
     Define 'col_name' as hex1_id*100 + hex2_id
 
@@ -500,3 +572,63 @@ def find_col_names(
     col_df = pd.DataFrame.from_dict({'col_name': col_names})
 
     return col_df
+
+def create_column_pins():
+    """
+    Function to run the code that generates the column pins from scratch. Not recommended.
+    These files should already exist within the `cache/eyemap` folder. 
+
+    Expected runtimes (on 4 cores @3.7GHz):
+    - ME(R): 20hrs
+    - ME(R) old: 28hrs
+    - LO(R): 7hrs
+    - LOP(R): 40 min
+
+    """
+    #specify which neuropils to make pins in, and how to anchor the pins to the neuropil ROI
+    roi_pins_dict_list = [
+        {'roi': 'LOP(R)', 'anchor_method': 'combined', 'n_anchor_bottom': 0, 'n_anchor_top': 0}
+      , {'roi': 'LO(R)', 'anchor_method': 'combined', 'n_anchor_bottom': 0, 'n_anchor_top': 37}
+      , {'roi': 'ME(R)', 'anchor_method': 'separate', 'n_anchor_bottom': 800, 'n_anchor_top': 800}
+      , {'roi': 'ME(R)', 'anchor_method': 'combined', 'n_anchor_bottom': 0, 'n_anchor_top': 0}
+    ]
+
+    # max number of columns - from database
+    _, hex_ids, _, _ = load_pins(roi_str='ME(R)', ignore_cache=True)
+    col_max_count = hex_ids.shape[0]
+
+    for roi_pins_dict in roi_pins_dict_list:
+        roi_str = roi_pins_dict['roi']
+
+        #create columns: gives some output, i.e., if created columns are straight
+        create_center_column_pins(
+            roi_str=roi_str
+          , anchor_method=roi_pins_dict['anchor_method']
+          , n_anchor_bottom=roi_pins_dict['n_anchor_bottom']
+          , n_anchor_top=roi_pins_dict['n_anchor_top']
+          , verbose=True
+        )
+
+        #count number of initially created columns
+        col_ids, _, _, _ = load_pins(roi_str=roi_str)
+        col_count = col_ids.shape[0]
+        print(f"Number of initial {roi_str[:-3]} columns: {col_ids.shape[0]}")
+
+        #smoothen and fill-in columns
+        ctr_smooth = 0
+        while col_count < col_max_count:
+            smooth_center_columns_w_median(roi_str=roi_str)
+            col_ids, _, _, _ = load_pins(roi_str=roi_str)
+            ctr_smooth += 1
+            if col_ids.shape[0] == col_count:
+                break
+            col_count = col_ids.shape[0]
+
+        print(f"Number of smoothing steps: {ctr_smooth}")
+        print(f"Number of final {roi_str[:-3]} columns: {col_ids.shape[0]}")
+
+
+# Needs to be at the end because of circular import
+from utils.ROI_layers import create_ol_layer_boundaries, make_large_mesh
+from utils.ROI_columns import create_center_column_pins, smooth_center_columns_w_median
+

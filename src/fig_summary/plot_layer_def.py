@@ -38,7 +38,8 @@ from cmap import Colormap
 # %%
 # %autoreload 2
 # load some helper functions
-from utils.ROI_calculus import load_layer_thre, _get_data_path, roi_layer_parameters
+from utils.ROI_calculus import load_layer_thre, roi_layer_parameters
+from utils.helper import get_data_path
 from utils.celltype_conn_by_roi import CelltypeConnByRoi
 from utils import olc_client
 from utils.summary_plot_preprocessor import SummaryPlotPreprocessor
@@ -168,8 +169,8 @@ for roi_str in ['ME(R)', 'LO(R)', 'LOP(R)']:
         plot_bgcolor='white'
     )
     fig.show()
-    fig.write_image(_get_data_path('cache') / f"{roi_str[:-3]}_layer_def.pdf", height=f_height, width=f_width*n_types) 
-    fig.write_image(_get_data_path('cache') / f"{roi_str[:-3]}_layer_def.svg", height=f_height, width=f_width*n_types) 
+    fig.write_image(get_data_path('cache') / f"{roi_str[:-3]}_layer_def.pdf", height=f_height, width=f_width*n_types) 
+    fig.write_image(get_data_path('cache') / f"{roi_str[:-3]}_layer_def.svg", height=f_height, width=f_width*n_types) 
 
 
 # %%

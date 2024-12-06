@@ -12,9 +12,8 @@ import navis.interfaces.neuprint as neu
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_synapses
 
 from utils.hex_hex import get_hex_df
-from utils.ROI_calculus import _get_data_path
 from utils.align_mi1_t4 import create_alignment
-
+from utils.helper import get_data_path
 
 def find_holes(pts_all, pts):
     """
@@ -120,7 +119,7 @@ def smooth_center_columns_w_median(
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    data_path = _get_data_path(reason='cache')
+    data_path = get_data_path(reason='cache')
 
     #load manually assigned hex ids
     column_df = load_hexed_body_ids(roi_str=roi_str)
@@ -265,7 +264,7 @@ def create_center_column_pins(
         assert (n_anchor_bottom>0)&(n_anchor_top>0),\
             f"n_anchor_bottom and n_anchor_top should both be bigger than 0, but are actually '{n_anchor_bottom}' and '{n_anchor_top}'"
 
-    data_path = _get_data_path(reason='cache')
+    data_path = get_data_path(reason='cache')
 
     n_neighbors, n_segments, n_pins\
         , thre_std, valid_cols, pc_coord, pc_sign, pc_from\
@@ -408,7 +407,7 @@ def load_hexed_body_ids(
 
     #Mi1-T4 assignment based on synapse fractions
     if roi_str=='LOP(R)':
-        data_path = _get_data_path(reason='data')
+        data_path = get_data_path(reason='data')
         alignment_file = data_path / 'mi1_t4_alignment.xlsx'
         if not alignment_file.is_file():
             create_alignment()
@@ -464,7 +463,7 @@ def load_roi_pin_params(roi_str='ME(R)'):
     assert roi_str in ['ME(R)', 'LO(R)', 'LOP(R)'],\
             f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
-    data_path = _get_data_path(reason='params')
+    data_path = get_data_path(reason='params')
     params_fn = data_path / "pin_creation_parameters.xlsx"
     params_df = pd.read_excel(params_fn).convert_dtypes()
     params_df = params_df[ params_df['neuropil']==roi_str[:-3] ]

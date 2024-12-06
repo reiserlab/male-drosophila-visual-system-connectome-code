@@ -103,7 +103,7 @@ class OLInstance(ABC):
     def main_group_name(self) -> str:
         """
         Return a readable name of the main group. For example, 'OL_intrinsic' becomes
-        'Optic Lobe Intrinsic Neurons'.
+        'Optic Neuropil Intrinsic Neurons'.
 
         Returns
         -------
@@ -111,8 +111,8 @@ class OLInstance(ABC):
             long name of the main group
         """
         full_group_names = {
-            'OL_intrinsic': 'Optic Lobe Intrinsic Neurons'
-          , 'OL_connecting': 'Optic Lobe Connecting Neurons'
+            'OL_intrinsic': 'Optic Neuropil Intrinsic Neurons'
+          , 'OL_connecting': 'Optic Neuropil Connecting Neurons'
           , 'VPN': 'Visual Projection Neurons'
           , 'VCN': 'Visual Centrifugal Neurons'
           , 'other': 'Other'

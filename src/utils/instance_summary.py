@@ -338,7 +338,7 @@ class InstanceSummary(ABC):
     @property
     def distribution(self) -> pd.DataFrame:
         """
-        Get the values for the synpse distribution by depth plot.
+        Get the values for the synapse distribution by depth plot.
 
         Returns
         -------
@@ -358,7 +358,7 @@ class InstanceSummary(ABC):
 
         # TODO: put in function
         l_dist = pd.DataFrame()
-        l_syn = self.synapses # not self.__synapses?
+        l_syn = self.synapses
         l_syn['syn_count'] = 1
         l_syn = l_syn.merge(self.__bids_df, on='bid', how='right')
 
@@ -382,6 +382,50 @@ class InstanceSummary(ABC):
             .sort_values(['roi', 'depth_bin'])
 
         return l_dist
+
+    @property
+    def distribution_count(self) -> pd.DataFrame:
+        """
+        Get the values for the synapse count by depth plot. Differs from the 'distribution' 
+        property in that it calculates the sum of all the synapses at each depth, not the mean.
+
+        Returns
+        -------
+        l_sum : pd.DataFrame
+            roi : str
+                name of the brain region
+            depth_bin : int
+                depth (in arbitrary bucket sizes) within the region
+            depth : float
+                depth in the brain region (0…1)
+            type : type
+                type of synapses (pre / post)
+            syn_count : float
+                synapse count at the depth
+        """
+        all_depths = self.__get_depths(with_syn_type=True)
+
+        l_sum = pd.DataFrame()
+        l_syn = self.synapses
+        l_syn['syn_count'] = 1
+        l_syn = l_syn.merge(self.__bids_df, on='bid', how='right')
+
+        def f(grp):
+            bid = grp['bid'].unique()[0]
+            lgrp =  grp.merge(all_depths, on=['roi', 'depth_bin', 'type'], how='right')\
+                .fillna(0)\
+                .reset_index(drop=True)
+            lgrp['bid'] = bid
+            return lgrp
+
+        l_sum = l_syn.groupby(['bid']).apply(f).reset_index(drop=True)
+        l_sum = l_sum\
+            .groupby(['roi', 'depth_bin', 'depth', 'type'])\
+            .agg(syn_sum=('syn_count', 'sum'))\
+            .reset_index()\
+            .sort_values(['roi', 'depth_bin'])
+
+        return l_sum
 
     @property
     def ame_count(self) -> pd.DataFrame:
@@ -538,10 +582,11 @@ class InstanceSummary(ABC):
             case 'upstream':
                 cql_match = "MATCH (n:Neuron)<-[e:ConnectsTo]-(m:Neuron)"
 
+        cutoff = ""
         if self.__connection_cutoff:
             cutoff = f"WHERE wgt >= {self.__connection_cutoff}"
         elif self.__per_cell_cutoff:
-            cutoff = f"WHERE wgt/cell_count > {self.__per_cell_cutoff}"
+            cutoff = f"WHERE toFloat(wgt)/cell_count > {self.__per_cell_cutoff}"
 
         cql = f"""
             {cql_match}
@@ -600,7 +645,7 @@ class InstanceSummary(ABC):
             all_depths_post = self.columns\
                 .loc[:, ['roi', 'depth_bin', 'depth']]\
                 .drop_duplicates()
-            all_depths['type'] = 'pre'    # E.G isn't this extracting the same set of depths?
+            all_depths['type'] = 'pre'
             all_depths_post['type'] = 'post'
             all_depths = pd.concat([all_depths_post, all_depths])
         return all_depths

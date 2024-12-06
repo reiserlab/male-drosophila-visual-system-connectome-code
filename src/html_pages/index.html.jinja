@@ -88,8 +88,8 @@
         .nav-right a:active {
             color: #004299; /* Even darker blue color when the link is clicked */
         }
-
         .h1-divider {margin-top: 5rem}
+        footer{position:fixed;bottom:0;}
 
     </style>
 </head>
@@ -122,26 +122,31 @@
         <!-- Search Bar Section -->
         <div class="search-bar-container">
             <div class="ui-widget">
-                <label for="lines"><b>Search by cell type:&nbsp;</b></label>
+                <label for="lines"><strong>Search by cell type:</strong></label>
                 <input id="lines">
-                <label for="lines"><i>e.g. Tm2, LPT7, Dm9</i></label>
+                <label for="lines"><em>e.g. Tm2, LPT7, Dm9</em></label>
             </div>
         </div>
 
         <div class="example-text">
-            <a href="cell_types.html"><b>View list of all available cell types here</b></a>
+            <p><a href="cell_types.html"><b>View list of all available cell types here</b></a></p>
         </div>
 
-        <div style="text-align: center;">
-            <b>View spatial coverage interactive plots:</b>
+        <div>
+            <p class="is-center"><b>View spatial coverage interactive plots:&nbsp;</b>
             {% set links = {
                 'Medulla': 'scatterplots/scatterplots-ME.html',
                 'Lobula': 'scatterplots/scatterplots-LO.html',
                 'Lobula Plate': 'scatterplots/scatterplots-LOP.html'
-            } %}
-            {% for name, url in links.items() %}
-                <a href="{{ url }}"><b>{{ name }}</b></a>{% if not loop.last %}, {% endif %}
-            {% endfor %}
+            } -%}
+            {%- for name, url in links.items() -%}
+                <a href="{{ url }}"><b> {{ name }}</b></a>{%- if not loop.last -%},&nbsp;{% endif -%}
+            {%- endfor -%}
+            </p>
+        </div>
+
+        <div class="example-text">
+            <a href="https://doi.org/10.1101/2024.04.16.589741"><b>Read the manuscript here</b></a>
         </div>
 
         <script>
@@ -155,10 +160,14 @@
                 });
             });
             </script>
-            
+                    
+                    
+        
         <footer class="row">
             <div class="col">
-                <hr class="h1-divider">
+                <em>Pages Updated {{ formattedDate }}</em> | 
+                <em>Source</em>: {{ meta['dataset'] }} with UUID {{ meta['uuid'] }} | 
+                <em>Last database edit</em> {{ lastDataBaseEdit }}
             </div>
         </footer>
     </div>

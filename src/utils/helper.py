@@ -1,8 +1,9 @@
 """ Helper functions """
 
+from pathlib import Path
 import re
 import unicodedata
-
+from dotenv import find_dotenv
 
 def slugify(value, to_lower=True, allow_unicode=False):
     """
@@ -81,3 +82,32 @@ def num_expand(
     if to_lower:
         my_str = my_str.lower()
     return re.sub(r'(\d+)', lambda x: f'{x.group(1).zfill(expand)}', my_str)
+
+def get_data_path(
+    reason:str='data'
+) -> Path:
+    """
+    Get data path.
+
+    Parameter
+    ---------
+    reason : str, default='data'
+        what the path will be used for. Currently supports 'data', 'cache', 'params'
+
+    Returns
+    -------
+    data_path : str
+        data path used throughout the functions of this file.
+    """
+    assert reason in ['data', 'cache', 'params'], f"path requested for unknown {reason}"
+
+    match reason:
+        case  'data':
+            data_path = Path(find_dotenv()).parent / 'results' / 'eyemap'
+        case 'cache':
+            data_path = Path(find_dotenv()).parent / 'cache' / 'eyemap'
+        case _ : # 'params'
+            data_path = Path(find_dotenv()).parent / 'params'
+
+    data_path.mkdir(parents=True, exist_ok=True)
+    return data_path

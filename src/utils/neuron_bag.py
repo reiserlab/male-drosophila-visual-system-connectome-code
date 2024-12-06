@@ -18,7 +18,7 @@ class NeuronBag(ABC):
         self
       , cell_type:str | list[str]=None
       , cell_instance:str | list[str]=None
-      , rois:str | list[str]=['ME(R)', 'LO(R)', 'LOP(R)', 'AME(R)', 'LA(R)']
+      , rois:str | list[str]=['OL(R)']
       , side:str='R-dominant'
     ):
         """
@@ -32,15 +32,15 @@ class NeuronBag(ABC):
         cell_instance : str
             name of the cell instance, e.g. 'LC4_R'. Either cell_type OR cell_instance are allowed,
             not both.
-        rois : str | list[str], default=['ME(R)', 'LO(R)', 'LOP(R)', 'AME(R)', 'LA(R)']
+        rois : str | list[str], default=['OL(R)']
             Only get neurons that innervate the listed ROI(s).
         side : str, default='R-dominant'
             options include, 'R', 'L', 'R-dominant' or 'both'.
             If cell_instance is given, this must be set to None. For cell_type, it defines what
             instances of the type to use.
             'R' means all neurons that have their cellbody on the right side, 'L' means that their
-            cellbody is on the left side, 'R-dominant' chooses the neurons that have their 
-            'dominant features' in the right hemisphere, and 'both' means to get both sides 
+            cellbody is on the left side, 'R-dominant' chooses the neurons that have their
+            'dominant features' in the right hemisphere, and 'both' means to get both sides
             (if available).
             For most analysis that works on one side, the 'R-dominant' is probably the best choice.
             There will be a 'L-dominant' once the other side is proof-read. 'both' returns the
@@ -49,12 +49,14 @@ class NeuronBag(ABC):
         """
 
         if side:
-            assert side in ['L', 'R', 'R-dominant', 'both'], f"side can only be 'L', 'R', 'R-dominant' or 'both' not {side}"
+            assert side in ['L', 'R', 'R-dominant', 'both']\
+                , f"side can only be 'L', 'R', 'R-dominant' or 'both' not {side}"
+        self.__side = side
         self.__is_ordered = False
 
         if not cell_type and not cell_instance:
             warnings.warn("This type of bag is not yet supported.")
-            self._bids = []
+            self.__bids = []
             return
 
         assert cell_type or cell_instance,\
@@ -64,31 +66,47 @@ class NeuronBag(ABC):
             assert side is None,\
                 f"If instance is used, side has to be None, not '{side}'"
 
+        tmp_instance = None
+        self.__cell_type_name = None
+        self.__cell_instance_name = None
         if cell_type:
             my_nc = NC(type=cell_type, rois=rois, roi_req='any')
-        elif cell_instance:
+            self.__cell_type_name = cell_type
+        else:
             my_nc = NC(instance=cell_instance, rois=rois, roi_req='any')
+            tmp_instance = cell_instance
+            self.__cell_instance_name = cell_instance
 
         n_df, _ = fetch_neurons(my_nc)
 
-        if side:
-            match side:
-                case "L":
-                    n_df = n_df[n_df.loc[:,'instance'].str.match(r'.*_L$')]
-                case "R":
+        match self.__side:
+            case "L":
+                n_df = n_df[n_df.loc[:,'instance'].str.match(r'.*_L$')]
+                tmp_instance = f"{cell_type}_L"
+            case "R":
+                n_df = n_df[n_df.loc[:,'instance'].str.match(r'.*_R$')]
+                tmp_instance = f"{cell_type}_R"
+            case "R-dominant":
+                n_instances = n_df['instance'].nunique()
+                tmp_instance = n_df['instance'].unique()[0]
+                if n_instances > 1:
+                    # if both L and R instances exist, choose the R instance
                     n_df = n_df[n_df.loc[:,'instance'].str.match(r'.*_R$')]
-                case "R-dominant":
-                    n_instances = n_df['instance'].nunique()
-                    if n_instances > 1:
-                        # if both L and R instances exist, choose the R instance
-                        n_df = n_df[n_df.loc[:,'instance'].str.match(r'.*_R$')]
-                case "both":
-                    n_df = n_df.copy()
+                    tmp_instance = f"{cell_type}_R"
+            case "both":
+                n_df = n_df.copy()
+                # if both _L and _R instances exist - choose the right
+                if n_df['instance'].nunique()>1:
+                    tmp_instance = f"{cell_type}_R"
+                else:
+                    tmp_instance =n_df['instance'][0]
 
         self.__cell_types = n_df['type'].unique().tolist()
-        self._bids=n_df['bodyId'].to_numpy()
-        if len(self._bids) == 0:
+        self.__bids = n_df['bodyId'].to_numpy()
+        if len(self.__bids) == 0:
             warnings.warn(f"No neurons found for cell type '{cell_type}'")
+        olt = OLTypes()
+        self.__star_id = olt.get_star(instance_str=tmp_instance)
 
 
     def sort_by_distance_to_hex(
@@ -109,7 +127,7 @@ class NeuronBag(ABC):
         hex2_id : int
             hex2 ID of column
         """
-        self._bids = self.__find_neurons_close_to_hex(
+        self.__bids = self.__find_neurons_close_to_hex(
             neuropil
           , hex1_id=hex1_id
           , hex2_id=hex2_id
@@ -117,12 +135,13 @@ class NeuronBag(ABC):
         self.__is_ordered = True
 
 
-    def sort_by_distance_to_star(self):
+    def sort_by_distance_to_star(self
+                                 ):
         """
         Sort the neurons in the bag by the distance from the star neuron. This
         assumes, that all neurons in the bag are of the same type.
         """
-        self._bids = self.__find_neurons_close_to_star()
+        self.__bids = self.__find_neurons_close_to_star()
         self.__is_ordered = True
 
 
@@ -135,7 +154,7 @@ class NeuronBag(ABC):
         If you want the whole list, you could use size attribute by calling
         `bag.get_body_ids(cell_count=bag.size())`
         """
-        return self._bids[:cell_count]
+        return self.__bids[:cell_count]
 
 
     def get_hex_ids(self) -> pd.DataFrame:
@@ -158,7 +177,7 @@ class NeuronBag(ABC):
                 hex2_id for neuron
         """
         ret = None
-        for bid in self._bids:
+        for bid in self.__bids:
             neuron = OLNeuron(body_id=bid)
             nhx = neuron.get_hex_id()
             nhx['bodyID'] = bid
@@ -173,9 +192,11 @@ class NeuronBag(ABC):
         """
         return self.__is_ordered
 
+
     @property
     def hemispheres(self)->list[str]:
         return self.__hemisphere
+
 
     @property
     def size(self)->int:
@@ -184,13 +205,13 @@ class NeuronBag(ABC):
 
         Use it as `my_neuron_bag.size` to find out how big your bag is (not `my_neuron_bag.size()`)
         """
-        return len(self._bids)
+        return len(self.__bids)
 
 
     @property
     def first_item(self) -> int:
         if self.size>0:
-            return self._bids[0]
+            return self.__bids[0]
         return None
 
 
@@ -200,8 +221,8 @@ class NeuronBag(ABC):
       , hex1_id:int
       , hex2_id:int
     ) -> list[int]:
-        if len(self._bids) == 0:
-            return self._bids
+        if len(self.__bids) == 0:
+            return self.__bids
 
         hemisphere = neuropil[-2]
         assert hemisphere.upper() in ['L', 'R'], \
@@ -209,7 +230,7 @@ class NeuronBag(ABC):
 
         all_neurons = pd.DataFrame()
 
-        for bid in self._bids:
+        for bid in self.__bids:
             oln = OLNeuron(bid)
             tmp_l = oln.get_roi_hex_id(roi_str=neuropil)
             tmp_l['bid'] = bid
@@ -229,14 +250,16 @@ class NeuronBag(ABC):
         ctype = self.__cell_types
         if isinstance(self.__cell_types, list) and len(self.__cell_types)>1:
             warnings.warn("bag cannot be sorted since it contains more than one type")
-            return self._bids
-        elif isinstance(self.__cell_types, list):
+            return self.__bids
+        if isinstance(self.__cell_types, list):
             ctype = self.__cell_types[0]
-        oltype = OLTypes()
-        star_id = oltype.get_star(ctype)
+        star_id = self.__star_id
         if not star_id:
             warnings.warn(f"couldn't find a star for {ctype}.")
-            return self._bids
+            return self.__bids
+        matcher = f"WHERE n.type='{ctype}'"
+        if self.__cell_instance_name:
+            matcher = f"WHERE n.instance='{self.__cell_instance_name}'"
         cql = f"""
             MATCH (star:Neuron)-[:Contains]->(:SynapseSet)-[:Contains]->(star_s:Synapse)
             WHERE star.bodyId = {star_id}
@@ -246,7 +269,7 @@ class NeuronBag(ABC):
                   , y: avg(star_s.location.y)
                   , z: avg(star_s.location.z)}}) as star_com
             MATCH (n:Neuron)-[:Contains]->(:SynapseSet)-[:Contains]->(ns:Synapse)
-            WHERE n.type='{ctype}'
+            {matcher}
             WITH n
               , star_com
               , point({{
@@ -260,6 +283,6 @@ class NeuronBag(ABC):
             """
         named_df = fetch_custom(cql)
         new_bids = named_df['bodyId'].to_numpy()
-        if len(self._bids) != len(new_bids):
+        if len(self.__bids) != len(new_bids):
             warnings.warn("The number of neurons changed by reordering them. Bug?")
         return new_bids

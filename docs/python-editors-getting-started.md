@@ -54,9 +54,8 @@ To manually sync a single file from `abcde.ipynb` to `abcde.py` (or the other wa
 
 ### Getting started with Jupyter
 
-During the [getting started with Python guide](python-getting-started.md), Jupyter was already installed during the [Dependency Management](python-getting-started.md#dependency-management) step. The execution of source code inside the Jupyter notebooks is handled by _kernels_ and you have already [activated your _ol-c-kernel_](python-getting-started.md#dependency-management) in the same step.
+If you followed our suggestion of using Pixi during the [getting started with Python guide](python-getting-started.md), Jupyter Lab is set up and working. You can start Jupyter Lab either via `pixi run jupyter lab` or from inside a Pixi shell via `jupyter lab`. A default kernel will have all the necessary dependencies.
 
-To use Jupyter, open a terminal and change into the _ol-connectome_ virtual environment by typing `workon ol-connectome`. Now you can start the application by typing `jupyter-lab`. You will see a lot of output on the terminal and a browser window should open an URL that looks like this: <http://localhost:8888/lab>.
 
 ![Jupyter Lab opening window](assets/p-e-g-s_jupyter-lab_welcome.png)
 

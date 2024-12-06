@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -15,7 +15,7 @@
 # %% [markdown]
 # # Cell slicing
 #
-# This is a demo file for how to create galleries of cells.
+# This is a notebook demonstrating an old version of plotting neurons (and slicing layer ROIs). This plotting method is superseeded by a blender based approach (see Methods section). We kept the code in case this useful for any quick and python based method, without the need for external applications.
 
 # %%
 # %load_ext autoreload
@@ -33,9 +33,6 @@ print(f"Project root directory: {PROJECT_ROOT}")
 # %%
 """ Imports related to data loading """
 from neuprint import NeuronCriteria as NC
-
-import navis
-import navis.interfaces.neuprint as neu
 
 from utils import olc_client
 c = olc_client.connect(verbose=True)
@@ -95,10 +92,10 @@ fig1 = group_plotter(
 
   , shadow_rois=['ME(R)', 'LO(R)', 'LOP(R)']    # This defines, for which ROIs you want to see
                                                 #   the backdrop.
-  
+
   , prune_roi='slice'                           # say that you want your neuron pruned into a slice
 
-  , plot_synapses=False                         # The standard behavior of group_plotter is to 
+  , plot_synapses=False                         # The standard behavior of group_plotter is to
                                                 #   plot the synapses, but that might get a bit
                                                 #   crowded for this type of plots.
 
@@ -124,11 +121,11 @@ show_figure(
 # %%
 save_figure(
     fig1
-  , name="L1-Mi1_ME-LO-LOP_18x18"                   # This will save the file to 
+  , name="L1-Mi1_ME-LO-LOP_18x18"                   # This will save the file to
                                                     #   results/cell_gallery/L1-Mi1_ME-LO-LOP_18x18.png
                                                     #   If that file already exists, it will add a timestamp
                                                     #   to the filename.
-  
+
   , width=1000, height=1000                         # same parameters as for `show_figure`
   , showlegend=False
 )
@@ -137,7 +134,6 @@ save_figure(
 
 # %% [markdown]
 # ## Example automation
-#
 #
 
 # %% magic_args="false --no-raise-error" language="script"

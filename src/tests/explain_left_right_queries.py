@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -13,7 +13,6 @@
 # ---
 
 # %%
-# %load_ext autoreload
 """
 This cell does the initial project setup.
 If you start a new script or notebook, make sure to copy & paste this part.
@@ -33,38 +32,28 @@ PROJECT_ROOT = Path(find_dotenv()).parent
 sys.path.append(str(PROJECT_ROOT.joinpath("src")))
 print(f"Project root directory: {PROJECT_ROOT}")
 
-import numpy as np
-import pandas as pd
-
 from utils import olc_client
 c = olc_client.connect(verbose=True)
 
-# %load_ext autoreload
-# %autoreload 2
-
-from neuprint import fetch_neurons, NeuronCriteria as NC
-
+# %%
 from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances
 
 # %%
-# %autoreload 2
-from queries.completeness import fetch_ol_types_and_instances
 fetch_ol_types_and_instances(side='both')
 
 # %%
-from queries.completeness import fetch_ol_types
 fetch_ol_types(side='R-dominant')
 
 # %%
-# types = fetch_ol_types(side='R-dominant') #728
-types = fetch_ol_types(side="both")  # 728
+# types = fetch_ol_types(side='R-dominant') # 732
+types = fetch_ol_types(side="both")  # 732
 types
 
 # %%
 cell_type = "aMe12"
 
 # %% [markdown]
-# 'R-dominant' will return the number of cells of the cell type that innervate the right optic lobe and have '_R' instances, unless the cell type does not have '_R' instances in which case it will use the '_L' instance. 
+# 'R-dominant' will return the number of cells of the cell type that innervate the right optic lobe and have '_R' instances, unless the cell type does not have '_R' instances in which case it will use the '_L' instance.
 
 # %%
 types = fetch_ol_types(side="R-dominant")
@@ -72,7 +61,7 @@ types = fetch_ol_types(side="R-dominant")
 types[types["type"] == cell_type]
 
 # %% [markdown]
-# 'both' will return the number of cells of the cell type that innervate the right optic lobe, regardless of whether they are '_L' or '_R' instances. 
+# 'both' will return the number of cells of the cell type that innervate the right optic lobe, regardless of whether they are '_L' or '_R' instances.
 
 # %%
 types = fetch_ol_types(side="both")
@@ -80,7 +69,7 @@ types = fetch_ol_types(side="both")
 types[types["type"] == cell_type]
 
 # %% [markdown]
-# 'left' will return the number of cells of the cell type that innervate the right optic lobe that have '_L' instances. 
+# 'left' will return the number of cells of the cell type that innervate the right optic lobe that have '_L' instances.
 
 # %%
 types = fetch_ol_types(side="L")
@@ -88,7 +77,7 @@ types = fetch_ol_types(side="L")
 types[types["type"] == cell_type]
 
 # %% [markdown]
-# 'right' will return the number of cells of the cell type that innervate the right optic lobe that have '_R' instances. 
+# 'right' will return the number of cells of the cell type that innervate the right optic lobe that have '_R' instances.
 
 # %%
 types = fetch_ol_types(side="R")
@@ -139,16 +128,19 @@ from utils.ol_types import OLTypes
 olt = OLTypes()
 
 # %%
-olt.get_star(type_str='LC14b')
+olt.get_star(type_str='LC14b') # This will throw a warning since the bilateral neuron type has two stars. It will return one of them.
 
 # %%
-olt.get_neuron_list(primary_classification='OL', side='R-dominant') # 239
+olt.get_star(instance_str='LC14b_R') # This get the star from one side.
 
 # %%
-olt.get_neuron_list() #685
+olt.get_neuron_list(primary_classification='OL', side='R-dominant') # 244
 
 # %%
-df = olt.get_neuron_list(side='both') # 728
+olt.get_neuron_list() # 732
+
+# %%
+df = olt.get_neuron_list(side='both')
 df[df['type'] == 'LC14b']
 
 # %%

@@ -29,8 +29,8 @@ c = olc_client.connect(verbose=True)
 from utils.ROI_voxels import voxelize_col_and_lay
 
 # %%
-voxelize_col_and_lay(rois=['ME(R)'], columns=False)
+voxelize_col_and_lay()
 
-#expected runtime for all neuropils, col and lay: 15 min
+#expected runtime for all neuropils, col and lay: 10 min
 
 # %%

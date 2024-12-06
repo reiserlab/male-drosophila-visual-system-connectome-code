@@ -146,7 +146,6 @@ def group_plotter(
             name='segmentation',
             layer=neuroglancer.SegmentationLayer(
                 source=(f'precomputed://{seg_src}')
-                # source="precomputed://gs://flyem-optic-lobe/v1.0/segmentation"
             )
         )
         for bid in body_ids:

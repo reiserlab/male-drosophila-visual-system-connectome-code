@@ -39,16 +39,6 @@ def generate_gallery_json(
     title : str
         Title of group plot to be printed
         on plot--can be left empty ("")
-    list_of_ids : dict
-        dictionary with type name
-    n_vis: dict
-        which layer meshes to show by inputing neuropil ('ME','LO', or 'LOP') and layer number; stucture n_vis{'npil':*,'lay':*}
-    camera : dict
-        gets camera rotation, location etc from "Rendering_Parameters.xlsx" based on view type
-    slicer : dict
-        gets slicer rotation, location etc from "Rendering_Parameters.xlsx" based on view type
-    template : str, default="gallery-descriptions.json.jinja"
-        name of the template to use (must be a Jinja2 template)
     description : str
         Is it a type, group, or star neuron
     view : str
@@ -57,22 +47,23 @@ def generate_gallery_json(
         indicated in template
     list_of_ids : dict
         dictionary with type name
-    list_of_rois : dict
-        dictionary with additional ROIs
     camera : dict
         gets camera rotation, location etc from "Rendering_Parameters.xlsx" based on view type
     slicer : dict
         gets slicer rotation, location etc from "Rendering_Parameters.xlsx" based on view type
+    scalebar : dict
+        TODO
     n_vis: dict
         which layer meshes to show by inputing neuropil ('ME','LO', or 'LOP') and layer number;
         stucture n_vis{'npil':*,'lay':*}
     neuropil_color : list
         assigns color to neuropil_layers; use new OL_COLOR.OL_NEUROPIL_LAYERS.rgba
-        from utils/ol_color.py
     directory : str
         Name of folder in "results/galleries" that results will be sent to
     template : str, default="gallery-descriptions.json.jinja"
         name of the template to use (must be a Jinja2 template)
+    list_of_rois : dict
+        dictionary with additional ROIs
     """
 
     assert type_of_plot in ['Full-Brain', 'Optic-Lobe'], \
@@ -158,9 +149,9 @@ def generate_one_off(
         color of the neurons
     body_color_order : list
         order of color assignment
-    color_by: str
+    color_by : str
         can either color by type of neuron or by body id. string='type' or 'bid'
-    n_vis: dict
+    n_vis : dict
         which layer meshes to show by inputing neuropil ('ME','LO', or 'LOP') and layer number;
         stucture n_vis{'npil':*,'lay':*}
     neuropil_color : list
@@ -168,7 +159,7 @@ def generate_one_off(
         from utils/ol_color.py
     directory : str
         folder output end up in
-    view : str
+    the_view : str
         view used; used for getting camera and slice parameters from "Rendering_parameters.xlsx"
     """
     olt = OLTypes()
@@ -197,9 +188,7 @@ def generate_one_off(
                   , 'the_new_star': list_bids_to_plot[idx]
                 })
         one_off_list = one_off_list.merge(pd.DataFrame(res), how='left')
-
-
-    if color_by=='bid':
+    elif color_by=='bid':
         if len(list_bids_to_plot) > len(one_off_list):
             one_off_list = pd.DataFrame(
                 np.repeat(
@@ -254,7 +243,6 @@ def generate_one_off(
           , 'number_of_cells': 1
           , 'slice_width': 12000
         }
-
         if color_by=='type':
             fischbach_dict[row['type']] = body_id_dict
         elif color_by=='bid':

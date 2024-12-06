@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -74,9 +74,10 @@ for roi_pins_dict in roi_pins_dict_list:
     print(f"Number of smoothing steps: {ctr_smooth}")
     print(f"Number of final {roi_str[:-3]} columns: {col_ids.shape[0]}")
 
-# Expected runtimes:
-#   - ME(R): 7 hrs 23 min
-#   - LO(R): 2 hrs 53 min
-#   - LOP(R): 20 min
+# Expected runtimes (with 4 Xeon cores@3.7GHz)
+#   - ME(R): 20hrs
+#   - ME(R) old: 28hrs
+#   - LO(R): 7hrs
+#   - LOP(R): 30 min
 
 # %%

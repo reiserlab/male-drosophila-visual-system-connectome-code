@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -17,32 +17,28 @@
 import sys
 from pathlib import Path
 import jinja2
-import datetime
-from datetime import datetime
+
 from dotenv import load_dotenv, find_dotenv
 load_dotenv()
 PROJECT_ROOT = Path(find_dotenv()).parent
 sys.path.append(str(PROJECT_ROOT.joinpath('src')))
 
-from utils import olc_client
-c = olc_client.connect(verbose=True)
-
-from neuprint import NeuronCriteria as NC
-from neuprint import fetch_neurons
-# from patterns import fetch_and_organize_neuron_data
 
 from queries.completeness import fetch_ol_types_and_instances
-from utils.ol_color import OL_COLOR 
-from html_pages.webpage_functions import get_meta_data
+from html_pages.webpage_functions import \
+    get_meta_data\
+  , get_last_database_edit\
+  , get_formatted_now\
+  , render_and_save_templates
+from utils.ol_color import OL_COLOR
+
+from utils import olc_client
+c = olc_client.connect(verbose=True)
 
 
 # %%
 # Fetch unique instances and their types
-neuron_names = fetch_ol_types_and_instances(side='both', client=c)
-
-# # Determine types with multiple instances
-# type_counts = neuron_names['type'].value_counts()
-# multiple_instances = type_counts[type_counts > 1].index.tolist()
+neuron_names = fetch_ol_types_and_instances(side='both')
 
 # # Initialize list for available tags
 available_tags = []
@@ -64,47 +60,32 @@ olt = OLTypes()
 mylist = olt.get_neuron_list(side='both')
 
 # %%
-# Get main groups and html-tags
-# main_groups_dict, available_tags = fetch_and_organize_neuron_data(neuron_names)
-
 # Define the mapping from abbreviations to full names
 full_group_names = {
-    'OL_intrinsic': 'Optic Lobe Intrinsic Neurons',
-    'OL_connecting': 'Optic Lobe Connecting Neurons',
-    'VPN': 'Visual Projection Neurons',
-    'VCN': 'Visual Centrifugal Neurons',
-    'other': 'Other'
+    'OL_intrinsic': 'Optic Neuropil Intrinsic Neurons'
+  , 'OL_connecting': 'Optic Neuropil Connecting Neurons'
+  , 'VPN': 'Visual Projection Neurons'
+  , 'VCN': 'Visual Centrifugal Neurons'
+  , 'other': 'Other'
 }
 
 color_mapping_groups = {
-        'OL_intrinsic': OL_COLOR.OL_TYPES.hex[0], 
-        'OL_connecting': OL_COLOR.OL_TYPES.hex[1],  
-        'VPN': OL_COLOR.OL_TYPES.hex[2],  
-        'VCN': OL_COLOR.OL_TYPES.hex[3],  
-        'other': OL_COLOR.OL_TYPES.hex[4],  
-    }
+    'OL_intrinsic': OL_COLOR.OL_TYPES.hex[0] 
+  , 'OL_connecting': OL_COLOR.OL_TYPES.hex[1]
+  , 'VPN': OL_COLOR.OL_TYPES.hex[2]
+  , 'VCN': OL_COLOR.OL_TYPES.hex[3]
+  , 'other': OL_COLOR.OL_TYPES.hex[4]
+}
 
 # %%
 # Fetch meta to the footer
-meta, lastDataBaseEdit, formattedDate = get_meta_data()
-
+meta = get_meta_data()
+lastDataBaseEdit = get_last_database_edit()
+formattedDate = get_formatted_now()
 
 # %%
-def render_and_save_templates(template_name, data_dict, output_filename):
-    # Assuming the templates are in the current directory for simplicity
-    environment = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
+output_path = PROJECT_ROOT / 'results' / 'html_pages'
 
-    # Load the template
-    template = environment.get_template(template_name)
-
-    # Render the template with the dynamically passed data
-    rendered_template = template.render(**data_dict)
-
-    # Save the rendered template to an HTML file
-    with open(output_filename, "w") as file:
-        file.write(rendered_template)
-
-output_path = Path(PROJECT_ROOT, 'results',  'html_pages')
 # Data for the index page
 index_data_dict = {
     'mylist': mylist,
@@ -123,18 +104,18 @@ render_and_save_templates(
 
 
 # %%
-
 # Data for the cover page
 cover_data_dict = {
-    'available_tags': available_tags, 
-    'meta': meta, 
-    'lastDataBaseEdit' : lastDataBaseEdit,
-    'formattedDate' : formattedDate
+    'available_tags': available_tags
+  , 'meta': meta
+  , 'lastDataBaseEdit' : lastDataBaseEdit
+  , 'formattedDate' : formattedDate
 }
 render_and_save_templates(
     "index.html.jinja"
   , cover_data_dict
-  , output_path / "index.html")
+  , output_path / "index.html"
+)
 
 # %%
 render_and_save_templates(

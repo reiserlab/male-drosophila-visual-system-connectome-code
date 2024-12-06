@@ -1,13 +1,11 @@
 import pandas as pd
 import numpy as np
 from scipy.optimize import linear_sum_assignment
-
-from utils.ROI_calculus import _get_data_path
-
-from neuprint import fetch_neurons, fetch_synapse_connections,\
-    merge_neuron_properties, fetch_all_rois
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC
 
+from utils.helper import get_data_path
+from neuprint import fetch_neurons, fetch_synapse_connections,\
+    merge_neuron_properties
 
 def _get_out_syn_and_com(
     cell_name:str
@@ -39,14 +37,14 @@ def _get_out_syn_and_com(
         .drop_duplicates(subset='bodyId')\
         .reset_index(drop=True)
     rel_syn_df = merge_neuron_properties(comb_df, syn_df, ['type', 'somaLocation'])
-    
+
     com_df = rel_syn_df[rel_syn_df['type_post'].isin(['T4a', 'T4b', 'T4c', 'T4d'])]\
         .groupby(['bodyId_pre'])[['x_pre', 'y_pre', 'z_pre']]\
         .mean()
     com_df['type'] = cell_name
-    
+
     return rel_syn_df, com_df
-    
+
 
 def _get_in_com(
     cell_name:str
@@ -83,7 +81,7 @@ def _get_in_com(
             .groupby('bodyId_post')[['x_post', 'y_post', 'z_post']]\
             .mean()
     com_df['type'] = cell_name
-    
+
     return com_df
 
 
@@ -315,7 +313,7 @@ def create_alignment() -> None:
             mi1_t4_align_df.at[indx, 'max_dist'] = pairs[rel_t4s_bool].max()
             mi1_t4_align_df.at[indx, 'valid_group'] = 1
 
-    data_path = _get_data_path(reason='data')
+    data_path = get_data_path(reason='data')
     table_fn = data_path / "mi1_t4_alignment.xlsx"
     table_df = mi1_t4_align_df.rename(
                 columns={

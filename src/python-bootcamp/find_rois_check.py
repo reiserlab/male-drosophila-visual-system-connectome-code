@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: 'Python 3.11.5 (''.venv'': venv)'
 #     language: python
@@ -27,15 +27,9 @@ print(f"Project root directory: {PROJECT_ROOT}")
 
 # %%
 """ Imports related to data loading """
-import numpy as np
 from neuprint import NeuronCriteria as NC
-from neuprint import SynapseCriteria as SC
 from neuprint import fetch_neurons
 
-
-import pandas as pd
-import navis
-import navis.interfaces.neuprint as neu
 
 from utils import olc_client
 c = olc_client.connect(verbose=True)
@@ -60,7 +54,7 @@ a_bag = NeuronBag(cell_type=celltype)
 # ### Sorting the bag of bodyIds by distance from the (hex1,hex2) column in the specified 'neuropil'
 
 # %%
-a_bag.sort_by_distance_to_hex('ME(R)',18,18)
+a_bag.sort_by_distance_to_hex('ME(R)', 18, 18)
 
 # %% [markdown]
 # ### Getting the sorted bodyIds

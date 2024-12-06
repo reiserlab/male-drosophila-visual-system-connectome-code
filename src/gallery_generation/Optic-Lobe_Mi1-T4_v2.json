@@ -1,0 +1,92 @@
+{
+  "plot": {
+    "plot_type": "Optic-Lobe",
+    "group_name": "Fig_ED_6c_alternative_2",
+    "title": "Mi1 - T4 (unused)",
+    "view": "Equator_slice",
+    "scalebar": {
+      "type": "-",
+      "length": "20",
+      "location": [ 21118, 49000, 16000 ],
+      "text_location": [ 20189, 50000, 16000 ]
+    },
+    "directory": "fig_ed_6",
+    "rois": {
+      "ME(R)": {"slice": [16682.0, 34887.0, 33158.0], "rotation": [91.0,-226.0,162.0], "thickness": 30, "color": [ 0.9, 0.9, 0.9, 1 ], "outline": [0.8, 0.8, 0.8, 1], "visible": true },
+      "LO(R)": { "color": [ 1.0, 0.0, 0.0, 1.0 ], "visible": false },
+      "LOP(R)": { "color": [ 1.0, 0.0, 0.0, 1.0 ], "visible": false },
+
+       "LOP_R_layer_1":{ "slice": [16682.0, 34887.0, 33158.0], "rotation": [91.0,-226.0,162.0], "thickness": 30, "color":[0.97, 0.91, 0.91, 1], "outline": [0.96, 0.7, 0.7, 1.0]}
+      , "LOP_R_layer_2":{ "slice": [16682.0, 34887.0, 33158.0], "rotation": [91.0,-226.0,162.0], "thickness": 30, "color":[0.91, 0.91, 0.96, 1], "outline": [0.7, 0.72, 0.96, 1]}
+      , "LOP_R_layer_3":{ "slice": [16682.0, 34887.0, 33158.0], "rotation": [91.0,-226.0,162.0], "thickness": 30, "color":[0.89, 0.96, 0.92, 1 ], "outline": [0.68, 0.96, 0.80, 1.0]}
+      , "LOP_R_layer_4":{ "slice": [16682.0, 34887.0, 33158.0], "rotation": [91.0,-226.0,162.0], "thickness": 30, "color":[0.99, 0.96, 0.9, 1], "outline": [0.99, 0.90, 0.7, 1]}
+
+      , "ME_R_col_19_18": {
+        "flat": [ 46000, 30000, 28000 ],
+        "color": [ 0.8, 0.8, 0.8, 1 ],
+        "visible": true
+      },
+      "LOP_R_col_19_18": {
+        "flat": [ 46000, 30000, 28000 ],
+        "color": [ 0.8, 0.8, 0.8, 1 ],
+        "visible": true
+      }
+
+    },
+    "camera":{
+        "rotation": [91, -226, 162]
+      , "location": [38000, 60000, 30000]
+      , "ortho_scale": 55000
+      , "resolution": [4096, 4096]
+    },
+
+
+    "neuron_types": {
+      "Mi1": {
+        "body_ids": [ 34189 ],
+        "body_color": [ 0.4, 0.4, 0.4, 1 ],
+        "text": {
+          "text_string": "Mi1",
+          "paper_position": [ 0.05, 0.95 ],
+          "text_align": "l"
+        }
+      },
+      "T4a": {
+        "body_ids": [ 95005 ],
+        "body_color": [ 0.68, 0.14, 0.17, 1 ],
+        "text": {
+          "text_string": "T4a",
+          "paper_position": [ 0.05, 0.92 ],
+          "text_align": "l"
+        }
+      },
+      "T4b": {
+        "body_ids": [ 104257 ],
+        "body_color": [ 0.18, 0.28, 0.65, 1 ],
+        "text": {
+          "text_string": "T4b",
+          "paper_position": [ 0.05, 0.89 ],
+          "text_align": "l"
+        }
+      },
+      "T4c": {
+        "body_ids": [ 109649 ],
+        "body_color": [ 0.12, 0.5, 0.24, 1 ],
+        "text": {
+          "text_string": "T4c",
+          "paper_position": [ 0.05, 0.86 ],
+          "text_align": "l"
+        }
+      },
+      "T4d": {
+        "body_ids": [ 89290 ],
+        "body_color": [ 0.87, 0.46, 0.14, 1 ],
+        "text": {
+          "text_string": "T4d",
+          "paper_position": [ 0.05, 0.83 ],
+          "text_align": "l"
+        }
+      }
+    }
+  }
+}

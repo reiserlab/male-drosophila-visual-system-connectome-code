@@ -4,6 +4,10 @@
     <title>{{ oli.name }} - Optic Lobe Connectome</title>
     <link rel="stylesheet" href="styles/chota.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/chota.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <style>
             /* Center the main content and add maximum width */
@@ -130,6 +134,27 @@
             color: #004299; /* Even darker blue color when the link is clicked */
         }
 
+        /* Align search bar to the left in the navigation */
+        .nav-left {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Styling for the search bar */
+        .search-bar-container {
+            display: inline-block;
+            margin-right: 20px;
+            margin-top: 20px;
+        }
+
+        .search-bar {
+            width: 200px; /* Adjust this value to set the desired width */
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
         .connectivity-link:hover {
             color: green; /* Lighter or different color on hover */
             text-decoration: underline; /* Optional: adds underline on hover */
@@ -243,6 +268,15 @@
 
     <div class="container">
         <nav class="nav">
+            <div class="nav-left">
+                <!-- Search Bar Section -->
+                <div class="search-bar-container">
+                    <div class="ui-widget">
+                        <label for="lines"><b>Search by cell type:&nbsp;</b></label>
+                        <input id="lines" class="search-bar">
+                    </div>
+                </div>
+            </div>
             <div class="nav-right">
                 <a href="index.html">Home</a>
                 <a href="cell_types.html">Cell Types</a>
@@ -257,7 +291,6 @@
                 <h1> <a href="{{ neuprint_deep_link }}" class="txt_{{oli.main_group}}">{{ oli.name_html }}</a>, <span class="counter">{{ n_cell_types }}</span></h1>
             </div>
         </header>
-
 
         <div class="row">
             <div class="col is-center">
@@ -301,7 +334,7 @@
             </div>
             <div class="col">
                 <div class="gallery_video">
-                    <iframe frameborder="0" style="margin-left: 10px; padding:1px;border:1px solid black;" allowfullscreen src="https://www.youtube.com/embed/UegZ6rnYB3k?si=BcfuCuetJ_pY1RuQ"></iframe>  
+                    <iframe frameborder="0" style="margin-left:0px; padding:0px;border:0px solid white;" allowfullscreen src="https://www.youtube.com/embed/{{youtube_link}}?autoplay=1&rel=0&color=white"></iframe>  
                 </div>
             </div>
         </div>
@@ -366,7 +399,18 @@
             </div>
         </div>
         
-   
+        <script>
+            $(function() {
+                var availableTags = {{ available_tags | tojson }};
+                $("#lines").autocomplete({
+                    source: availableTags,
+                    select: function(event, ui) {
+                        window.location = ui.item.url;
+                    }
+                });
+            });
+        </script>
+
         <footer class="row">
         <div class="col">
             <hr class="h1-divider">

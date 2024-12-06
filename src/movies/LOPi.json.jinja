@@ -1,27 +1,28 @@
 {
-  "_metadata":{"source": "LOPi.json.jinja"},
-  "rois": {
-    "source": [
-        "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/roisSmoothedDecimated/"
-      , "cache/blender/crossections"
-    ]
-    ,"ME": {"ids": ["ME(R)"], "sourceIndex": 0}
-    ,"LO": {"ids": ["LO(R)"], "sourceIndex": 0}
-    , "LOP": {"ids": ["LOP(R)"], "sourceIndex": 0}
-    {% if innervated_layers  | length %},"LOP_layers": {"ids": ["{{ innervated_layers|join('", "') }}"], "sourceIndex": 1}{% endif %}
-    {% if innervated_columns | length %},"LOP_columns": {"ids": ["{{ innervated_columns|join('", "') }}"], "sourceIndex": 0}{% endif %}
-    {% if innervated_layers  | length < 4 -%}
-    , "Noninnervated_LOP_layers": {"ids": [
-    {%- set ns = namespace(iter=false) -%}
-    {%- for layer in range(1, 5) -%}
-    {%- if ("LOP_R_layer_{}".format(layer)) not in innervated_layers -%}
-        {%- if ns.iter %}, {% endif -%}
-        {%- set ns.iter = true -%}
-        "{{- "LOP_R_layer_{}".format(layer) -}}"
-    {%- endif -%}
-    {%- endfor -%}
-    ], "sourceIndex": 1}
-    {%- endif %}
+    "_metadata": {"source": "LOPi.json.jinja"}
+  , "rois": {
+        "source": [
+            "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/roisSmoothedDecimated"
+          , "cache/blender/crossections"
+        ]
+      , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
+      , "LO": {"ids": ["LO(R)"], "sourceIndex": 0}
+      , "LOP": {"ids": ["LOP(R)"], "sourceIndex": 0}
+      {% if innervated_layers  | length -%}, "LOP_layers": {"ids": ["{{ innervated_layers|join('", "') }}"], "sourceIndex": 1}{%- endif %}
+      {% if innervated_columns | length %}, "LOP_columns": {"ids": ["{{ innervated_columns|join('", "') }}"], "sourceIndex": 0}{% endif %}
+      {% if innervated_layers  | length < 4 -%}
+      , "Noninnervated_LOP_layers": {"ids": [
+      {%- set ns = namespace(iter=false) -%}
+      {%- for layer in range(1, 5) -%}
+        {%- if ("LOP_R_layer_{}".format(layer)) not in innervated_layers -%}
+          {%- if ns.iter %}, {% endif -%}
+          {%- set ns.iter = true -%}
+          "{{- "LOP_R_layer_{}".format(layer) -}}"
+        {%- endif -%}
+      {%- endfor -%}
+        ]
+      , "sourceIndex": 1}
+      {%- endif %}
   },
   "neurons": {
     "source": "https://storage.googleapis.com/flyem-optic-lobe/v0.91/segmentation/single-res-meshes",
@@ -30,13 +31,13 @@
     {% if other_neurons | length %}, "all": [{{other_neurons| join(', ')}}]{% endif %}
   },
   "synapses": {
-    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/synapses/",
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/synapses",
     "pre": {"neurons": [{{star_neuron}}], "type": "pre", "confidence": 0.5, "radius": 60.0},
     "post": {"neurons": [{{star_neuron}}], "type": "post", "confidence": 0.5, "radius": 40.0}
   },
   "animation": [
     ["setValue", {"meshes": "rois.ME + rois.LO + rois.LOP", "alpha": 0.015}],
-    
+
     ["setValue", {"meshes": "rois.ME", "color" : "#5D194D"}],
     ["setValue", {"meshes": "rois.LO", "color" : "#7D111D"}],
     ["setValue", {"meshes": "rois.LOP", "color" : "#BA4A5F"}],
@@ -60,9 +61,9 @@
     ["label", {"text": "ME", "position": [0.6, 0.75], "color": "#5D194D", "size": 0.03, "duration": 2.0}],
     ["label", {"text": "LO", "position": [0.7, 0.15], "color": "#7D111D", "size": 0.03, "duration": 5.0}],
     ["label", {"text": "LOP", "position": [0.37, 0.15], "color": "#BA4A5F", "size": 0.03, "duration": 2.0}],
-  
+
     ["advanceTime", { "by" : 1.0 }],
-  
+
     ["orbitCamera", {"axis": "y", "endingRelativeAngle": -45, "duration": 2.0}],
     ["fade", {"meshes": "rois.LO", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
     ["fade", {"meshes": "rois.ME", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
@@ -76,11 +77,11 @@
 
 
     ["advanceTime", {"by": 2.0}],
-  
+
     ["fade", {"meshes": "rois.LOP", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
     ["advanceTime", {"by": 2.0}],
 
-  
+
     ["orbitCamera", {"localAxis": "y", "endingRelativeAngle": 90, "duration": 5.5}],
     ["orbitCamera", {"localAxis": "z", "endingRelativeAngle": -5, "duration": 5.5}],
     ["advanceTime", {"by": 5.5 }],
@@ -98,13 +99,13 @@
     ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
     ["advanceTime", {"by": 1.0}],
 
-    ["frameCamera", {"bound": "rois.LOP", "scale": 0.90,  "duration": 2.0}], 
+    ["frameCamera", {"bound": "rois.LOP", "scale": 0.90,  "duration": 2.0}],
     ["fade", {"meshes": "rois.LOP", "startingAlpha": 0.0, "endingAlpha":  0.015, "duration": 2.0} ],
     ["advanceTime", {"by" : 2.5 }],
 
-    
+
     {% if innervated_layers  | length %} ["fade", {"meshes": "rois.LOP_layers","startingAlpha": 0.0, "endingAlpha": 0.1, "duration": 2.0}],{% endif %}
-    {% if innervated_layers | length < 4 -%}["fade", {"meshes": "rois.Noninnervated_LOP_layers", 
+    {% if innervated_layers | length < 4 -%}["fade", {"meshes": "rois.Noninnervated_LOP_layers",
       "startingAlpha": 0.0, "endingAlpha": 0.05, "duration": 2.0}],{% endif %}
 
     ["label", {"text": "Lobula Plate Layers", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 7.5}],
@@ -115,14 +116,14 @@
     ["label", {"text": "{{ layer }}", "position": [0.02, {{ "{:.2f}".format(0.77 - layer  * 0.04)}}], "color": "#5D194D", "size":0.025, "duration": 7.5}],
     {% endif -%}
     {%- endfor %}
-    
+
     ["advanceTime", {"by": 2.5}],
 
-    {% if innervated_layers | length < 4 -%}["fade", {"meshes": "rois.Noninnervated_LOP_layers", 
+    {% if innervated_layers | length < 4 -%}["fade", {"meshes": "rois.Noninnervated_LOP_layers",
       "startingAlpha": 0.05, "endingAlpha": 0.0, "duration": 2.0}],{% endif %}
 
     ["advanceTime", {"by": 2.5}],
-    
+
     {% if innervated_layers  | length %}
     ["fade", {"meshes": "rois.LOP_layers","startingAlpha": 0.1, "endingAlpha": 0.0, "duration": 2.0}],
     ["advanceTime", {"by": 2.5}],
@@ -132,20 +133,20 @@
 
     {% if innervated_columns | length %}
      {% if innervated_columns | length<80 %}
-    
+
     ["fade", {"meshes": "rois.LOP_columns", "startingAlpha": 0.00, "endingAlpha":  0.015, "duration": 2.0}],
 
     {% endif %}
     ["advanceTime", {"by" : 1.0}],
     {% endif %}
-    
+
     ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": -90, "scale": 1.0, "duration": 4.0}],
     ["advanceTime", {"by": 4.0}],
-    
+
     {% if innervated_columns | length %}["frameCamera", {"bound": "rois.LOP_columns", "scale": 0.75,  "duration": 2.0}],
-    
+
     ["advanceTime", {"by" : 2.5}],
-    
+
 
     {% if innervated_columns | length<200 %}["fade", {"meshes": "rois.LOP_columns", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],{% endif %}
     ["advanceTime", {"by" : 3.5}],
@@ -158,18 +159,18 @@
     ["advanceTime", {"by": 2.0}],
 
     {% if neighbor_neurons | length %}["fade", {"meshes": "neurons.neighbors", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 4.0, "stagger": "constant"}],{% endif %}
-    
+
     ["advanceTime", {"by" : 3.0}],
 
-    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": {{1.0+(neuron_count-11)*0.02}}}], 
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": {{1.0+(neuron_count-11)*0.02}}}],
     ["advanceTime", {"by" : 1.0}],
     {% if other_neurons | length %}
-    ["fade", {"meshes": "neurons.all", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": {{3.0+(neuron_count-11)*0.02}}, "stagger": "constant"}], 
+    ["fade", {"meshes": "neurons.all", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": {{3.0+(neuron_count-11)*0.02}}, "stagger": "constant"}],
     ["advanceTime", {"by": {{3.0+(neuron_count-11)*0.02}}}],
     {% endif %}
 
     ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 90, "scale": 1.0, "duration": 4.0}],
     ["advanceTime", {"by" : 6.0 }]
-    
+
   ]
 }

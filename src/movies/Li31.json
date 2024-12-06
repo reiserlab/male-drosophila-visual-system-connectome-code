@@ -2,7 +2,7 @@
   "_metadata":{"source": "LOi.json.jinja"},
   "rois": {
     "source": [
-      "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/roisSmoothedDecimated/",
+      "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/roisSmoothedDecimated/",
       "cache/blender/crossections"
     ]
     , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
@@ -13,20 +13,20 @@
     , "Noninnervated_LO_layers": {"ids": ["LO_R_layer_1", "LO_R_layer_2", "LO_R_layer_3", "LO_R_layer_7"], "sourceIndex": 1}
   },
   "neurons": {
-    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/segmentation/single-res-meshes",
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.1/segmentation/single-res-meshes",
     "id": [10974]
-     
-     
+
+
   },
   "synapses": {
-    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/synapses",
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/synapses",
     "pre": {"neurons": [10974], "type": "pre", "confidence": 0.5, "radius": 60.0},
     "post": {"neurons": [10974], "type": "post", "confidence": 0.5, "radius": 40.0}
   },
   "animation": [
-   
+
     ["setValue", {"meshes": "rois.ME + rois.LO + rois.LOP", "alpha": 0.015}],
-   
+
     ["setValue", {"meshes": "rois.ME", "color": "#5D194D"}],
     ["setValue", {"meshes": "rois.LO", "color": "#7D111D"}],
     ["setValue", {"meshes": "rois.LOP", "color": "#BA4A5F"}],
@@ -55,17 +55,17 @@
     ["fade", {"meshes": "rois.LOP", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
     ["fade", {"meshes": "rois.ME", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
     ["advanceTime", {"by": 2.0 }],
-  
+
     ["frameCamera", {"bound": "neurons.id", "scale": 1.0, "duration": 4.0}],
     ["advanceTime", {"by": 2.0}],
-  
+
     ["fade", {"meshes": "rois.LO", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
     ["advanceTime", {"by": 2.0}],
-  
+
     ["orbitCamera", {"localAxis": "y", "endingRelativeAngle": 90, "duration": 5.5}],
     ["orbitCamera", {"localAxis": "z", "endingRelativeAngle": 12, "duration": 5.5}],
     ["advanceTime", {"by": 5.5 }],
-    
+
     ["label", {"text": "postynaptic sites (n=13126)", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 3.5}],
     ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
     ["advanceTime", {"by": 2.5}],
@@ -79,13 +79,13 @@
     ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
     ["advanceTime", {"by": 1.0}],
 
-    ["frameCamera", {"bound": "rois.LO", "scale": 0.75,  "duration": 2.0}], 
+    ["frameCamera", {"bound": "rois.LO", "scale": 0.75,  "duration": 2.0}],
     ["fade", {"meshes": "rois.LO", "startingAlpha": 0.0, "endingAlpha":  0.015, "duration": 2.0} ],
     ["advanceTime", {"by" : 2.5 }],
 
-    
+
     ["fade", {"meshes": "rois.LO_layers","startingAlpha": 0.0, "endingAlpha": 0.1, "duration": 2.0}],
-    ["fade", {"meshes": "rois.Noninnervated_LO_layers", 
+    ["fade", {"meshes": "rois.Noninnervated_LO_layers",
       "startingAlpha": 0.0, "endingAlpha": 0.05, "duration": 2.0}],
 
     ["label", {"text": "Lobula layers", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 7.5}],
@@ -96,11 +96,11 @@
     ["label", {"text": "5", "position": [0.02, 0.57], "color": "#7CFC00", "size": 0.033, "duration": 7.5}],
     ["label", {"text": "6", "position": [0.02, 0.53], "color": "#7CFC00", "size": 0.033, "duration": 7.5}],
     ["label", {"text": "7", "position": [0.02, 0.49], "color": "#7D111D", "size":0.025, "duration": 7.5}],
-    
-    
+
+
     ["advanceTime", {"by": 2.5}],
 
-    ["fade", {"meshes": "rois.Noninnervated_LO_layers", 
+    ["fade", {"meshes": "rois.Noninnervated_LO_layers",
       "startingAlpha": 0.05, "endingAlpha": 0.0, "duration": 2.0}],
 
     ["advanceTime", {"by": 2.5}],
@@ -109,19 +109,19 @@
     ["advanceTime", {"by": 2.5}],
 
     ["label", {"text": "LO columns (n=0)", "position": [0.02, 0.77], "color": "#7CFC00", "size": 0.03, "duration": 10.0}],
-    
-    
-    
+
+
+
     ["fade", {"meshes": "rois.LO_columns", "startingAlpha": 0.00, "endingAlpha":  0.015, "duration": 2.0}],
-    
+
 
     ["advanceTime", {"by" : 1.0}],
-    
+
     ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": -90, "scale": 1.0, "duration": 4.0}],
     ["advanceTime", {"by": 4.0}],
-    
+
     ["frameCamera", {"bound": "rois.LO_columns", "scale": 0.75,  "duration": 2.0}],
-    
+
     ["advanceTime", {"by" : 2.5}],
 
     ["fade", {"meshes": "rois.LO_columns", "startingAlpha": 0.015, "endingAlpha": 0.0, "duration": 2.0}],
@@ -133,13 +133,13 @@
 
     ["advanceTime", {"by": 2.0}],
 
-    
-    
+
+
     ["advanceTime", {"by" : 3.0}],
 
-    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": 0.8}], 
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": 0.8}],
     ["advanceTime", {"by" : 1.0}],
-    
+
 
     ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 90, "scale": 1.0, "duration": 4.0}],
     ["advanceTime", {"by" : 6.0 }]

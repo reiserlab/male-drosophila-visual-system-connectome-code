@@ -1,0 +1,74 @@
+{ "plot": {
+        "plot_type": "Optic-Lobe"
+        , "group_name": "Fig_ED_6d_center"
+        , "title": "TmY5a"
+        , "view": "Equator_slice"
+        , "scalebar": {
+            "type": "-"
+            , "length": "20"
+            , "location": [ 21118, 33286, 49685 ]
+            , "text_location": [ 20189, 33594, 50163 ]
+
+        }
+        , "directory": "fig_ed_6"
+        , "rois": {
+            "ME(R)": { "slice": [ 16682.0, 34887.0, 33158.0 ], "rotation": [ 91.0, -226.0, 162.0 ], "thickness": 30, "color": [ 0.9, 0.9, 0.9, 1 ], "outline": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LO(R)": { "slice": [ 16682.0, 34887.0, 33158.0 ], "rotation": [ 91.0, -226.0, 162.0 ], "thickness": 30, "color": [ 0.9, 0.9, 0.9, 1 ], "outline": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LOP(R)": { "slice": [ 16682.0, 34887.0, 33158.0 ], "rotation": [ 91.0, -226.0, 162.0 ], "thickness": 30, "color": [ 0.9, 0.9, 0.9, 1 ], "outline": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+
+            , "ME_R_col_22_14": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LO_R_col_21_13": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LOP_R_col_22_14": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+
+
+            , "ME_R_col_20_16": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LO_R_col_20_15": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LOP_R_col_21_16": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+
+            , "ME_R_col_18_18": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LO_R_col_17_18": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LOP_R_col_18_18": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+
+            , "ME_R_col_16_20": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LO_R_col_15_19": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LOP_R_col_16_19": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+
+            , "ME_R_col_14_23": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LO_R_col_13_22": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+            , "LOP_R_col_14_23": { "flat": [ 46000, 30000, 28000 ], "color": [ 0.8, 0.8, 0.8, 1 ], "visible": true }
+
+        }
+        , "camera": {
+            "rotation": [ 91, -226, 162 ]
+            , "location": [ 38000, 60000, 30000 ]
+            , "ortho_scale": 55000
+            , "resolution": [ 4096, 4096 ]
+        }
+        , "neuron_types": {
+             "TmY5a_4": {
+                "body_ids":
+                [ 54914 ]
+                , "body_color": [ 0.68, 0.66, 0.24, 1 ]
+            }, "TmY5a_6": {
+                "body_ids":
+                [ 59398 ]
+                , "body_color": [ 0.23, 0.70, 0.47, 1 ]
+            }, "TmY5a_8": {
+                "body_ids":
+                [ 46155 ]
+                , "body_color": [ 0.79, 0.21, 0.64, 1 ]
+            },
+            "TmY5a_10": {
+                "body_ids":
+                [ 52887 ]
+                , "body_color": [ 0.11, 0.70, 0.94, 1 ]
+            }, "TmY5a_12": {
+                "body_ids":
+                [ 51229 ]
+                , "body_color": [ 0.79, 0.34, 0.14, 1 ]
+            }
+
+
+
+        }
+    } }

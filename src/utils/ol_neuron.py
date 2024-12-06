@@ -72,6 +72,7 @@ class OLNeuron(ABC):
         cachedir = Path(find_dotenv()).parent / "cache" / "meshes"
         cachedir.mkdir(parents=True, exist_ok=True)
         mesh_fn = cachedir / f"ms_{self.__body_id}.pickle"
+
         if not ignore_cache and mesh_fn.is_file():
             with mesh_fn.open('rb') as mesh_fh:
                 mesh = pickle.load(mesh_fh)
@@ -79,6 +80,7 @@ class OLNeuron(ABC):
             mesh = neu.fetch_mesh_neuron(
                 NC(bodyId=self.__body_id)
               , seg_source=os.environ['SEGMENTATION_SOURCE']
+              , mesh_dir='single-res-meshes'
               , lod=None
             )
             with mesh_fn.open('wb') as mesh_fh:
@@ -212,7 +214,22 @@ class OLNeuron(ABC):
     def get_roi_hex_id(
         self
       , roi_str:str=None
-    ):
+    ) -> pd.DataFrame | None:
+        """
+        Get a hex ID for the neuron. It first tries to get the assigned hex ID,
+        then caclulates one based on the synapse count and, if that fails too,
+        get the hex ID based on the centroid based method.
+
+        Returns
+        -------
+        ret : pd.DataFrame
+            ROI : str
+                brain region, for example 'ME(R)'
+            hex1_id : int
+                hex 1 ID
+            hex2_id : int
+                hex 2 id
+        """
         for method in ['assigned', 'synapse_count', 'centroid']:
             ret = self.get_hex_id(roi_str=roi_str, method=method)
             if ret.size:
@@ -327,6 +344,7 @@ class OLNeuron(ABC):
         neuron_df, _ = fetch_neurons(NC(bodyId=self.__body_id))
         return neuron_df.loc[:, 'type'].values[0]
 
+
     @property
     def instance(
         self
@@ -341,160 +359,6 @@ class OLNeuron(ABC):
         """
         neuron_df, _ = fetch_neurons(NC(bodyId=self.__body_id))
         return neuron_df.loc[:, 'instance'].values[0]
-
-    def get_slice(
-        self
-      , view:NG_View
-      , thickness:int=200
-      , only_show_cutter:bool=False
-    ) -> navis.Volume | None:
-        """
-        The attempt to slice the neuron mesh using an externally defined view. The method is not
-        working very well, was only used for the GalleryPlotter (which is being replaced by
-        another plotting approach).
-
-        The slicing is done via trimesh, which uses either blender or openscad(?). So you will
-        need one of these software packages for this to work.
-
-        Parameters
-        ----------
-        view : NG_View
-            The view that defines the direction of the cut
-        thickness : int, default=200
-            Thickness of the slice in nm
-        only_show_cutter : bool, default=False
-            debugging option: if true, `get_slice` attempts to plot the original mesh and the
-            cutting box.
-
-        Returns
-        -------
-        intersect : navis.Volume
-            the result of the intersection. If `only_show_cutter`, then nothing is returned.
-        """
-        mesh = self.get_mesh().trimesh[0]
-        xsz = mesh.bounds[1][0] - mesh.bounds[0][0]
-        ysz = mesh.bounds[1][1] - mesh.bounds[0][1]
-        cutter = trimesh.creation.box(extents=(xsz, ysz, thickness))
-        q1 = view.orientation_camera
-        q2 = quaternion_from_euler(np.pi/2, 0, 0, 'sxyz')
-        q3 = quaternion_multiply(q1, q2)
-
-        rotate = quaternion_matrix(q3)
-        center = mesh.centroid
-        translate = translation_matrix(center)
-        cutter.apply_transform(rotate)
-        cutter.apply_transform(translate)
-        if only_show_cutter:
-            navis.plot3d([mesh, cutter])
-        else:
-            intersect = trimesh.boolean.intersection([mesh, cutter])
-            return navis.Volume(intersect)
-
-
-    def get_flat_view(
-        self
-      , view:NG_View
-      , center:list[float]=None
-      , thickness:int=None
-      , continuous:bool=False
-      , as_mesh:bool=True
-      , keep_soma:bool=False
-      , ignore_fixation:bool=False
-    ) -> navis.TreeNeuron | trimesh.Trimesh | navis.MeshNeuron:
-        """
-        The attempt to project the slice of neuron onto a plane.
-
-        This method is more a draft than a well tested piece of code. It worked OK for a few
-        cells, but since GalleryPlotter is being replaced by a new approach, this is not
-        needed nor tested anymore.
-
-        Parameters
-        ----------
-        view : NG_View
-            The view that defines the cut and the projection.
-        center : list[float]
-            x,y,z coordinates for the "center" of the plane and view. Usually the
-            center of mass of the neuron is used, but for special cases the "center"
-            can be defined. The projection plane and the cutter are all defined around 
-            the "center".
-        thickness : int, default=None
-            thickness of the slice
-        continuous : bool, default=False
-            only keep parts of the neuron that are connected to the main body and remove fragments
-            that become disconnected after slicing
-        as_mesh : bool, default=True
-            make the skeleton into a mesh before returning.
-        keep_soma : bool, default=False
-            try to keep the axon that connects the soma to the part that is left after slicing
-        ignore_fixation : bool, default=False
-            if true, release the camera from fixating on the point defined by the view and instead
-            use the neuron center of mass
-        
-        Returns
-        -------
-        skel : navis.TreeNeuron | trimesh.Trimesh | navis.MeshNeuron
-            return a plotable skeleton or mesh that is projected onto a plane
-        """
-        skel = self.get_skeleton()
-        if skel.name is None:
-            return skel
-
-        assert not (as_mesh and keep_soma)\
-            , "Can't do both: keeping the soma and converting to meshes (known bug)"
-        if view.location_camera:
-            center = np.array(view.location_camera)
-        elif not center:
-            center = self.get_center()
-
-        if ignore_fixation:
-            center = self.get_center()
-
-        move_to_center = AffineTransform(translation_matrix(-center))
-        move_from_center = AffineTransform(translation_matrix(center))
-
-        q1 = view.orientation_camera
-        q22 = quaternion_from_euler(0, np.pi/2, 0, 'sxyz')
-        rotate_from_center = AffineTransform(quaternion_matrix(quaternion_inverse(q1)))
-
-        rotate_to_center = AffineTransform(quaternion_matrix(q1))
-
-        rotate_at_center = AffineTransform(quaternion_matrix(q22))
-        unrotate_at_center = AffineTransform(quaternion_matrix(quaternion_inverse(q22)))
-
-        flatten = AffineTransform([[1,0,0,0], [0,1,0,0], [0,0,0,1]])
-
-        skel = navis.xform(skel, move_to_center)
-
-        skel = navis.xform(skel, rotate_to_center)
-        skel = navis.xform(skel, rotate_at_center)
-        if thickness:
-            skel = self.__slice_skeleton(
-                skel, thickness=thickness, continuous=continuous, keep_soma=keep_soma)
-        skel = navis.xform(skel, flatten)
-        skel = navis.xform(skel, unrotate_at_center)
-        skel = navis.xform(skel, rotate_from_center)
-        skel = navis.xform(skel, move_from_center)
-        if as_mesh:
-            skel = navis.mesh(skel)
-        return skel
-
-
-    def __slice_skeleton(self, skel, thickness, continuous, keep_soma):
-        bounds = skel.bbox
-        bounds[2] = [-thickness/2, thickness/2]
-        bounds = bounds.reshape(6).reshape((2,3), order='F')
-        cutter = trimesh.creation.box(bounds=bounds)
-        cutter_vol = navis.Volume(cutter)
-        p_skel = skel.prune_by_volume(
-            cutter_vol
-          , mode='IN'
-          , prevent_fragments=continuous
-          , inplace=False
-        )
-        if keep_soma:
-            cbf = skel.cell_body_fiber(reroot_soma=True)
-            p_skel = navis.stitch_skeletons([p_skel, cbf])
-        return p_skel
 
 
     def get_center(

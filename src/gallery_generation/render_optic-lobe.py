@@ -149,7 +149,8 @@ def add_scalebar(
     bland_mat.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = [.6, .6, .6, 1]
     bland_mat.node_tree.nodes["Principled BSDF"].inputs['Alpha'].default_value = 1
     bland_mat.blend_method = 'BLEND'
-    bland_mat.shadow_method = 'HASHED'
+    if bpy.app.version < (4, 3, 0):
+        bland_mat.shadow_method = 'HASHED'
     bar1.data.materials.clear()
     bar1.data.materials.append(bland_mat)
     if config.scalebar['type'] == 'L':
@@ -176,7 +177,8 @@ def add_scalebar(
         r_mat.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = [1, 0, 0, 1]
         r_mat.node_tree.nodes["Principled BSDF"].inputs['Alpha'].default_value = 1
         r_mat.blend_method = 'BLEND'
-        r_mat.shadow_method = 'HASHED'
+        if bpy.app.version < (4, 3, 0):
+            r_mat.shadow_method = 'HASHED'
         bar1.data.materials.clear()
         bar1.data.materials.append(r_mat)
         g_mat = bpy.data.materials.new(name=f"scalebar2.material")
@@ -184,7 +186,8 @@ def add_scalebar(
         g_mat.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = [0, 1, 0, 1]
         g_mat.node_tree.nodes["Principled BSDF"].inputs['Alpha'].default_value = 1
         g_mat.blend_method = 'BLEND'
-        g_mat.shadow_method = 'HASHED'
+        if bpy.app.version < (4, 3, 0):
+            g_mat.shadow_method = 'HASHED'
         bar2.data.materials.clear()
         bar2.data.materials.append(g_mat)
 
@@ -276,8 +279,12 @@ def import_rois(config:PlotConfig) -> None:
             # bpy.ops.mesh.pr
             bpy.context.view_layer.objects.active = robj
             # bpy.ops.object.modifier_apply(modifier="shrink.me")
-        
-            robj.matrix_world.translation += camera.matrix_world.to_3x3() @ mathutils.Vector((0,0, -50000))
+            z_mov = -50000
+            if roi.oname == 'AME(R)':
+                z_mov = -35000
+            if roi.oname.startswith("LO_R_col") or roi.oname.startswith("ME_R_col") or roi.oname.startswith("LOP_R_col"):
+                z_mov = -30000
+            robj.matrix_world.translation += camera.matrix_world.to_3x3() @ mathutils.Vector((0,0, z_mov))
 
         mat = bpy.data.materials.new(name=f"{roi.oname}.material")
         mat.use_nodes = True
@@ -318,7 +325,8 @@ def import_rois(config:PlotConfig) -> None:
             wmat.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = roi.outline_color
             wmat.node_tree.nodes["Principled BSDF"].inputs['Alpha'].default_value = roi.outline_color[3]
             wmat.blend_method = 'BLEND'
-            wmat.shadow_method = 'HASHED'
+            if bpy.app.version < (4, 3, 0):
+                wmat.shadow_method = 'HASHED'
             wobj.data.materials.clear()
             wobj.data.materials.append(wmat)
             bpy.ops.object.modifier_add(type='DECIMATE')
@@ -358,7 +366,8 @@ def import_neurons(config:PlotConfig) -> None:
             mat.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = neurons.colors[n_idx]
             mat.node_tree.nodes["Principled BSDF"].inputs['Alpha'].default_value = neurons.colors[n_idx][3]
             mat.blend_method = 'BLEND'
-            mat.shadow_method = 'HASHED'
+            if bpy.app.version < (4, 3, 0):
+                mat.shadow_method = 'HASHED'
             n_obj.data.materials.clear()
             n_obj.data.materials.append(mat)
             n_objs.append(n_obj)
@@ -541,7 +550,8 @@ def add_mat(
     mat.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = color
     mat.node_tree.nodes["Principled BSDF"].inputs['Alpha'].default_value = (alpha)
     mat.blend_method = 'BLEND'
-    mat.shadow_method = 'HASHED'
+    if bpy.app.version < (4, 3, 0):
+        mat.shadow_method = 'HASHED'
 
 
 def create_layer_material(

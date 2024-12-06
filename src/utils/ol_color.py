@@ -149,11 +149,18 @@ class OL_COLOR(Enum):
     )
 
     NT = (
-        'ol_nt  ',
+        'ol_nt',
         ["#EE672D", "#09A64D", "#1F4695", "#000000", "#59626E", "#979DA5", "#C9D0D9"],
         ['ACh', 'Glu', 'GABA', 'His', 'Dop', 'OA', '5HT'],
          False
-     )
+    )
+
+    NT_SHORT = (
+        'ol_nt_short',
+        ["#EE672D", "#09A64D", "#1F4695", "#979DA5"],
+        ['ACh', 'Glu', 'GABA', 'Other'],
+         False
+    )
 
 
     def hex(self, which):

@@ -1,0 +1,77 @@
+    ["frameCamera", {"bound": "rois.ME + rois.LO + rois.LOP", "scale": 1.0, "duration": 0.0}],
+    ["orbitCamera", {"axis": "y", "endingRelativeAngle": 45, "duration": 0}],
+    ["orbitCamera", {"axis": "x", "endingRelativeAngle": 5, "duration": 0}],
+    ["advanceTime", {"by": 0.5}],
+
+    ["label", {"text": "{{neuron_type}} ({{star_neuron}})", "position": [0.02, 0.9], "color": "#333333", "size": 0.03, "duration": 34.0}],
+    ["label", {"text": "ME", "position": [0.6, 0.75], "color": "#5D194D", "size": 0.03, "duration": 3.0}],
+    ["label", {"text": "LO", "position": [0.7, 0.15], "color": "#7D111D", "size": 0.03, "duration": 3.0}],
+    ["label", {"text": "LOP", "position": [0.37, 0.15], "color": "#BA4A5F", "size": 0.03, "duration": 3.0}],
+
+    ["advanceTime", {"by": 3.0}],
+    {%if movie_type!='OL_connecting'%}
+    {%if movie_type=="LOPi"%}
+    {% if LOP_columns | length %}
+    {% if LOP_columns | length<80%}
+    ["frameCamera", {"bound": "rois.LOP_columns", "scale": 1.4, "duration": 3.0}],
+    {%else%}
+    ["frameCamera", {"bound": "rois.LOP_columns", "scale": 0.85, "duration": 3.0}],
+    {%endif%}
+    {%endif%}
+    ["advanceTime", {"by": 3.0}],
+    ["orbitCamera", {"axis": "y", "endingRelativeAngle": -45, "duration": 2.0}],
+    {%endif%}
+
+    {%if movie_type=="MEi"%}
+    {% if ME_columns | length %}
+    {% if ME_columns | length <80%}
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 1.2, "duration": 3.0}],
+    {%else%}
+    ["frameCamera", {"bound": "rois.ME_columns", "scale": 0.6, "duration": 3.0}],
+    {%endif%}
+    {% endif %}
+    {%endif%}
+
+    {%if movie_type=="LOi"%}
+    {% if LO_columns | length %}
+    {% if LO_columns | length <80%}
+    ["frameCamera", {"bound": "rois.LO_columns", "scale": 1.05, "duration": 3.0}],
+    {%else%}
+    ["frameCamera", {"bound": "rois.LO_columns", "scale": 0.6, "duration": 3.0}],
+    {%endif%}
+    {% endif %}
+    {%endif%}
+
+    ["advanceTime", {"by" : 3.0}],
+
+    {%if movie_type=="LOi"%}["orbitCamera", {"axis": "y", "endingRelativeAngle": 100, "duration": 3.0}],{%endif%}
+
+    {%if movie_type=="MEi" or movie_type=="LOPi" %}["fade", {"meshes": "rois.LO", "startingAlpha": 0.1, "endingAlpha": 0.0, "duration": 2.0} ],{%endif%}
+    {%if movie_type=="MEi" or movie_type=="LOi" %}["fade", {"meshes": "rois.LOP", "startingAlpha": 0.1, "endingAlpha": 0.0, "duration": 2.0} ],{%endif%}
+    {%if movie_type=="LOi" or movie_type=="LOPi" %}["fade", {"meshes": "rois.ME", "startingAlpha": 0.1, "endingAlpha": 0.0, "duration": 2.0} ],{%endif%}
+    ["advanceTime", {"by" : 3.0}],
+
+    ["orbitCamera", {"localAxis": "y", "endingRelativeAngle": {%if movie_type=="LOPi"%}-70{%else%}90{%endif%}, "duration": 5.5}],
+    {%if movie_type=="MEi"%}["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 7, "duration": 5.5}],{%endif%}
+    {%if movie_type!="MEi" and movie_type!="LOPi"%}["orbitCamera", {"localAxis": "z", "endingRelativeAngle": {%if movie_type=="LOi"%}12{%endif%}, "duration": 5.5}],{%endif%}
+
+    ["advanceTime", { "by" : 5.5 }],
+    {%endif%}
+    ["label", {"text": "postynaptic sites (n={{post_count}})", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 3.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 2.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 1.0}],
+    ["advanceTime", {"by": 1.0}],
+
+    ["label", {"text": "presynaptic sites (n={{pre_count}})", "position": [0.02, 0.81], "color": "#0070A4", "size": 0.03, "duration": 25}],
+    ["fade", {"meshes": "synapses.pre", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 2.5}],
+    ["label", {"text": "postsynaptic sites (n={{post_count}})", "position": [0.02, 0.85], "color": "#FA9006", "size": 0.03, "duration": 22.5}],
+    ["fade", {"meshes": "synapses.post", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 1.0}],
+    ["advanceTime", {"by": 1.0}],
+
+    {%if movie_type!="OL_connecting"%}
+    ["frameCamera", {"bound": {%if movie_type=="MEi"%}"rois.ME"{%endif%}{%if movie_type=="LOi"%}"rois.LO"{%endif%}{%if movie_type=="LOPi"%}"rois.LOP"{%endif%}, "scale": 0.80,  "duration": 2.0}],
+    ["fade", {"meshes":  {%if movie_type=="MEi"%}"rois.ME"{%endif%}{%if movie_type=="LOi"%}"rois.LO"{%endif%}{%if movie_type=="LOPi"%}"rois.LOP"{%endif%}, "startingAlpha": 0.0, "endingAlpha":  0.15, "duration": 2.0} ],
+    ["advanceTime", {"by" : 2.5 }],
+    {%endif%}

@@ -112,24 +112,24 @@
             </div>
         </header>
 
-        <section>
-        {%- for g_name, group in mylist.groupby(by='main_groups') %}
-        <div class="group-name col-{{g_name}}">
-            <h2>{{ full_group_names[g_name] }}</h2>
-        </div>
-        <div class="neuron_list"> <!-- Use the .neuron_list for grid layout -->
-            {% for idx, row in group.reset_index().iterrows() %}
-            <!-- Add bg-{{g_name}} class to apply background color based on the group -->
-            <div class="neuron-item bg-{{g_name}}"> 
-                <a href="{{ row['instance'] }}.html" class="col-{{g_name}} {{row['main_groups']}}">
-                {{ row['type'] }} ({{ row['instance'][-1:] }})
-                </a>
-            </div>
-            {% endfor %}
-
-        </div>
-        </section>
+       <section>
+        {%- for g_name in full_group_names.keys() %}
+            {%- if g_name in mylist['main_groups'].values %}
+                <div class="group-name col-{{g_name}}">
+                    <h2>{{ full_group_names[g_name] }}</h2>
+                </div>
+                <div class="neuron_list">
+                    {% for idx, row in mylist[mylist['main_groups'] == g_name].reset_index().iterrows() %}
+                    <div class="neuron-item bg-{{g_name}}">
+                        <a href="{{ row['instance'] }}.html" class="col-{{g_name}} {{row['main_groups']}}">
+                        {{ row['type'] }} ({{ row['instance'][-1:] }})
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {%- endif %}
         {%- endfor %}
+        </section>
 
         <hr>
         <footer class="row">

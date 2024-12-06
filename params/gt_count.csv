@@ -1,0 +1,8 @@
+,ground_truth,cell_type_count,bodyId_count,syn_train_count,syn_test_count
+0,ACh,31,19899,1276868,982654
+1,Glu,12,3064,300877,200404
+2,GABA,7,3197,243289,193115
+3,His,2,2934,27601,72795
+4,Dop,1,2,1645,4634
+5,OA,4,6,12032,20085
+6,5HT,2,7,2609,9979

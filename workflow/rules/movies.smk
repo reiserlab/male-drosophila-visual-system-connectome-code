@@ -8,7 +8,7 @@ envvars:
 include: "../scripts/get-mem.py"
 include: "../scripts/movie-paths.py"
 
-rule crossection:
+rule crossection_standard:
     output:
         directory("cache/blender/crossections/"),
         expand("cache/blender/crossections/ME_R_layer_{mel:02d}.obj", mel=[i for i in range(1,11)]),
@@ -20,20 +20,40 @@ rule crossection:
     priority: 1
     shell:
         """
-        python src/movies/neuropil-crossections.py > {log.stdout} 2> {log.stderr}
+        python src/movies/neuropil-crossections.py standard > {log.stdout} 2> {log.stderr}
         """
+
+rule crossection_connecting:
+    output:
+        directory("cache/blender/crossections_connecting/"),
+        expand("cache/blender/crossections_connecting/ME_R_layer_{mel:02d}.obj", mel=[i for i in range(1,11)]),
+        expand("cache/blender/crossections_connecting/LO_R_layer_{lol}.obj", lol=[i for i in range(1,8)]),
+        expand("cache/blender/crossections_connecting/LOP_R_layer_{lopl}.obj", lopl=[i for i in range(1,5)])
+    log: 
+        stdout="logs/crossection_connecting.out.log", 
+        stderr="logs/crossection_connecting.err.log"
+    priority: 1
+    shell:
+        """
+        python src/movies/neuropil-crossections.py connecting > {log.stdout} 2> {log.stderr}
+        """
+
+rule crossection:
+    input:
+        rules.crossection_standard.output,
+        rules.crossection_connecting.output
 
 rule blendfile:
     input:
         json="results/movie-descriptions/{movie}.json",
-        cs="cache/blender/crossections/"
-    output:
+        cs="cache/blender/crossections/",
+        csc="cache/blender/crossections_connecting/"
+    output: 
         blender="cache/blender/{movie}.blend"
-    resources: mem_mb=get_mem_mb
     threads: 3
     priority: 2
     params:
-        cache="cache/blender/{movie}-object-cache/",
+        cache= "/nrs/reiser/neuvid/{movie}-object-cache/" if os.environ.get('LSB_JOBID') else "cache/blender/{movie}-object-cache/",
         blender_path = os.environ['BLENDER_PATH'],
         neuvid_path = os.environ['NEUVID_PATH']
     shell:
@@ -47,7 +67,6 @@ rule blendanim:
         blender="cache/blender/{movie}.blend"
     output: "cache/blender/{movie}Anim.blend"
     threads: 3
-    resources: mem_mb=get_mem_mb
     priority: 3
     params:
         blender_path = os.environ['BLENDER_PATH'],
@@ -62,9 +81,10 @@ rule renderframes:
         json="results/movie-descriptions/{movie}.json",
         blenderAnim="cache/blender/{movie}Anim.blend"
     output:
-        path = directory("cache/blender/{movie}_{width}x{height}-frames/"),
+        path = directory("/nrs/reiser/neuvid/{movie}_{width}x{height}-frames/") if os.environ.get('LSB_JOBID') else directory("cache/blender/{movie}_{width}x{height}-frames/"),
         flag = touch("cache/blender/.render_{movie}_{width}x{height}.done")
-    threads: 4
+    threads: 5
+    resources: mem_mb=get_mem_mb
     priority: 4
     params:
         blender_path = os.environ['BLENDER_PATH'],
@@ -73,19 +93,19 @@ rule renderframes:
         render_threads = 36
     shell:
         """
-        {params.blender_path} --background --python {params.neuvid_path}/neuVid/render.py -- --skipExisting --persist --threads {params.render_threads} --resX {wildcards.width} --resY {wildcards.height} -i {input.json} {params.optix} --inputBlender {input.blenderAnim} --output {output.path}
+        {params.blender_path} --background --python {params.neuvid_path}/neuVid/render.py -- --skipExisting --persist --threads {params.render_threads} --resX {wildcards.width} --resY {wildcards.height} -i {input.json} {params.optix} --inputBlender {input.blenderAnim} --white --output {output.path}
         """
 
 rule addtext:
     input:
         json="results/movie-descriptions/{movie}.json",
-        path="cache/blender/{movie}_{width}x{height}-frames/",
+        path="/nrs/reiser/neuvid/{movie}_{width}x{height}-frames/" if os.environ.get('LSB_JOBID') else "cache/blender/{movie}_{width}x{height}-frames/",
         flag="cache/blender/.render_{movie}_{width}x{height}.done"
-    threads: 10
+    threads: 5
     resources: mem_mb=get_mem_mb
     priority: 5
     output:
-        path=directory("cache/blender/{movie}_{width}x{height}-labeled/"),
+        path= directory("/nrs/reiser/neuvid/{movie}_{width}x{height}-labeled/") if os.environ.get('LSB_JOBID') else directory("cache/blender/{movie}_{width}x{height}-labeled/"),
         flag=touch("cache/blender/.label_{movie}_{width}x{height}.done")
     params:
         blender_path = os.environ['BLENDER_PATH'],
@@ -93,18 +113,18 @@ rule addtext:
         optix = "--optix" if os.environ.get('LSB_JOBID') else ""
     shell:
         """
-        {params.blender_path} --background --python {params.neuvid_path}/neuVid/compLabels.py -- --threads {threads} {params.optix} --input {input.json} --inputFrames {input.path} --output {output.path}
+        {params.blender_path} --background --python {params.neuvid_path}/neuVid/compLabels.py -- --threads {threads} --input {input.json} --inputFrames {input.path} --output {output.path}
         """
 
 rule assembleframes:
     input:
         json="results/movie-descriptions/{movie}.json",
-        path="cache/blender/{movie}_{width}x{height}-labeled/",
+        path="/nrs/reiser/neuvid/{movie}_{width}x{height}-labeled/" if os.environ.get('LSB_JOBID') else "cache/blender/{movie}_{width}x{height}-labeled/",
         flag="cache/blender/.label_{movie}_{width}x{height}.done"
     resources: mem_mb=get_mem_mb
-    priority: 6
+    priority: 5
     output:
-        path=directory("cache/blender/{movie}_{width}x{height}-assembled/"),
+        path=directory("/nrs/reiser/neuvid/{movie}_{width}x{height}-assembled/") if os.environ.get('LSB_JOBID') else directory("cache/blender/{movie}_{width}x{height}-assembled/"),
         movie="results/movies/{movie}_{width}x{height}.avi"
     params:
         blender_path = os.environ['BLENDER_PATH'],
@@ -174,7 +194,7 @@ rule generatedescriptions:
     output:
         json=touch("results/movie-descriptions/generation.done")
     run:
-        shell("jupyter execute --kernel_name='.venv' src/movies/generate_movies.ipynb")
+        shell("jupyter execute --kernel_name='python3' src/movies/generate_movies.ipynb")
 
 
 rule alldescriptions:
@@ -195,11 +215,11 @@ rule allmovies:
 
 rule generate_flipbook_images:
     run:
-        shell("jupyter execute --kernel_name='.venv' src/gallery_generation/generate_full_brain_stars_flipbook.ipynb")
+        shell("jupyter execute --kernel_name='python3' src/gallery_generation/generate_full_brain_stars_flipbook.ipynb")
 
 
 # Required GNU parallel and imagemagick
-rule generate_flipbook:
+rule generate_flipbook_cache:
     input:
         inpdir="results/gallery/{directory}"
     output:
@@ -214,7 +234,7 @@ rule generate_flipbook:
 
 
 # requires ffmpeg
-rule generate_flipbook2:
+rule generate_flipbook_all:
     input:
         olin="cache/movies/flipbook_OL_intrinsic",
         olcn="cache/movies/flipbook_OL_connecting",
@@ -222,10 +242,10 @@ rule generate_flipbook2:
         olvcn="cache/movies/flipbook_VCN",
         oloth="cache/movies/flipbook_other"
     output:
-        movie_raw="results/movies/Flipbook_uncompressed.mov",
-        movie_hq="results/movies/Flipbook_HQ.mov",
-        movie_mq="results/movies/Flipbook_MQ.mov",
-        movie_lq="results/movies/Flipbook_LQ.mov"
+        movie_raw="results/movies/Flipbook_uncompressed.mp4",
+        movie_hq="results/movies/Flipbook_HQ.mp4",
+        movie_mq="results/movies/Flipbook_MQ.mp4",
+        movie_lq="results/movies/Flipbook_LQ.mp4"
     params:
         desc="cache/movies/flipbook.txt"
     run:
@@ -237,6 +257,36 @@ rule generate_flipbook2:
         generate_movie_description(input.olvpn)
         generate_movie_description(input.olvcn)
         generate_movie_description(input.oloth)
+        shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -pix_fmt yuv420p -preset veryslow -tune stillimage -profile:v high422 -crf 10 {output.movie_hq}")
+        shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -pix_fmt yuv420p -preset veryslow -tune stillimage -profile:v high422 -crf 26 {output.movie_mq}")
+        shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -pix_fmt yuv420p -preset veryslow -tune stillimage -profile:v high422 -crf 30 {output.movie_lq}")
+        shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -preset veryslow -tune stillimage -crf 0 {output.movie_raw}")
+
+
+# requires ffmpeg
+rule generate_flipbook_traditional:
+    input:
+        olin="cache/movies/flipbook_OL_intrinsic",
+        olcn="cache/movies/flipbook_OL_connecting",
+        olvpn="cache/movies/flipbook_VPN",
+        olvcn="cache/movies/flipbook_VCN",
+        oloth="cache/movies/flipbook_other"
+    output:
+        movie_raw="results/movies/Flipbook_uncompressed_traditional.mp4",
+        movie_hq="results/movies/Flipbook_HQ_traditional.mp4",
+        movie_mq="results/movies/Flipbook_MQ_traditional.mp4",
+        movie_lq="results/movies/Flipbook_LQ_traditional.mp4"
+    params:
+        desc="cache/movies/flipbook_trad.txt"
+    run:
+        import shutil
+        shutil.copy2('src/movies/flipbook_title.png', 'cache/movies/flipbook_title.png')
+        generate_traditional_flipbook_title()
+        generate_traditional_movie_description(input.olin)
+        generate_traditional_movie_description(input.olcn)
+        generate_traditional_movie_description(input.olvpn)
+        generate_traditional_movie_description(input.olvcn)
+        generate_traditional_movie_description(input.oloth)
         shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -pix_fmt yuv420p -preset veryslow -tune stillimage -profile:v high422 -crf 10 {output.movie_hq}")
         shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -pix_fmt yuv420p -preset veryslow -tune stillimage -profile:v high422 -crf 22 {output.movie_mq}")
         shell("ffmpeg -f concat -i {params.desc} -vcodec libx264 -pix_fmt yuv420p -preset veryslow -tune stillimage -profile:v high422 -crf 30 {output.movie_lq}")

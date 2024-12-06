@@ -3,8 +3,6 @@ import os
 
 from functools import partial
 
-import datetime
-from datetime import datetime
 from pathlib import Path
 
 import plotly.io as pio
@@ -25,12 +23,10 @@ from utils.helper import slugify
 from html_pages.make_spatial_coverage_plots_for_webpages import\
     plot_synapses_per_column, plot_cells_per_column
 from html_pages.plotting_to_html import get_dynamic_plot
-from html_pages.webpage_functions import get_meta_data
+from html_pages.webpage_functions import get_meta_data, get_youtube_link, get_last_database_edit, get_formatted_now
 
 from queries.webpage_queries import\
     get_layer_synapses, get_roi_synapses, get_io_table, consensus_nt_for_instance
-
-
 
 def shorten_nt_name(
     nt_name:str
@@ -126,6 +122,7 @@ def convert_pkl_to_html_with_layers(
   , template:str
   , input_path_coverage:Path
   , output_path:Path
+  , available_tags:list[dict]
 ) -> None:
     """
     Create an html file for the given cell type from the pkl data file of its synaptic connections
@@ -142,21 +139,23 @@ def convert_pkl_to_html_with_layers(
         Location of the coverage and completeness images.
     output_path : Path
         Location where the HTML file is stored.
-
+    available_tags : list[dict]
+        A list of mappings between search terms (also called tags) that represent cell types
+        and the html file names. Handed through to the template
     """
-    assert os.environ.get('NEUPRINT_BASE_URL'),\
-        "Please set the `NEUPRINT_BASE_URL` variable in your environment."
+    assert os.environ.get('NEUPRINT_BASE_URL')\
+      , "Please set the `NEUPRINT_BASE_URL` variable in your environment."
 
-    assert isinstance(oli, OLInstance), "interface changed, please use OLInstance"
+    assert isinstance(oli, OLInstance)\
+      , "interface changed, please use OLInstance"
 
     # Setting the ouputs by which html pages can be saved
     output_cell_filename = f"{oli.slug}.html"
     output_filename = output_path.joinpath(output_cell_filename)
     output_filename.parent.mkdir(parents=True, exist_ok=True)
     if output_filename.is_file(): # don't overwrite existing html files
-        return
+        return False
 
-    success = True
     # Jinja template
     environment = jinja2.Environment(loader=jinja2.FileSystemLoader(''))
     template = environment.get_template(template)
@@ -172,7 +171,6 @@ def convert_pkl_to_html_with_layers(
 
     # TITLE information
     # Add neurotransmitter prediction to the title from database
-
     nt_prediction = shorten_nt_name(consensus_nt_for_instance(instance=oli.name))
 
     in_vals = get_io_table(
@@ -236,7 +234,9 @@ def convert_pkl_to_html_with_layers(
 
         if x in valid_neuron_names:
             # Use the determined color for the link
-            return f'<a href="{t_oli.slug}.html" class="connectivity-link{class_txt}">{t_oli.name_html}</a>'
+            return \
+                f'<a href="{t_oli.slug}.html" class="connectivity-link{class_txt}">'\
+                f'{t_oli.name_html}</a>'
         # Non-functional links don't need specific group-based coloring; handling remains the same
         return f'<span class="non-functional-link">{t_oli.name_html}</span>'
 
@@ -307,7 +307,7 @@ def convert_pkl_to_html_with_layers(
         # Default to grey if neuropil not found
         bg_color_rgba = hex_to_rgba(color_mapping.get(neuropil, '#FFFDFD'), 0.3)
 
-        styles = [{         
+        styles = [{
             "selector": "th"
           , "props": [ ("text-align", "center"), ("background-color", bg_color_rgba)]
         }, {
@@ -457,6 +457,9 @@ def convert_pkl_to_html_with_layers(
             try:
                 with file_path.open('rb') as metric_fh:
                     coverage_data = pd.read_pickle(metric_fh)
+                if coverage_data.empty:
+                    print(f"File not found: {file_path}. Skipping {neuropil}.")
+                    return format_data(generate_zero_data(expected_keys))
                 # Filter for neuropil
                 filtered_data = coverage_data[coverage_data['roi'] == f"{neuropil}(R)"]
                 # If no matching data, return zero data
@@ -504,7 +507,8 @@ def convert_pkl_to_html_with_layers(
     # NEUPRINT LINK
     # Base URL (up to the point before 'cellType')
     dynamic_param = f"&qr[0][pm][neuron_name]={oli.type}"
-    neuprint_url = f"https://{os.environ.get('NEUPRINT_SERVER_URL')}/{os.environ.get('NEUPRINT_BASE_URL')}{dynamic_param}"
+    neuprint_url = f"https://{os.environ.get('NEUPRINT_SERVER_URL')}/"\
+        f"{os.environ.get('NEUPRINT_BASE_URL')}{dynamic_param}"
 
     fig_3d = get_dynamic_plot(oli.name, resample_precision=oli.resample_precision)
     fig_3d_fn = output_path / 'img' / 'dynamic' / f'{oli.slug}.html'
@@ -520,39 +524,45 @@ def convert_pkl_to_html_with_layers(
     )
     three_d_image_script = f"img/dynamic/{oli.slug}.html"
 
+    # YOUTUBE LINK
+    youtube_link = get_youtube_link(cell_type=oli.type)
+
     # META TO FOOTER
-    meta, last_database_edit, formatted_date = get_meta_data()
+    meta = get_meta_data()
+    last_database_edit = get_last_database_edit()
+    formatted_date = get_formatted_now()
 
     # RENDER TEMPLATE
     # Render the template with the data
     rendered_template = template.render(
-        oli=oli,
-        n_cell_types=n_cell_types,
-        nt_prediction = nt_prediction,
-        color_mapping_regions = color_mapping_regions,
-        lay_stats_ME_html=lay_stats_me_html,
-        lay_stats_LO_html=lay_stats_lo_html,
-        lay_stats_LOP_html=lay_stats_lop_html,
-        lay_stats_LA_html=lay_stats_la_html,
-        lay_stats_AME_html=lay_stats_ame_html,
-        lay_stats_CB_html=lay_stats_cb_html,
-        in_styled_html=in_styled_html,
-        out_styled_html=out_styled_html,
-        in_vals_empty=in_vals_empty,
-        out_vals_empty=out_vals_empty,
-        filtered_card_data=filtered_card_data,
-        image_tags=image_tags,
-        threeD_image_script=three_d_image_script,
-        neuprint_deep_link=neuprint_url,
-        meta=meta,
-        lastDataBaseEdit=last_database_edit,
-        formattedDate=formatted_date
+        oli=oli
+      , n_cell_types=n_cell_types
+      , nt_prediction = nt_prediction
+      , color_mapping_regions = color_mapping_regions
+      , lay_stats_ME_html=lay_stats_me_html
+      , lay_stats_LO_html=lay_stats_lo_html
+      , lay_stats_LOP_html=lay_stats_lop_html
+      , lay_stats_LA_html=lay_stats_la_html
+      , lay_stats_AME_html=lay_stats_ame_html
+      , lay_stats_CB_html=lay_stats_cb_html
+      , in_styled_html=in_styled_html
+      , out_styled_html=out_styled_html
+      , in_vals_empty=in_vals_empty
+      , out_vals_empty=out_vals_empty
+      , filtered_card_data=filtered_card_data
+      , image_tags=image_tags
+      , threeD_image_script=three_d_image_script
+      , youtube_link=youtube_link
+      , neuprint_deep_link=neuprint_url
+      , meta=meta
+      , lastDataBaseEdit=last_database_edit
+      , formattedDate=formatted_date
+      , available_tags=available_tags
     )
 
     # Save the rendered template to an HTML file
     with open(output_filename, "w", encoding="utf-8") as _file:
         _file.write(rendered_template)
 
-    if success:
-        print(f"HTML page generated successfully for {oli.name}.")
-    return success
+    print(f"HTML page generated successfully for {oli.name}.")
+    return True

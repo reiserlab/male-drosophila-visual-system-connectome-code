@@ -1,0 +1,184 @@
+{
+  "_metadata":{"source": "movie-descriptions.json.jinja",
+              "movie_type":"{{movie_type}}",
+              "movie_group":"{{movie_group}}"},
+  "rois": {
+    "source": [
+        "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/roisSmoothedDecimated"
+
+      {%if movie_group=="VPN" or movie_group=="VCN" or movie_group=="other"%}
+      , "https://storage.googleapis.com/flyem-optic-lobe/rois/fullbrain-major-shells/mesh"
+      {% endif %}
+      {%- if ME_layers_innervated|length or LO_layers_innervated|length or LOP_layers_innervated|length -%}
+      {% if movie_type == 'OL_connecting' %}
+      , "cache/blender/crossections_connecting"
+      {% else %}
+      , "cache/blender/crossections"
+      {% endif %}
+      {%- endif -%}
+    ]
+
+    {% set second_source = 1 %}
+    , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
+    , "LO": {"ids": ["LO(R)"], "sourceIndex": 0}
+    , "LOP": {"ids": ["LOP(R)"], "sourceIndex": 0}
+     {%if movie_group=="VPN" or movie_group=="VCN" or movie_group=="other"%}
+    , "OL(L)": {"ids": ["OL(L).ngmesh"], "sourceIndex": 1}
+    , "OL(R)": {"ids": ["OL(R).ngmesh"], "sourceIndex": 1}
+    , "CB": {"ids": ["CB.ngmesh"], "sourceIndex": 1}
+      {% set second_source = 2 %}
+    {%endif%}
+
+    ,"ME_columns":{"ids": [{% if ME_columns | length %}"{%endif%}{{ ME_columns|join('", "') }}{% if ME_columns | length %}"{%endif%}], "sourceIndex": 0}
+    ,"LO_columns":{"ids": [{% if LO_columns | length %}"{%endif%}{{ LO_columns|join('", "') }}{% if LO_columns | length %}"{%endif%}], "sourceIndex": 0}
+    ,"LOP_columns":{"ids": [{% if LOP_columns | length %}"{%endif%}{{ LOP_columns|join('", "') }}{% if LOP_columns | length %}"{%endif%}], "sourceIndex": 0}
+
+    {%if ME_layers_innervated|length or movie_type=="OL_connecting"%}
+    ,"ME_layers_innervated": {"ids": [{% if ME_layers_innervated | length %}"{%endif%}{{ ME_layers_innervated|join('", "') }}{% if ME_layers_innervated | length %}"{%endif%}], "sourceIndex": {{second_source}} }
+    ,"ME_layers_noninnervated": {"ids": [{% if ME_layers_noninnervated | length %}"{%endif%}{{ ME_layers_noninnervated|join('", "') }}{% if ME_layers_noninnervated | length %}"{%endif%}], "sourceIndex": {{second_source}} }
+     {%endif%}
+    {%if LO_layers_innervated|length or movie_type=="OL_connecting"%}
+    ,"LO_layers_innervated": {"ids": [{% if LO_layers_innervated | length %}"{%endif%}{{ LO_layers_innervated|join('", "') }}{% if LO_layers_innervated | length %}"{%endif%}], "sourceIndex": {{second_source}}}
+    ,"LO_layers_noninnervated": {"ids": [{% if LO_layers_noninnervated | length %}"{%endif%}{{ LO_layers_noninnervated|join('", "') }}{% if LO_layers_noninnervated | length %}"{%endif%}], "sourceIndex": {{second_source}}}
+    {%endif%}
+    {%if LOP_layers_innervated|length or movie_type=="OL_connecting"%}
+    ,"LOP_layers_innervated": {"ids": [{% if LOP_layers_innervated | length %}"{%endif%}{{ LOP_layers_innervated|join('", "') }}{% if LOP_layers_innervated | length %}"{%endif%}], "sourceIndex": {{second_source}}}
+    ,"LOP_layers_noninnervated": {"ids": [{% if LOP_layers_noninnervated | length %}"{%endif%}{{ LOP_layers_noninnervated|join('", "') }}{% if LOP_layers_noninnervated | length %}"{%endif%}], "sourceIndex": {{second_source}}}
+    {%endif%}
+  }
+
+  ,"neurons": {
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.1/segmentation/single-res-meshes"
+    , "id": [{{star_neuron }}]
+    {% if neighbor_neurons | length %}, "neighbors": [{{neighbor_neurons| join(', ')}}]{% endif %}
+    {% if other_neurons | length %}, "all": [{{other_neurons| join(', ')}}] {% endif %}
+  },
+  "synapses": {
+    "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/synapses",
+    "pre": {"neurons": [{{star_neuron}}], "type": "pre", "confidence": 0.5, "radius": 60.0},
+    "post": {"neurons": [{{star_neuron}}], "type": "post", "confidence": 0.5, "radius": 40.0}
+  },
+  "animation": [
+    ["setValue", {"meshes": "rois.ME + rois.LO + rois.LOP", "alpha": 0.1,"exponent":2}],
+    {%if movie_group=="VPN" or movie_group=="VCN" or movie_group=="other"%}
+    ["setValue", {"meshes": "rois.CB", "color" : "#5D194D","exponent":2}],
+    ["setValue", {"meshes": "rois.OL(L)", "color" : "#5D194D","exponent":2}],
+    ["setValue", {"meshes": "rois.OL(R)", "color" : "#5D194D","exponent":2}],
+    {%endif%}
+
+    ["setValue", {"meshes": "rois.ME", "color" : "#5D194D"}],
+    ["setValue", {"meshes": "rois.LO", "color" : "#7D111D"}],
+    ["setValue", {"meshes": "rois.LOP", "color" : "#BA4A5F"}],
+
+    {%if movie_type=="MEi" or movie_type=="OL_connecting"%}
+    {% if ME_columns | length%}
+    ["setValue", {"meshes":  "rois.ME_columns", "color" : "#3E7E00"}],
+    ["setValue", {"meshes":  "rois.ME_columns", "alpha" : 0.0}],
+    {% endif %}
+    {% if ME_layers_innervated  | length %}["setValue", {"meshes": "rois.ME_layers_innervated", "color": "#3E7E00"}],
+    ["setValue", {"meshes":  "rois.ME_layers_innervated", "alpha" : 0.0}],
+    {% endif %}
+    {% if ME_layers_innervated | length %}["setValue", {"meshes": "rois.ME_layers_noninnervated", "color": "#5D194D"}],
+    ["setValue", {"meshes":  "rois.ME_layers_noninnervated", "alpha" : 0.0}],
+    {% endif %}
+    {%endif%}
+
+    {%if movie_type=="LOi" or movie_type=="OL_connecting"%}
+    {% if LO_columns | length%}
+    ["setValue", {"meshes":  "rois.LO_columns", "color" : "#3E7E00"}],
+    ["setValue", {"meshes":  "rois.LO_columns", "alpha" : 0.0}],
+    {% endif %}
+    {% if LO_layers_innervated | length %}["setValue", {"meshes": "rois.LO_layers_innervated", "color": "#3E7E00"}],
+    ["setValue", {"meshes":  "rois.LO_layers_innervated", "alpha" : 0.0}],
+    {% endif %}
+    {% if LO_layers_innervated | length-%}["setValue", {"meshes": "rois.LO_layers_noninnervated", "color": "#5D194D"}],
+    ["setValue", {"meshes":  "rois.LO_layers_noninnervated", "alpha" : 0.0}],
+    {% endif %}
+    {% endif %}
+
+    {%if movie_type=="LOPi" or movie_type=="OL_connecting"%}
+    {% if LOP_columns | length%}
+    ["setValue", {"meshes":  "rois.LOP_columns", "color" : "#3E7E00"}],
+    ["setValue", {"meshes":  "rois.LOP_columns", "alpha" : 0.0}],
+    {% endif %}
+    {% if LOP_layers_innervated | length %}["setValue", {"meshes": "rois.LOP_layers_innervated", "color": "#3E7E00"}],
+    ["setValue", {"meshes":  "rois.LOP_layers_innervated", "alpha" : 0.0}],
+    {% endif %}
+    {% if LOP_layers_innervated | length %}["setValue", {"meshes": "rois.LOP_layers_noninnervated", "color": "#5D194D"}],
+    ["setValue", {"meshes":  "rois.LOP_layers_noninnervated", "alpha" : 0.0}],
+    {% endif %}
+    {% endif %}
+
+    ["setValue", {"meshes": "neurons.id", "color": "#333333"}],
+    ["setValue", {"meshes": "synapses.pre", "color": "#003851"}],
+    ["setValue", {"meshes": "synapses.post", "color": "#683C03"}],
+
+    {%include "_movie-descriptions_rotations.json.jinja"%}
+    {%if movie_type=='MEi' or movie_type=='OL_connecting'%}
+    {% if ME_layers_innervated | length!=0 %}
+    {%include "_movie-descriptions_ME_layers.json.jinja"%}
+    {%endif%}
+    {%endif%}
+    {%if movie_type=='LOi' or movie_type=='OL_connecting'%}
+    {% if LO_layers_innervated | length!=0 %}
+    {%include "_movie-descriptions_LO_layers.json.jinja"%}
+    {%endif%}
+    {%endif%}
+    {%if movie_type=='LOPi' or movie_type=='OL_connecting'%}
+    {% if LOP_layers_innervated | length!=0 %}
+    {%include "_movie-descriptions_LOP_layers.json.jinja"%}
+    {%endif%}
+    {%endif%}
+    {%if movie_type!='OL_connecting'%}
+    {%include "_movie-descriptions_columns.json.jinja"%}
+    {%endif%}
+    {%if movie_group == "OL_intrinsic" or movie_group == "OL_connecting"%}
+    {%include "_movie-descriptions_tiling.json.jinja"%}
+    {%endif%}
+
+{%if movie_group=="VPN" or movie_group=="VCN" or movie_group=="other"%}
+
+{%if movie_type=='LOi'%}
+{%include "_movie-descriptions_tiling.json.jinja"%}
+
+["orbitCamera", {"localAxis": "z", "endingRelativeAngle": -102, "duration": 1.0}],
+["orbitCamera", {"localAxis": "y", "endingRelativeAngle": -30, "duration": 1.0}],
+
+["advanceTime", {"by" : 2.0 }],
+{%endif%}
+
+{%if movie_type=='MEi'%}
+{%include "_movie-descriptions_tiling.json.jinja"%}
+["orbitCamera", {"localAxis": "z", "endingRelativeAngle": -90, "duration": 1.0}],
+["orbitCamera", {"localAxis": "y", "endingRelativeAngle": -135, "duration": 1.0}],
+
+["advanceTime", {"by" : 2.0 }],
+{%endif%}
+
+{%if movie_type=='LOPi'%}
+{%include "_movie-descriptions_tiling.json.jinja"%}
+["orbitCamera", {"localAxis": "z", "endingRelativeAngle": 105, "duration": 1.0}],
+["orbitCamera", {"localAxis": "y", "endingRelativeAngle": 183, "duration": 1.0}],
+
+
+["advanceTime", {"by" : 2.0 }],
+{%endif%}
+
+{%if movie_type=='OL_connecting'%}
+{%include "_movie-descriptions_tiling.json.jinja"%}
+["orbitCamera", {"localAxis": "z", "endingRelativeAngle": -35, "duration": 1.0}],
+["orbitCamera", {"localAxis": "x", "endingRelativeAngle": -70, "duration": 1.0}],
+["advanceTime", {"by" : 2.0 }],
+{%endif%}
+
+
+["fade", {"meshes": "rois.CB + rois.OL(R) + rois.OL(L)", "startingAlpha": 0.0, "endingAlpha": 0.2, "duration": 1.0}],
+["frameCamera", {"bound": "rois.CB + rois.OL(R) + rois.OL(L)", "scale": 0.65,  "duration":3.0 }],
+["advanceTime", {"by" : 4.0 }]
+{%endif%}
+
+
+
+  ]
+}
+

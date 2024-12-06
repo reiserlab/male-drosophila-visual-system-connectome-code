@@ -5,16 +5,19 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.15.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
-#     name: ol-connectome
+#     name: python3
 # ---
 
 # %% [markdown]
-# # Generate cross section view to make a gallery of all neurons in OL
+# # Alternative 2
 #
+# Generate cross section view to make a gallery of all neurons in OL. 
+# We did not use this method in the paper, but it might be interesting
+# to some.
 
 # %%
 """
@@ -163,7 +166,7 @@ ME_R_layer = [None] * 10
 ME_R_layer_sec = [None] * 10
 # selected layers
 for i in [1,3,5,7,9]:
-    exec(f"ME_R_layer[{i-1}] = neu.fetch_roi('ME_R_layer_{i}')") # load layer meshes with a constructed variable name
+    exec(f"ME_R_layer[{i-1}] = neu.fetch_roi('ME_R_layer_{i:02d}')") # load layer meshes with a constructed variable name
     ME_R_layer_sec[i-1] = ME_R_layer[i-1].section(vn, vt1)
     ME_R_layer_sec[i-1] = pd.DataFrame(ME_R_layer_sec[i-1].vertices, columns=['x','y','z'])  # convert TrackedArray to dataframe
 

@@ -190,8 +190,8 @@ def plot(group, per_page, main_group):
         toc_list.append([1, plt_grp['instance'], 1, 33 + 29 * row_counter])
         row_counter += 1
     group_mapper = {
-        'OL_connecting': "Optic Lobe Connecting Neurons"
-      , 'OL_intrinsic': "Optic Lobe Intrinsic Neurons"
+        'OL_connecting': "Optic Neuropil Connecting Neurons"
+      , 'OL_intrinsic': "Optic Neuropil Intrinsic Neurons"
       , 'VCN': "Visual Centrifugal Neurons"
       , 'VPN': "Visual Projection Neurons"
       , 'other': "Other Visual Neurons"

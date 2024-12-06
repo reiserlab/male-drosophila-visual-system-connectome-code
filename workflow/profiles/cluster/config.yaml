@@ -1,0 +1,18 @@
+jobs: '400'
+executor: lsf
+restart-times: 7
+cores: 15
+default-resources:
+    lsf_project: 'reiser'
+    lsf_queue: 'local'
+set-resources:
+    render_galleries_blend:
+        lsf_queue: 'gpu_tesla'
+        lsf_extra: "'-gpu num=1'"
+    render_galleries:
+        lsf_queue: 'gpu_tesla'
+        lsf_extra: "'-gpu num=1'"
+set-threads:
+    - render_galleries_blend=pow(2, attempt-1)
+    - render_galleries=pow(2, attempt-1)
+    - pin_creation=4

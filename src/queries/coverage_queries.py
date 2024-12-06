@@ -3,7 +3,7 @@
 import pandas as pd
 from neuprint import Client
 from neuprint.client import inject_client
-from queries.completeness import fetch_ol_types_and_instances
+from queries.completeness import fetch_ol_types_and_instances, fetch_ol_types
 
 @inject_client
 def fetch_cells_synapses_per_col(
@@ -24,23 +24,23 @@ def fetch_cells_synapses_per_col(
     Parameters
     ----------
     cell_type : str
-        cell type of interest
+        Cell type of interest.
     cell_instance : str
-        instance of neuron type of interest
+        Instance of neuron type of interest.
     roi_str : str | list[str]
-        optic lobe region of interest
+        Optic lobe region of interest.
     side : str, default = 'R-dominant'
         options include, 'R', 'L', 'R-dominant' or 'both'.
-        'R' means all neurons that have their cellbody on the right side, 'L' means that their
-        cellbody is on the left side, 'R-dominant' chooses the neurons that have their
+        'R' means all neurons that have their cell body on the right side, 'L' means that their
+        cell body is on the left side, 'R-dominant' chooses the neurons that have their
         'dominant features' in the right hemisphere, and 'both' means to get both sides
         (if available).
         For most analysis that works on one side, the 'R-dominant' is probably the best choice.
         There will be a 'L-dominant' once the other side is proof-read. 'both' returns the types
         that are present on either side and counts their total. If you know what you are doing and
-        there is a reasonto diverge, you can choose 'R' or 'L'.
+        there is a reason to diverge, you can choose 'R' or 'L'.
     syn_type : str, default = 'all'
-        synapse type to use. Possible options are 'pre', 'post' or 'all'
+        Synapse type to use. Possible options are 'pre', 'post' or 'all'
     client : neuprint.Client
         Client used for the connection. If no explicit client is provided, then the `defaultclient`
         is used.
@@ -49,22 +49,22 @@ def fetch_cells_synapses_per_col(
     -------
     df : pd.DataFrame
         column : str
-            column id. In the style '(hex1_id)_(hex2_id)' i.e. '22_28'
-        roi : str 
-            region roi in which the synapse is found
+            Column id. In the style '(hex1_id)_(hex2_id)' i.e. '22_28'
+        roi : str
+            Region roi in which the synapse is found.
         n_cells : int
-            number of unique cells assigned to that column
+            Number of unique cells assigned to that column.
         n_syn : int
-            number of synapses assigned to that column
+            Number of synapses assigned to that column.
         cell_body_ids : list
-            list of the bodyIds of the cells assigned to that column.
+            List of the bodyIds of the cells assigned to that column.
 
     """
     assert cell_type is None or cell_instance is None, "Can only use type or instance, not both."
-    
+
     if cell_type:
         assert side in ["R", "L", "R-dominant", "both"],\
-            f"Unsupported side '{side}' for type, only 'R', 'L', 'R-dominant' or 'both' are allowed."
+            f"Unsupported side '{side}' for type, only 'R', 'L', 'R-dominant' or 'both' allowed."
 
     assert syn_type in ["pre", "post", "all"],\
         f"Unsupported syn_type '{syn_type}', only 'pre', 'post' or 'all'  are allowed"
@@ -91,7 +91,7 @@ def fetch_cells_synapses_per_col(
             types = fetch_ol_types_and_instances(side='R-dominant')
             side_to_choose = types[types['type']==cell_type]['instance'].to_list()[0][-1]
             str_side = f"AND n.instance ENDS WITH '_{side_to_choose}'"
-    
+
     if cell_instance:
         str_type_instance = f"AND n.instance='{cell_instance}'"
 
@@ -134,6 +134,39 @@ def fetch_syn_per_col_for_instance(
   , syn_type:str='all'
   , client:Client=None
 ) -> pd.DataFrame:
+    """
+    For a given cell type and instance (neuron_instance, e.g. 'Dm4_R') and region 
+    (ROI, e.g. 'ME(R)'), return a dataframe with one row per column within the region that
+    contains synapses from cells of that type and instance and columns that contain the number
+    of synapses ('synapse_count') and percentage of all synapses ('synapse_perc') within the 
+    region that are found within that column, for synapses from cells of that type and instance.
+
+    Parameters
+    ----------
+    neuron_instance : str
+        Cell type instance.
+    roi_str : str, default='ME(R)'
+        Optic lobe region of interest.
+    syn_type : str, default='all'
+        Synapse type to use. Possible options are 'pre', 'post' or 'all'.
+    client : neuprint.Client, default=None
+        Client used for the connection. If no explicit client is provided, then the `defaultclient`
+        is used.
+
+    Returns
+    -------
+    df : pd.DataFrame
+        column : str
+            Column id. In the style '(hex1_id)_(hex2_id)' i.e. '22_28'
+        roi : str
+            Optic lobe region of interest in which the synapse is found.
+        bodyId : int
+            BodyId of the neuron of interest.
+        synapse_count : int
+            Number of synapses assigned to that column.
+        synapse_perc : list
+            Proportion of all synapses of that cell in that column.
+    """
 
     df = __fetch_syn_per_col(
         neuron_constraint = f"n.instance='{neuron_instance}'"
@@ -161,11 +194,11 @@ def fetch_syn_per_col_for_bid(
     Parameters
     ----------
     bodyId : int
-        neuron's bodyId
-    roi : str, default='ME(R)'
-        neuropil roi
+        Neuron's bodyId.
+    roi_str : str, default='ME(R)'
+        Optic lobe region of interest.
     syn_type : str, default='all'
-        synapse type to use. Possible options are 'pre', 'post' or 'all'
+        Synapse type to use. Possible options are 'pre', 'post' or 'all'.
     client : neuprint.Client, default=None
         Client used for the connection. If no explicit client is provided, then the `defaultclient`
         is used.
@@ -174,15 +207,15 @@ def fetch_syn_per_col_for_bid(
     -------
     df : pd.DataFrame
         column : str
-            column id. In the style '(hex1_id)_(hex2_id)' i.e. '22_28'
+            Column id. In the style '(hex1_id)_(hex2_id)' i.e. '22_28'
         roi : str
-            region roi in which the synapse is found
+            Optic lobe region of interest in which the synapse is found.
         bodyId : int
-            bodyId of the neuron of interest
+            BodyId of the neuron of interest.
         synapse_count : int
-            number of synapses assigned to that column
+            Number of synapses assigned to that column.
         synapse_perc : list
-            proportion of all synapses of that cell in that column.
+            Proportion of all synapses of that cell in that column.
 
     """
     df = __fetch_syn_per_col(
@@ -202,7 +235,14 @@ def __fetch_syn_per_col(
   , syn_type:str='all'
   , client:Client=None
 ) -> pd.DataFrame:
-    """ 
+    """
+    Parameters
+    ----------
+    neuron_constraint : str
+        
+    roi_str : str, default='ME(R)'
+        Optic lobe region of interest.
+
     syn_type : str, default='all'
         synapse type to use. Possible options are 'pre', 'post' or 'all'
     """
@@ -211,7 +251,7 @@ def __fetch_syn_per_col(
 
     assert syn_type in ["pre", "post", "all"],\
         f"Unsupported syn_type '{syn_type}', only 'pre', 'post' or 'all'  are allowed"
-    
+
     assert roi_str in ["ME(R)", "LO(R)", "LOP(R)"],\
         f"Unsupported roi_str '{roi_str}', only 'ME(R)', 'LO(R)' or 'LOP(R)'  are allowed"
 
@@ -229,7 +269,9 @@ def __fetch_syn_per_col(
         AND (exists(ns.olHex2) and ns.olHex2 IS NOT NULL)
         {str_syn}
     WITH n, ns, toString(ns.olHex1)+'_'+toString(ns.olHex2) AS col
-    WITH {{bid: n.bodyId, col: col, syn: count(distinct ns)}} as tmp_res, n.bodyId as tmpbid, count(distinct ns) as syn_count
+    WITH {{bid: n.bodyId, col: col, syn: count(distinct ns)}} AS tmp_res
+      , n.bodyId AS tmpbid
+      , count(DISTINCT ns) AS syn_count
     WITH tmpbid, collect(tmp_res) as agg_res, sum(syn_count) as total_syn_count
     UNWIND agg_res as per_col
     RETURN
@@ -242,3 +284,106 @@ def __fetch_syn_per_col(
     """
     df_neuron = client.fetch_custom(cql)
     return df_neuron
+
+
+def fetch_syn_all_types(
+    side:str
+  , syn_type: str
+) -> pd.DataFrame:
+    """
+    fetch all the synapses from all cell types in the columns within the
+    three main optic lobe regions.
+
+    Parameters
+    ----------
+    side : str, default = 'R-dominant'
+        options include, 'R', 'L', 'R-dominant' or 'both'.
+        'R' means all neurons that have their cellbody on the right side, 'L' means that their
+        cellbody is on the left side, 'R-dominant' chooses the neurons that have their
+        'dominant features' in the right hemisphere, and 'both' means to get both sides
+        (if available).
+        For most analysis that works on one side, the 'R-dominant' is probably the best choice.
+        There will be a 'L-dominant' once the other side is proof-read. 'both' returns the types
+        that are present on either side and counts their total. If you know what you are doing and
+        there is a reasonto diverge, you can choose 'R' or 'L'.
+
+    syn_type : str
+        Type of synapses to be included. Can only be 'pre', 'post' or 'all'.
+
+    Returns
+    -------
+    df : pd.DataFrame
+        Dataframe with the columns 'column', 'n_syn' for number of synapses
+        and 'roi' for the optic lobe region.
+    """
+    assert syn_type in ["pre", "post", "all"],\
+        f"Unsupported syn_type '{syn_type}', only 'pre', 'post' or 'all'  are allowed"
+
+    assert side in ["R", "L", "R-dominant", "both"],\
+        f"Unsupported side '{side}' for type, only 'R', 'L', 'R-dominant' or 'both' are allowed."
+
+    df_all = pd.DataFrame()
+    types_list = fetch_ol_types(return_type='list')
+    data = []
+    for roi_str in ['ME(R)', 'LO(R)', 'LOP(R)']:
+        for cell_type in types_list:
+            df2 = fetch_cells_synapses_per_col(cell_type=cell_type,
+                                               roi_str=roi_str,
+                                               side=side,
+                                               syn_type=syn_type)
+            df2 = df2[['column', 'n_syn', 'roi']]
+            data.append(df2)
+        df_all = pd.concat(data, ignore_index=True)
+
+    df_all['n_syn'] = df_all.groupby(['column', 'roi'])['n_syn'].transform('sum')
+    df_all = df_all.drop_duplicates(['column', 'roi']).reset_index(drop=True)
+
+    return df_all
+
+
+@inject_client
+def fetch_pin_points(
+    *
+  , roi_str:str
+  , client:Client=None
+) -> pd.DataFrame:
+    """
+    Extract the x,y,z locations of the pin points that make up the pins 
+    used to define the columns in a given optic lobe neuropil. 
+
+    Parameters
+    ----------
+    roi_str : str, default='ME(R)'
+        Optic lobe region of interest.
+
+    Returns
+    -------
+    df : pd.DataFrame
+        hex1_id : str
+            Hex1 coordinate.
+        hex2_id : str
+            Hex2 coordinate.
+        x : float
+            x coordinate of pin point
+        y : float
+            y coordinate of pin point
+        z : float
+            z coordinate of pin point
+    """
+    cql = f"""
+        MATCH (pin:ColumnPin)
+        WHERE pin['{roi_str}']
+        WITH DISTINCT pin.olHex1 as hex1_id
+          , pin.olHex2 as hex2_id
+          , pin.location.x as x
+          , pin.location.y as y
+          , pin.location.z as z
+        RETURN hex1_id
+          , hex2_id
+          , x
+          , y
+          , z
+        ORDER BY hex1_id, hex2_id
+    """
+    df = client.fetch_custom(cql)
+    return df

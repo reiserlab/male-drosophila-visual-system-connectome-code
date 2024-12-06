@@ -31,7 +31,8 @@ def plot_rois(
     """
     for roi in roi_list:
         roi_data = get_roi(roi, ignore_cache=True)
-        navis.simplify_mesh(roi_data, F=resample_precision, inplace=True)
+        # FIXME: This currently breaks. NAVIS issue?
+        # navis.simplify_mesh(roi_data, F=resample_precision, inplace=True)
         f_roi = navis.plot3d(roi_data, inline=False)
         if f_roi.data:
             fig.add_trace(f_roi.data[0])
@@ -78,8 +79,8 @@ def get_dynamic_plot(
         star_neuron = olt.get_star(instance_str=instance)
 
         mesh = get_mesh(body_id=star_neuron)
-
-        navis.downsample_neuron(mesh, downsampling_factor=1.0/resample_precision, inplace=True)
+        # FIXME: this currently breaks. NAVIS issue?
+        # navis.downsample_neuron(mesh, downsampling_factor=1.0/resample_precision, inplace=True)
         fig = go.Figure()
 
         # colr = (227/255, 66/255, 52/255, 0.7)  # Convert to 0-1 scale for RGB

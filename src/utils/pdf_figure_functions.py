@@ -13,36 +13,32 @@ from utils.pdf_maker import PDFMaker
 from utils.plot_config import PlotConfig
 from utils.ol_types import OLTypes
 
-def generate_group_pdf(plot_type: str, pdf_specs: dict):
+def generate_group_pdf(plot_type:str, pdf_specs:dict):
     """
     Function to generate PDF plot of premade group pngs.
 
     Parameters
     ----------
-
-    plot_type: str
+    plot_type : str
         either 'VPN' or 'VCN'
-
     pdf_specs : dict
-        pdf_w: int
+        pdf_w : int
             pdf width in mm
-
-        pdf_h: int
+        pdf_h : int
             pdf height in mm
-
-        pdf_res: int
+        pdf_res : int
             pdf resolution in dpi
-        
-        pdf_margin: tuple
+        pdf_margin : tuple
             paper margin in mm. [margin_x, margin_y]
     """
+    assert plot_type in ['VCN', 'VPN'], f"plot type must be VPN or VCN, not {plot_type}"
     json_string = "Full-Brain_Group_"
     PROJECT_ROOT = Path(find_dotenv()).parent
     gallery_dir = PROJECT_ROOT / "results" / "gallery"
     # paths to PNGs
     if plot_type == "VCN":
         img_path = gallery_dir / "vcn_group_plots"
-    elif plot_type == "VPN":
+    else: # VPN
         img_path = gallery_dir / "vpn_group_plots"
     # path to JSONs
     json_path = PROJECT_ROOT / "results" / "gallery-descriptions"
@@ -53,13 +49,13 @@ def generate_group_pdf(plot_type: str, pdf_specs: dict):
     default_views = {"VPN": ["whole_brain", "half_brain"], "VCN": ["whole_brain"]}
 
     default_rows_cols = {
-        "VPN": {"whole_brain": [4, 4], "half_brain": [7, 5]},
-        "VCN": {"whole_brain": [5, 4]},
+        "VPN": {"whole_brain": [4, 4], "half_brain": [7, 5]}
+      , "VCN": {"whole_brain": [5, 4]}
     }
 
     default_apspect_ratio = {
-        "VPN": {"whole_brain": 2, "half_brain": 1},
-        "VCN": {"whole_brain": 2, "half_brain": 2},
+        "VPN": {"whole_brain": 2, "half_brain": 1}
+      , "VCN": {"whole_brain": 2, "half_brain": 2}
     }
 
     ol = OLTypes()
@@ -75,10 +71,10 @@ def generate_group_pdf(plot_type: str, pdf_specs: dict):
     for view in views_to_use:
         # generate the empty page
         doc = PDFMaker(
-            width=pdf_specs["pdf_w"],
-            height=pdf_specs["pdf_h"],
-            resolution=pdf_specs["pdf_res"],
-            margin=pdf_specs["pdf_margin"],
+            width=pdf_specs["pdf_w"]
+          , height=pdf_specs["pdf_h"]
+          , resolution=pdf_specs["pdf_res"]
+          , margin=pdf_specs["pdf_margin"]
         )
 
         df = df_group[df_group["fb_view"] == view]
@@ -90,10 +86,10 @@ def generate_group_pdf(plot_type: str, pdf_specs: dict):
         if plot_type == "VPN" and view == "half_brain":
             # some groups have neurons that are classified as half_brain but are only shown in the full_brain plot
             incorrect_grouping = [
-                "mainly_AME_1",
-                "LO_VPN_LC_2",
-                "LO_SPS_IB",
-                "LO_VPN_contra_2",
+                "mainly_AME_1"
+              , "LO_VPN_LC_2"
+              , "LO_SPS_IB"
+              , "LO_VPN_contra_2"
             ]
             # remove these groups from the half_brain plot
             for name_to_remove in incorrect_grouping:
@@ -119,7 +115,7 @@ def generate_group_pdf(plot_type: str, pdf_specs: dict):
             config = PlotConfig(config_filename=config_name)
             text_dict = config.text_dict
 
-            for key, t in text_dict.items():
+            for _, t in text_dict.items():
                 align = t["align"]
                 if align == "c":
                     plot_pos_x = 0.5
@@ -143,12 +139,12 @@ def generate_group_pdf(plot_type: str, pdf_specs: dict):
 
 
 def generate_gallery_pdf(
-    pdf_specs: dict,
-    page_idx: int,
-    instances: list,
-    nudge_dict : dict,
-    rows_cols: tuple = None,
-    offset: int = 45,
+    pdf_specs:dict
+  , page_idx:int
+  , instances:list
+  , nudge_dict:dict
+  , rows_cols:tuple=None
+  , offset:int=45
 ):
     """
     Function to generate PDF plot of premade gallery pngs.
@@ -201,7 +197,6 @@ def generate_gallery_pdf(
     coords, img_width, img_height = doc.get_page_layout_rows_cols(
         rows=rows_cols[0], cols=rows_cols[1], aspect_ratio=1
     )
-    # save_name = f"Gallery_{main_group}_{rows_cols[0]}R_{rows_cols[1]}C_{pdf_specs['pdf_w']}mm_{pdf_specs['pdf_h']}mm_{pdf_specs['pdf_res']}dpi_{str(page_idx).zfill(2)}.pdf"
     save_name = f"Gallery_Group-{page_idx:02d}.pdf"
     idx = 0
 
@@ -229,13 +224,14 @@ def generate_gallery_pdf(
             for i in range(256):
                 color = (255, 255, 255, i)
                 new_rectangle_size = (
-                    int(rectangle_size[0] * (1 - i / 255)),
-                    rectangle_size[1],
+                    int(rectangle_size[0] * (1 - i / 255))
+                  , rectangle_size[1]
                 )
                 new_rectangle_position = (
                     rectangle_position[0]
-                    + int((rectangle_size[0] - new_rectangle_size[0])),
-                    rectangle_position[1],
+                      + int((rectangle_size[0]
+                      - new_rectangle_size[0]))
+                  , rectangle_position[1]
                 )
                 draw.rectangle(
                     [
@@ -282,59 +278,72 @@ def generate_gallery_pdf(
     doc.save(filename=save_name, directory=output_path)
 
 
-def check_for_imgs(plot_type: str):
+def check_for_imgs(plot_type:str):
     """
-    Check that png images needed for making the combined pdfs exist.
+    Check that at least one png image needed for making the combined pdfs exists.
 
-    Parameters
-    ----------
-    plot_type : str
-        type of plot being generated. Only options are 'gallery' or 'group' plots. 
-    """
-    assert plot_type in ["group","gallery"]\
-      , f" 'plot_type' has the unexpected value {plot_type} - only 'group' or 'gallery' are allowed."
-
-    PROJECT_ROOT = Path(find_dotenv()).parent
-    plot_dir = PROJECT_ROOT / "results" / "gallery"
-
-    if plot_type == 'group':
-        vcn_directory = plot_dir / "vcn_group_plots"
-        vpn_directory = plot_dir / "vpn_group_plots"
-        dirs_to_check = [vcn_directory, vpn_directory]
-
-        for directory in dirs_to_check:
-            image_files = glob.glob(os.path.join(directory, 'Full-Brain*.png'))
-            if not image_files:
-                warnings.warn(f"No images found in {directory}")
-
-    elif plot_type == 'gallery':
-        directory = plot_dir / 'ol_gallery_plots'
-
-        image_files = glob.glob(os.path.join(directory, 'Optic-Lobe*.png'))
-        if not image_files:
-            warnings.warn(f"No images found in {directory}")
-
-
-def check_for_jsons(plot_type: str):
-    """
-    Check that the json descriptions of images needed for making the combined pdfs exist. 
+    This function assumes that having one image in the directory means that the image generation function was run successfully.
 
     Parameters
     ----------
     plot_type : str
         type of plot being generated. Only options are 'gallery' or 'group' plots.
+    
+    Returns
+    -------
+    rtn : bool
+        false if images are missing, otherwise true
     """
-    assert plot_type in ["group","gallery"]\
+    assert plot_type in ["group", "gallery"]\
       , f" 'plot_type' has the unexpected value {plot_type} - only 'group' or 'gallery' are allowed."
+    rtn = True
 
-    PROJECT_ROOT = Path(find_dotenv()).parent
+    plot_dir = Path(find_dotenv()).parent / "results" / "gallery"
+
+    if plot_type == 'group':
+        dirs_to_check = [plot_dir / "vcn_group_plots", plot_dir / "vpn_group_plots"]
+        search_string = 'Full-Brain*.png'
+    else: # gallery
+        dirs_to_check = [plot_dir / 'ol_gallery_plots']
+        search_string = 'Optic-Lobe*.png'
+
+    for directory in dirs_to_check:
+        image_files = glob.glob(os.path.join(directory, search_string))
+        if not image_files:
+            warnings.warn(f"No images found in {directory}")
+            rtn = False
+    return rtn
+
+
+def check_for_jsons(plot_type: str) -> bool:
+    """
+    Check that at least one json descriptions of images needed for making the combined pdfs exist.
+
+    This function assumes that having one description means that the generators were run successfully.
+
+    Parameters
+    ----------
+    plot_type : str
+        type of plot being generated. Only options are 'gallery' or 'group' plots.
+
+    Returns
+    -------
+    rtn : bool
+        false if descriptions are missing, otherwise true
+    """
+    assert plot_type in ["group", "gallery"]\
+      , f" 'plot_type' has the unexpected value {plot_type} - only 'group' or 'gallery' are allowed."
+    rtn = True
+
+    json_dir = Path(find_dotenv()).parent / 'results' / 'gallery-descriptions'
     
     if plot_type == 'group':
         search_string = 'Full-Brain_Group_*.json'
-    elif plot_type == 'gallery':
+    else: # gallery
         search_string = 'Optic-Lobe_Gallery_*.json'
 
-    json_dir = PROJECT_ROOT / 'results/gallery-descriptions'
     json_files = glob.glob(os.path.join(json_dir, f"{search_string}"))
     if not json_files:
         warnings.warn(f"No jsons found in {json_dir}")
+        rtn = False
+    return rtn

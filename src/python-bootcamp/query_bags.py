@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -13,7 +13,6 @@
 # ---
 
 # %%
-# %load_ext autoreload
 """
 This cell does the initial project setup.
 If you start a new script or notebook, make sure to copy & paste this part.
@@ -40,7 +39,6 @@ c = olc_client.connect(verbose=True)
 # Neuron Bag is a collection of neurons. Currently they can be found by providing a cell type (as shown below).
 
 # %%
-# %autoreload 2
 from utils.neuron_bag import NeuronBag
 from utils.ng_view import NG_View
 
@@ -71,7 +69,7 @@ group_plotter(
 # %%
 another_bag = NeuronBag(cell_type='LC4')
 
-print(f"Is 'another bag' (of length {another_bag.size}) sorted? {another_bag.is_sorted}")
+print(f"Is 'another bag' (containing {another_bag.size} neurons) sorted? {another_bag.is_sorted}")
 
 
 # %%
@@ -85,7 +83,7 @@ another_bag.sort_by_distance_to_hex(
 another_bag.get_body_ids(another_bag.size)
 
 # %%
-print(f"Is 'another bag' (of length {another_bag.size}) sorted? {another_bag.is_sorted}")
+print(f"Is 'another bag' (containing {another_bag.size} neurons) sorted? {another_bag.is_sorted}")
 
 # Get top 10 LC4 closest to 18/18
 print(f"LC4 top 10: {another_bag.get_body_ids()}")
@@ -98,7 +96,7 @@ print(f"LC4 top 10: {another_bag.get_body_ids()}")
 for body_id in another_bag.get_body_ids(3):
 
     fig = group_plotter(
-        [body_id]  
+        [body_id]
       , shadow_rois=['ME(R)', 'LO(R)', 'LOP(R)']
       , view=NG_View.GALLERY1
     )

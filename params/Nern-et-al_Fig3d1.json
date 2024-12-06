@@ -1,0 +1,98 @@
+{
+  "title": "Layer",
+  "dimensions": {
+    "x": [
+      8e-09,
+      "m"
+    ],
+    "y": [
+      8e-09,
+      "m"
+    ],
+    "z": [
+      8e-09,
+      "m"
+    ]
+  },
+  "position": [
+    20163.865234375,
+    31418.5,
+    32704.169921875
+  ],
+  "crossSectionScale": 19.322966472440427,
+  "projectionOrientation": [
+    0.10976426303386688,
+    -0.32929277420043945,
+    -0.32929277420043945,
+    0.8781141042709351
+  ],
+  "projectionScale": 983.7572106361007,
+  "layers": [
+    {
+      "type": "image",
+      "source": {
+        "url": "precomputed://gs://cns-full-clahe",
+        "subsources": {
+          "default": true
+        },
+        "enableDefaultSubsources": false
+      },
+      "tab": "source",
+      "name": "em-clahe"
+    },
+    {
+      "type": "segmentation",
+      "source": {
+        "url": "precomputed://gs://flyem-optic-lobe/v1.1/LO(R)-layers-v7",
+        "subsources": {
+          "default": true,
+          "properties": true,
+          "mesh": true
+        },
+        "enableDefaultSubsources": false
+      },
+      "pick": false,
+      "tab": "source",
+      "colorSeed": 1315547281,
+      "name": "LO(R)-layers"
+    },
+    {
+      "type": "segmentation",
+      "source": {
+        "url": "precomputed://gs://flyem-optic-lobe/v1.1/LOP(R)-layers-v7",
+        "subsources": {
+          "default": true,
+          "properties": true,
+          "mesh": true
+        },
+        "enableDefaultSubsources": false
+      },
+      "pick": false,
+      "tab": "source",
+      "colorSeed": 1315547281,
+      "name": "LOP(R)-layers"
+    },
+    {
+      "type": "segmentation",
+      "source": {
+        "url": "precomputed://gs://flyem-optic-lobe/v1.1/ME(R)-layers-v7",
+        "subsources": {
+          "default": true,
+          "properties": true,
+          "mesh": true
+        },
+        "enableDefaultSubsources": false
+      },
+      "pick": false,
+      "tab": "source",
+      "meshRenderScale": 3.2182457794709154,
+      "crossSectionRenderScale": 1.3607900001743771,
+      "colorSeed": 1315547281,
+      "name": "ME(R)-layers"
+    }
+  ],
+  "showAxisLines": false,
+  "showSlices": false,
+  "crossSectionBackgroundColor": "#000000",
+  "layout": "xz"
+}

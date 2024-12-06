@@ -1,7 +1,7 @@
-{ 
+{
     "rois": {
         "source": [
-            "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/roisSmoothedDecimated/"
+            "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/roisSmoothedDecimated"
           , "cache/blender/crossections"
         ]
       , "ME": {"ids": ["ME(R)"], "sourceIndex": 0}
@@ -10,7 +10,7 @@
       , "ME_layers": {"ids": ["{{ innervated_layers|join('", "') }}"], "sourceIndex": 1 }
       , "ME_columns": {"ids": ["{{ innervated_columns|join('", "') }}"], "sourceIndex": 0 }
     }
-  , "neurons": { 
+  , "neurons": {
         "source": "https://storage.googleapis.com/flyem-optic-lobe/v0.91/segmentation/single-res-meshes"
       , "id": [{{star_neuron}}]
       , "close_neighbors": [{{neighbor_neurons | join(", ")}}]
@@ -31,14 +31,14 @@
       , "group14": [{{group_neurons[14] | join(", ")}}]
       , "group15": [{{group_neurons[15] | join(", ")}}]
       , "group16": [{{group_neurons[16] | join(", ")}}]
-      , "group17": [{{group_neurons[17] | join(", ")}}] 
+      , "group17": [{{group_neurons[17] | join(", ")}}]
     }
   , "synapses": {
-        "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.0/dvid-exports/api/node/27a052234096412ba5442a5dd7461e02/synapses/"
+        "source": "https://storage.googleapis.com/flyem-optic-lobe/v1.1/dvid-exports/api/node/a7d91278b4274c689088df5b4d5944ba/synapses"
       , "pre": {"neurons": [{{star_neuron}}], "type": "pre", "confidence": 0.5, "radius": 60.0 }
       , "post": {"neurons": [{{star_neuron}}], "type": "post", "confidence": 0.5, "radius": 40.0 }
     }
-  , "animation": [ 
+  , "animation": [
         ["setValue", {"meshes": "rois.ME + rois.LO + rois.LOP", "alpha": 0.015}]
       , ["setValue", {"meshes": "rois.ME_columns", "alpha": 0.03}]
       , ["setValue", {"meshes": "rois.ME", "color": "#5D194D"}]
@@ -168,5 +168,5 @@
       , ["advanceTime", {"by": 0.25}]
       , ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 90, "scale": 1.15, "duration": 3.0 } ]
       , ["advanceTime", {"by": 3.0}]
-    ] 
-} 
+    ]
+}

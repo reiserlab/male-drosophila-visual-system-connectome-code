@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -18,9 +18,9 @@
 # %%
 import sys
 import os
+import warnings
 import math
 from pathlib import Path
-import pandas as pd
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv()
@@ -39,12 +39,7 @@ c = olc_client.connect(verbose=True)
 
 # %%
 olt = OLTypes()
-oli_list = olt.get_neuron_list()
-
-# %%
-#excludes uncurated neurons
-oli_list = oli_list[oli_list['star_neuron'].notnull()]
-oli_list = oli_list[oli_list['Slice_width'].notnull()]
+oli_list = olt.get_neuron_list(side='both')
 
 # %%
 """
@@ -52,7 +47,6 @@ Generate  JSON files for OL neurons determined by Aljoscha using "gallery-descri
 template and function from `utils/gallery_filler.py`
 """
 
-# TODO: fix color scheme with 
 neuropil_color = [
     OL_COLOR.OL_NEUROPIL_LAYERS.rgba[3], OL_COLOR.OL_NEUROPIL_LAYERS.rgba[4]
   , OL_COLOR.OL_NEUROPIL_LAYERS.rgba[5], OL_COLOR.OL_NEUROPIL_LAYERS.rgba[6]
@@ -64,46 +58,61 @@ neuropil_color = [
 iter_counter = 0
 for idx, row in oli_list.reset_index().sample(frac=1).iterrows():
 
+    # celltypes with slice_width empty
+    if math.isnan(row['slice_width']):
+        warnings.warn(f"No slice width, skipping {row['type']}_{row['hemisphere']}")
+        continue
+
     iter_counter += 1
-    txt_pos = 0.95
+    txt_pos = 0.85
     
-    a_bag = NeuronBag(cell_type=row['type'])
+    # if the type has more than one instance, include the hemisphere in the gallery name
+    gallery_name = (
+        f"{row['type']} ({row['hemisphere']})"
+        if olt.is_bilateral(type_str=row["type"])
+        else row["type"]
+    )
+    
+    a_bag = NeuronBag(cell_type=row['type'], side=row["hemisphere"])
 
     body_id = a_bag.first_item
     if isinstance(row['star_neuron'], int):
         body_id = row['star_neuron']
 
-    camera_dict = get_rend_params('camera',row['ol_view'])
-    slicer_dict = get_rend_params('slice',row['ol_view'])
+    camera_dict = get_rend_params('camera', row['ol_view'])
+    slicer_dict = get_rend_params('slice', row['ol_view'])
+    scalebar_dict = get_rend_params('scalebar', row['ol_view'])
    
     gallery_dict = {}
     body_id_dict = {
-        'type':row['type']
+        'type': gallery_name
       , 'body_ids': [body_id]
-      , 'body_color': [0,0,0,1]
+      , 'body_color': [0.2,0.2,0.2,1]
       , 'text_position': [0.03, txt_pos]
       , 'text_align': 'l'
       , 'number_of_cells': a_bag.size
-      , 'slice_width':row['Slice_width'] 
+      , 'slice_width': row['slice_width'] 
     }
-    
+   
     gallery_dict[row['type']] = body_id_dict
     
-    if row['main_groups']=='OL_intrinsic' or row['main_groups']=='OL_connecting' or row['main_groups']=='OL_intrinsic*':
+    if row['main_groups'] in ['OL_intrinsic', 'OL_connecting']:
         the_directory='ol_gallery_plots' 
     else: 
         the_directory='vpn_vcn_gallery_plots'  
 
     generate_gallery_json(
         type_of_plot="Optic-Lobe"
-      , description = "OLi"
-      , type_or_group=row['type']
+      , description = "Gallery"
+      , type_or_group=f"{row['type']}_{row['hemisphere']}"
       , title=""
-      , list_of_ids= gallery_dict
+      , list_of_ids=gallery_dict
       , neuropil_color=neuropil_color
       , camera=camera_dict
       , slicer=slicer_dict
+      , scalebar=scalebar_dict
       , view=row['ol_view']
+      , n_vis={}
       , directory=the_directory
       , template="gallery-descriptions.json.jinja"
     )

@@ -1,0 +1,24 @@
+    {% if LO_layers_innervated  | length %}["fade", {"meshes": "rois.LO_layers_innervated","startingAlpha": 0.0, "endingAlpha": 0.35, "duration": 2.0}],
+    {% if LO_layers_innervated | length < 8 -%}["fade", {"meshes": "rois.LO_layers_noninnervated",
+      "startingAlpha": 0.0, "endingAlpha": 0.15, "duration": 2.0}],{% endif %}
+    {% endif %}
+
+    ["label", {"text": "Lobula layers", "position": [0.02, 0.77], "color": "#3E7E00", "size": 0.03, "duration": 7.5}],
+    {% for layer in range(1, 8) -%}
+    {%- if ("LO_R_layer_{}".format(layer)) in LO_layers_innervated -%}
+    ["label", {"text": "{{ layer }}", "position": [0.02, {{ "{:.2f}".format(0.77 - layer * 0.04)}}], "color": "#3E7E00", "size": 0.033, "duration": 7.5}],
+    {% else -%}
+    ["label", {"text": "{{ layer }}", "position": [0.02, {{ "{:.2f}".format(0.77 - layer  * 0.04)}}], "color": "#7D111D", "size":0.025, "duration": 7.5}],
+    {% endif -%}
+    {%- endfor %}
+
+    ["advanceTime", {"by": 2.5}],
+
+    {% if LO_layers_innervated | length < 10 -%}["fade", {"meshes": "rois.LO_layers_noninnervated",
+      "startingAlpha": 0.15, "endingAlpha": 0.0, "duration": 2.0}],{% endif %}
+
+    ["advanceTime", {"by": 2.5}],
+
+    {% if LO_layers_innervated | length %}["fade", {"meshes": "rois.LO_layers_innervated","startingAlpha": 0.35, "endingAlpha": 0.0, "duration": 2.0}],
+    ["advanceTime", {"by": 2.5}],
+    {% endif %}

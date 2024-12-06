@@ -143,18 +143,18 @@
         </header>
 
         <div class="col">
-            {% for idx in scatter_dict %}
+            {% for scatter in scatter_dict %}
                 <div class="row">
 
                     <div class="card">
-                        <h3>Figure {{ idx+1 }}</h3>
-                        <p><b>X-axis:</b> {{ scatter_dict[idx]['xval'] }}</p>
-                        <p><b>Y-axis:</b> {{ scatter_dict[idx]['yval'] }}</p>
-                        <p><b>Colorscale:</b> {{ scatter_dict[idx]['colorscale'] }}</p>
+                        <h3>Figure {{ loop.index }}</h3>
+                        <p><b>X-axis:</b> {{ scatter['xval'] }}</p>
+                        <p><b>Y-axis:</b> {{ scatter['yval'] }}</p>
+                        <p><b>Colorscale:</b> {{ scatter['colorscale'] }}</p>
                     </div>
 
                     <div class="col">
-                        <div class="scatter">{{ scatter_dict[idx]['fig'] }}</div>
+                        <div class="scatter">{{ scatter['fig'] }}</div>
                     </div>
 
                 </div>

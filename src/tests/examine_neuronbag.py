@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -48,6 +48,9 @@ display(f"The dataset has {len(all)} named instances, {len(r_dom)} of which have
 
 # %% [markdown]
 # `OLTypes` is an interface to the whole dataset and allows you to retrieve all neurons from a group:
+
+# %%
+olt.is_bilateral('TmY5a')
 
 # %%
 ol_all = olt.get_neuron_list(primary_classification='OL', side='both')

@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.15.2
+#       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: OL-Connectome
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -26,45 +26,41 @@ print(f"Project root directory: {PROJECT_ROOT}")
 
 from queries.completeness import fetch_ol_types
 from utils.neuron_bag import NeuronBag
-from utils.movie_maker import create_template_filename, generate_movie_json
+from utils.movie_maker import generate_movie_json
+from utils.ol_types import OLTypes
 
 from utils import olc_client
 
 c = olc_client.connect(verbose=True)
 
 # %%
-# pandas dataframe generated from @aljoschanern's list of optic lobe intrinsic neurons
+olt = OLTypes()
 
-ol_cell_types = fetch_ol_types()
-ol_cell_types['Movie_Template'] = None
-ol_intrinsic_types = pd.read_csv(PROJECT_ROOT / "params" / "OL_intrinsic_groups_072623_v1.csv")
-movie_template_list = ol_cell_types.merge(ol_intrinsic_types, on='type')
+oli_list = olt.get_neuron_list()
 
-
-# %%
-movie_template_list['Movie_Template'] = movie_template_list.apply(create_template_filename, axis=1)
 
 # %% [markdown]
 # ## Fill and save the template
 
 # %%
-assigned_neurontypes = movie_template_list[movie_template_list['Movie_Template'].notna()]
+for idx, row in oli_list.iterrows():
+   
+    a_bag = NeuronBag(cell_instance=row['instance'], side=None, rois='OL(R)')
+    a_bag.sort_by_distance_to_star()
 
-for idx, row in assigned_neurontypes.iterrows():
-    # fetch the bodyIds sorted by distance to a column
-    a_bag = NeuronBag(cell_type=row['type'])
-    a_bag.sort_by_distance_to_hex(
-        neuropil="ME(R)"
-      , hex1_id=18
-      , hex2_id=18)
     sorted_body_ids = a_bag.get_body_ids(a_bag.size)
+
+    if row['main_groups']=='OL_intrinsic' or row['main_groups']=='OL_connecting'\
+        or row['main_groups']=='VPN' or row['main_groups']=='VCN':
+            the_movie_group=row['main_groups']
+    else:
+        the_movie_group='other'
 
     generate_movie_json(
         neuron_type=row['type']
       , sorted_body_ids=sorted_body_ids
-      , template = row['Movie_Template']
+      , template='movie-descriptions.json.jinja'
+      , is_general_template=False
+      , movie_group=the_movie_group
     )
     print(f"Json generation done for {row['type']}")
-
-# %%
-movie_template_list.to_csv(PROJECT_ROOT / "logs" / 'template_list_for_movies.csv', index=False)

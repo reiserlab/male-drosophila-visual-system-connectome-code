@@ -292,5 +292,6 @@ class PlotConfig(ABC):
         """
         neuron_list = []
         for grp_name, values in self.__data['plot']['neuron_types'].items():
-            neuron_list.append(PlotNeuron(grp_name, values))
+            if 'body_ids' in values.keys() and values['body_ids']:
+                neuron_list.append(PlotNeuron(grp_name, values))
         return neuron_list

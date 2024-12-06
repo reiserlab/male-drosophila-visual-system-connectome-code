@@ -45,7 +45,7 @@ The individual steps are documented in neuVid. For the movies in ol-connectome w
 
 ## Example
 
-In this example I want to create a preview of the movie defined in `src/movies/Dm15.json`. All you need to run is: `snakemake --cores 10 results/movies/Dm15-preview.avi`. This should start the process. After some processing time, you should end up with preview file. 
+In this example I want to create a preview of the movie defined in `src/movies/Dm15.json`. From inside a [pixi shell](python-getting-started.md) all you need to run is: `snakemake --cores 10 results/movies/Dm15-preview.avi`. This should start the process. After some processing time, you should end up with preview file. 
 
 The number `10` after `--cores` describes how many of your processing cores you want to dedicate to the rendering. The lower the number, the more responsive your computer will be during the process, but the longer it will take.
 
@@ -57,4 +57,4 @@ All intermediate files will end up in the `cache/blender/` folder. There you wil
 
 The same process will be used on the cluster, so if the preview runs on your machine, the full movie will render on the cluster.
 
-There are special commands to `snakemake allpreviews` and `snakemake allmovies`. This will potentially take a long time, so don't try this at home.
+There are special commands to `snakemake allpreviews` and `snakemake allmovies`. This will potentially take a long time, so don't try this at home. This job should more reasonably run on a cluster.

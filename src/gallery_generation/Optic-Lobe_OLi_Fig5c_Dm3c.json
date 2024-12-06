@@ -1,0 +1,95 @@
+{
+  "plot": {
+    "plot_type": "Optic-Lobe",
+    "group_name": "Fig5c_Dm3c",
+    "title": "",
+    "view": "medulla_face_on",
+    "scalebar": {
+      "type": "-",
+      "length": "40",
+      "location": [ 21118, 49000, 16000 ],
+      "text_location": [ 20189, 50000, 16000 ]
+    },
+    "directory": "fig_5",
+    "rois": {
+      "ME(R)": { "color": [ 0.05, 0.05, 0.05, 0.05 ], "visible": false },
+      "LO(R)": { "color": [ 1.0, 0.0, 0.0, 1.0 ], "visible": false },
+      "LOP(R)": { "color": [ 1.0, 0.0, 0.0, 1.0 ], "visible": false },
+      "ME_R_layer_03": {
+        "flat": [ 46000, 30000, 28000 ],
+        "rotation": [ -50.0, 177.0, 84.0 ],
+        "color": [ 0.9333333333333333, 0.9333333333333333, 0.9333333333333333, 1 ],
+        "visible": false
+      }
+    },
+    "camera": {
+      "rotation": [ -50, 177, 84 ],
+      "location": [ 5000, 35000, 30000 ],
+      "ortho_scale": 45000,
+      "resolution": [ 4096, 4096 ]
+    },
+    "neuron_types": {
+      "Dm3c": {
+        "body_ids": [ 138666 ],
+        "body_color": [ 0.00784313725490196, 0.8705882352941177, 0.6274509803921569, 1 ],
+        "text": {
+          "text_string": "Dm3c",
+          "paper_position": [ 0.05, 0.95 ],
+          "text_align": "l"
+        }
+      },
+      "Dm3c_": {
+        "body_ids": [ 122839 ],
+        "body_color": [ 0.00392156862745098, 0.3215686274509804, 0.23529411764705882, 1 ]
+      },
+      "TmY4": {
+        "body_ids": [ 62330 ],
+        "body_color": [ 1.0, 0.5450980392156862, 0.2, 1 ],
+        "text": {
+          "text_string": "TmY4",
+          "paper_position": [ 0.05, 0.92 ],
+          "text_align": "l"
+        },
+        "slicer": [
+          { "roi": [ "ME(R)" ], "keep": "intersection" }
+        ]
+      },
+      "TmY4_out": {
+        "body_ids": [ 62330 ],
+        "body_color": [ 1.0, 0.5450980392156862, 0.2, 0.1 ],
+        "slicer": [
+          { "roi": [ "ME(R)" ], "keep": "difference" }
+        ]
+      },
+      "TmY4_": {
+        "body_ids": [ 58076 ],
+        "body_color": [ 0.7607843137254902, 0.5568627450980392, 0.11372549019607843, 1 ],
+        "slicer": [
+          { "roi": [ "ME(R)" ], "keep": "intersection" }
+        ]
+      },
+      "TmY4__out": {
+        "body_ids": [ 58076 ],
+        "body_color": [ 0.7607843137254902, 0.5568627450980392, 0.11372549019607843, 0.1 ],
+        "slicer": [
+          { "roi": [ "ME(R)" ], "keep": "difference" }
+        ]
+      },
+      "TmY4__": {
+        "body_ids": [ 52746 ],
+        "body_color": [ 0.8352941176470589, 0.3686274509803922, 0.0, 1 ],
+        "slicer": [
+          { "roi": [ "ME(R)" ], "keep": "intersection" }
+        ]
+      },
+      "TmY4___out": {
+        "body_ids": [ 52746 ],
+        "body_color": [ 0.8352941176470589, 0.3686274509803922, 0.0, 0.1 ],
+        "slicer": [
+          { "roi": [ "ME(R)" ], "keep": "difference" }
+        ]
+      }
+
+    }
+  }
+}

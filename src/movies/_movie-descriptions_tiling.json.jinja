@@ -1,0 +1,27 @@
+    ["advanceTime", {"by": 2.0}],
+
+    {% if neighbor_neurons | length %}["fade", {"meshes": "neurons.neighbors", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": 4.0, "stagger": "constant"}],
+    ["advanceTime", {"by" : 3.0}],
+    {% endif %}
+
+    {%if movie_type=="MEi"%}
+    ["frameCamera", {"bound": "rois.ME", "scale": 0.9,  "duration": {{1.0+(neuron_count-11)*0.02}}}],
+    {%endif%}
+
+    {%if movie_type=="LOi"%}
+    ["frameCamera", {"bound": "rois.LO", "scale": 0.9,  "duration": {{1.0+(neuron_count-11)*0.02}}}],
+    {%endif%}
+
+    {%if movie_type=="LOPi"%}
+    ["frameCamera", {"bound": "rois.LOP", "scale": 0.9,  "duration": {{1.0+(neuron_count-11)*0.02}}}],
+    {%endif%}
+
+    ["advanceTime", {"by" : 1.0}],
+    {% if other_neurons | length %}
+    ["fade", {"meshes": "neurons.all", "startingAlpha": 0.0, "endingAlpha": 1.0, "duration": {{3.0+(neuron_count-11)*0.02}}, "stagger": "constant"}],
+    ["advanceTime", {"by": {{3.0+(neuron_count-11)*0.02}}}],
+    {% endif %}
+
+    {%if movie_group == "OL_intrinsic" or movie_group == "OL_connecting"%}
+    ["advanceTime", {"by" : 1.0}]
+    {%endif%}

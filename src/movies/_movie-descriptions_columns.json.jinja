@@ -1,0 +1,47 @@
+        {% if ME_columns | length %}
+        {% if ME_columns | length<80 %}
+        ["fade", {"meshes": "rois.ME_columns", "startingAlpha": 0.00, "endingAlpha":  0.15, "duration": 2.0}],
+        ["label", {"text": "ME columns (n={{number_of_columns}})", "position": [0.02, 0.77], "color": "#3E7E00", "size": 0.03, "duration": 10.0}],
+        {% endif %}
+        {% endif %}
+
+        {% if LO_columns | length %}
+        {% if LO_columns | length<180 %}
+        ["fade", {"meshes": "rois.LO_columns", "startingAlpha": 0.00, "endingAlpha":  0.15, "duration": 2.0}],
+        {% endif %}
+        {% endif %}
+
+        {% if LOP_columns | length %}
+        {% if LOP_columns | length<80 %}
+        ["fade", {"meshes": "rois.LOP_columns", "startingAlpha": 0.00, "endingAlpha":  0.15, "duration": 2.0}],
+        {% endif %}
+        {% endif %}
+
+        ["advanceTime", {"by" : 1.0}],
+
+        ["orbitCamera", {"localAxis": "x", "endingRelativeAngle": 90, "scale": 1.0, "duration": 2.0}],
+        ["advanceTime", {"by" : 3.0}],
+
+        {% if LO_columns | length %}
+        {% if LO_columns | length<180 %}
+        ["fade", {"meshes": "rois.LO_columns", "startingAlpha": 0.15, "endingAlpha":  0.0, "duration": 2.0}],
+        {% endif %}
+        {% endif %}
+
+        {% if LOP_columns | length %}
+        {% if LOP_columns | length<80 %}
+        ["fade", {"meshes": "rois.LOP_columns", "startingAlpha": 0.15, "endingAlpha":  0.0, "duration": 2.0}],
+        {% endif %}
+        {% endif %}
+
+        {% if ME_columns | length %}
+        {% if ME_columns | length<80 %}
+        ["fade", {"meshes": "rois.ME_columns", "startingAlpha": 0.15, "endingAlpha":  0.0, "duration": 2.0}],
+        {% endif %}
+        {% endif %}
+
+        ["fade", {"meshes": "synapses.pre", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 2.0}],
+        ["fade", {"meshes": "synapses.post", "startingAlpha": 1.0, "endingAlpha": 0.0, "duration": 2.0}],
+        ["label", {"text": "{{neuron_type}} (n={{neuron_count}})", "position": [0.02, 0.9], "color": "#8F8F8F", "size": 0.03, "duration": 22.0}],
+
+        ["advanceTime", {"by": 2.0}],

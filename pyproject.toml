@@ -1,8 +1,94 @@
+[project]
+name = "male-drosophila-visual-system-connectome-code"
+version = "1.0-rc.1"
+description = "Supplemental source code for Nern et al. 2024: 'Connectome-driven neural inventory of a complete visual system'"
+authors = [
+    {name = "Frank Loesche", email = "loeschef@janelia.hhmi.org"},
+    {name = "Sanna Koskela", email = "koskelas@janelia.hhmi.org"},
+    {name = "Laura E. Burnett", email = "burnettl@janelia.hhmi.org"},
+    {name = "Edward M. Rogers", email = "rogerse10@janelia.hhmi.org"},
+    {name = "Judith Hoeller", email = "hoellerj@janelia.hhmi.org"},
+    {name = "Eyal Gruntman", email = "gruntmane@janelia.hhmi.org"},
+    {name = "Kit D. Longden", email = "longdenk@janelia.hhmi.org"},
+    {name = "Arthur Zhao", email = "zhaoa@janelia.hhmi.org"},
+    {name = "Pavithraa Seenivasan", email = "seenivasanp@janelia.hhmi.org"},
+    {name = "Marisa Dreher", email = "marisa@dreherdesignstudio.com"},
+    {name = "Stuart Berg", email = "bergs@janelia.hhmi.org"},
+    {name = "Aljoscha Nern", email = "nerna@janelia.hhmi.org"},
+    {name = "Michael B. Reiser", email = "reiserm@janelia.hhmi.org"}
+]
+requires-python = ">= 3.12"
+dependencies = ["navis>=1.7.0,<2", "neuprint-python>=0.4.26,<0.5", "kaleido>=0.2.1,<0.3", "snakemake>=8.20.3,<9", "pymupdf>=1.24.10,<2", "snakemake-executor-plugin-lsf>=0.2.6,<0.3", "cloud-volume>=10.4.0,<11", "google-cloud-storage>=2.18.2,<3", "fastcluster>=1.2.6,<2"]
+
 [tool.pylint.FORMAT]
 max-line-length=99
+
 [tool.jupytext]
 # Always pair ipynb notebooks to py:percent files
 formats = "ipynb,py:percent"
 
 [tool.pytest.ini_options]
 pythonpath = "src"
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms =  ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+male-drosophila-visual-system-connectome-code = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+eyemap = { cmd = [
+    "jupyter", "nbconvert", 
+    "--execute", "--to", "notebook", 
+    "--inplace", "src/eyemap/from_connections_to_grids.ipynb"
+] }
+
+
+cluster-previews = "bsub -n1 -q local -J previews 'snakemake --profile lsf -k --rerun-incomplete allpreviews'"
+
+cluster-movies = "bsub -n1 -q local -J previews 'snakemake --profile lsf -k --rerun-incomplete allmovies'"
+
+clean-all = { depends_on = ["clean-results", "clean-cache"] }
+clean-results-html = "rm -f results/html_pages/*html; rm -rf results/html_pages/img; rm -rf results/html_pages/scatterplots"
+clean-results = { cmd = "rm -rf results/gallery-descriptions/*; rm -rf results/movie-descriptions/*", depends_on=["clean-results-html", "clean-galleries"] }
+clean-galleries = "rm -rf results/gallery/"
+clean-summary = "rm -rf cache/fig_summary"
+clean-summary-plots = "rm -rf cache/summary_plots"
+clean-coverage = "rm -rf cache/cov_compl; rm -rf cache/coverage_synapses; rm -rf cache/coverage_cells; rm -rf cache/complete_metrics; rm -rf cache/columns"
+clean-cache-html = "rm -rf cache/html_pages"
+clean-cache-clustering = "rm -rf cache/clustering"
+clean-cache-rois = "rm -rf cache/rois"
+clean-cache-meshes = "rm -rf cache/meshes"
+clean-cache-skeletons = "rm -rf cache/skeletons"
+clean-cache-galleries = "rm -rf cache/gallery/"
+clean-cache-preprocess = "rm -rf cache/fig_summary_preprocess"
+clean-cache = { depends_on=[
+    "clean-cache-meshes", "clean-cache-skeletons", "clean-cache-rois", 
+    "clean-cache-clustering", "clean-cache-html", "clean-coverage", 
+    "clean-summary", "clean-cache-preprocess", "clean-summary-plots", 
+    "clean-cache-galleries"
+] }
+
+
+[tool.pixi.dependencies]
+ipykernel = ">=6.29.5,<7"
+numpy = "==1.26"
+nptyping = "==2.4.1"
+pynrrd = ">=1.0.0,<2"
+python-dotenv = ">=1.0.1,<2"
+alphashape = ">=1.3.1,<2"
+openpyxl = ">=3.1.5,<4"
+ipywidgets = ">=8.1.5,<9"
+nbformat = ">=5.10.4,<6"
+cmap = ">=0.3.0,<0.4"
+k3d = ">=2.16.1,<3"
+datrie = ">=0.8.2,<0.9"
+nbconvert = ">=7.16.4,<8"
+kneed = ">=0.8.5,<0.9"
+jupyterlab = ">=4.2.5,<5"
+jupytext = ">=1.16.4,<2"
+pylint = ">=3.2.7,<4"
+statsmodels = ">=0.14.4,<0.15"
+

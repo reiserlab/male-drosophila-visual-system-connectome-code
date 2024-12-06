@@ -44,7 +44,7 @@ Orphaned files (files that have no know origin) within the `results` directory g
 If you regularly work with the OL-Connectome code, you are encouraged to do the following two tasks regularly once every other week:
 
 - remove the `cache` directory (you can run `make clean` or delete manually)
-- [reinstall dependencies](docs/python-getting-started.md#dependency-management): newer code often relies on new function from libraries and `requirements.txt` is updated at least once a week
+- make sure you have the latest `pixi.lock` file from the repository, which defines all dependencies
 
 # List of Code Contributors
 
@@ -54,7 +54,7 @@ If you regularly work with the OL-Connectome code, you are encouraged to do the 
 - Edward M. Rogers; <rogerse10@janelia.hhmi.org>; ORCID: 0000-0002-8275-1830
 - Sanna Koskela; <koskelas@janelia.hhmi.org>; ORCID: 0000-0002-0496-5016
 - Judith Hoeller; <hoellerj@janelia.hhmi.org>; ORCID: 0009-0004-7261-4156
-- Arthur zhao; <zhaoa@janelia.hhmi.org>; ORCID: 0000-0003-2869-4393
+- Arthur Zhao; <zhaoa@janelia.hhmi.org>; ORCID: 0000-0003-2869-4393
 - Michael B. Reiser <reiserm@janelia.hhmi.org>; ORCID: 0000-0002-4108-4517
 - Aljoscha Nern; <nerna@janelia.hhmi.org>; ORCID: 0000-0002-3822-489X
 - Pavithraa Seenivasan; <seenivasanp@janelia.hhmi.org>; ORCID: 0000-0002-1527-208X

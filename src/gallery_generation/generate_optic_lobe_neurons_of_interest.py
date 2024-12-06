@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -51,6 +51,8 @@ for name, values in random.sample(list(plots.items()), len(plots.items())):
       , directory=values['directory']
       , body_color_list=values['body_color_list']
       , body_color_order=values['body_color_order']
+      , color_by=values['color_by']
+      , n_vis=values['n_vis']
       , neuropil_color=OL_COLOR.OL_NEUROPIL_LAYERS.rgba
       , the_view=values['view']
     )
@@ -62,6 +64,6 @@ for name, values in random.sample(list(plots.items()), len(plots.items())):
                 break
         else:
             break
-    
+
 
 # %%

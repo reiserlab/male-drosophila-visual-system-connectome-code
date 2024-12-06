@@ -1,9 +1,4 @@
-"""
-Helper functions used in the notebook `src/column_features/column_features_analysis.ipynb`
-"""
-import pandas as pd
 from neuprint import fetch_custom
-
 
 def find_neuropil_hex_coords(roi_str: str):
     """
@@ -26,7 +21,7 @@ def find_neuropil_hex_coords(roi_str: str):
         total number of columns in the neuropil (roi_str)
 
     """
-    assert roi_str in ["ME(R)", "LO(R)", "LOP(R)"]\
+    assert isinstance(roi_str, str) and roi_str in ["ME(R)", "LO(R)", "LOP(R)"]\
       , f"ROI must be one of 'ME(R)', 'LO(R)', 'LOP(R)', but is actually '{roi_str}'"
 
     cql = f"""
@@ -41,4 +36,3 @@ def find_neuropil_hex_coords(roi_str: str):
     n_cols = len(col_hex_ids)
 
     return col_hex_ids, n_cols
-

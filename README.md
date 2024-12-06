@@ -1,17 +1,17 @@
 # Optic Lobe Connectome
 
-This repository is a collection of code for analyzing the optic lobe in the new Male Brain dataset ([Janelia FlyEM](https://neuprint.janelia.org/?dataset=optic-lobe:v1.0&qt=findneurons)). You can find the preprint at [bioRxiv](https://doi.org/10.1101/2024.04.16.589741).
+This repository is a collection of code for analyzing the optic lobe in the new Male Brain dataset ([Janelia FlyEM](https://neuprint-cns.janelia.org/?dataset=cns&qt=findneurons)). At this point it is only intended for internal use -- if you can see the repository, the [Reiser lab](https://www.janelia.org/lab/reiser-lab/) has invited you to contribute to the effort.
 
-Please also visit our [Cell Type Explorer](https://reiserlab.github.io/male-drosophila-visual-system-connectome/) where we describe each of the more than 700 cell types with their neuropil innervation, some descriptive statistics regarding coverage in Medulla, Lobula, and Lobula Plate as well as the upstream and downstream connecting partners. Finally, get an impression of the cell type morphology on our [YouTube channel](https://www.youtube.com/@ReiserLab).
-
-All resources, including direct contacts to the authors, are nicely bundled in our Janelia landing page ["Seeing is believing: Janelia reveals connectome of the fruit fly visual system"](https://www.janelia.org/news/seeing-is-believing-janelia-reveals-connectome-of-the-fruit-fly-visual-system).
-
-# Get started
+## Infrastructure
 
 To allow others in the team to replicate the analysis, the code should be human-readable and run on several systems. 
 
-In the guide on [getting started in Python](docs/python-getting-started.md), we provide a step-by-step documentation on how to set up a working environment and run you through a first example.
+### Set up a Python environment
 
-# Contribute
+In the guide on ["Getting started in Python"](docs/python-getting-started.md), we provide a step-by-step documentation on how to set up a working environment and run you through a first analysis. In essence, we suggest to install [pixi](https://pixi.sh) and create a copy of the `.env-sample` file with the name `.env`. After completion, you can open a Jupyter notebook via `pixi run jupyter lab src/python-bootcamp/local_demo.ipynb`. The first time this command is run, all necessary dependencies are installed automatically, which might take up to two minutes. Running the example notebook itself on local data inside the Jupyter Lab environment will not require a connection to neuPrint and takes less than a second to produce two interactive plots for a neuron. 
 
-Please let us know if you notice something unusual, if you have ideas how to improve it, or just say "hi". Feel free to send emails and you can also submit pull requests or open issues in GitHub.
+Changing the number of the bodyId is enough to run the same analysis on the most recent neuPrint database, but requires additional setup steps from our ["Getting started in Python"](docs/python-getting-started.md) guide. In our guide [Editing Python files](docs/python-editors-getting-started.md) we show two different ways to edit and run Jupyter notebooks.
+
+Our software depends on Blender>3.6, Python>3.10, and a number of python libraries. The comprehensive list of python libraries and their versions are listed in the `pyproject.toml` file `navis`, `neuprint-python`, `kaleido`, `snakemake`, `pymupdf`, `snakemake-executor-plugin-lsf`, `cloud-volume`, `google-cloud-storage`, `fastcluster`, `ipykernel`, `numpy`, `nptyping`, `pynrrd`, `python-dotenv`, `alphashape`, `openpyxl`, `ipywidgets`, `nbformat`, `cmap`, `k3d`, `datrie`, `nbconvert`, `kneed`, `jupyterlab`, `jupytext`, and `pylint`.
+
+Our software has been tested with Python 3.10 to 3.12 and Blender 3.6 to 4.2 on Linux, MacOS, and Windows.
