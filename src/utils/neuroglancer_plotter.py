@@ -37,13 +37,23 @@ def _set_ng_view(driver, set_3d=False, background_color='#FFFFFF'):
     if set_3d:
         js_url['layout'] = '3d'
     js_url['projectionBackgroundColor'] =  background_color
-    #js_url['showUIControls'] = {'visible':'False'}
-    #js_url['showPanelBorders'] = 'False'
-    #js_url['viewerSize'] = (1024, 1024)
     st_url = json.dumps(js_url)
     qu_url = urllib.parse.quote(st_url)
     driver.get(f"{furl[1]}{qu_url}")
 
+
+def _is_firefox_installed():
+    try:
+        options = webdriver.FirefoxOptions()
+        options.add_argument("-headless")
+        driver = webdriver.Firefox(
+            service=FirefoxService(GeckoDriverManager().install())
+          , options=options
+        )
+        driver.quit()
+        return True
+    except:
+        return False
 
 def url_plotter(
     url:str
@@ -54,13 +64,17 @@ def url_plotter(
 
     assert wait_sec>=3, f"Need to wait at least 3 seconds, you specified {wait_sec}"
 
+    assert _is_firefox_installed(), "Please install Firefox if you want to use this plotter."
+
     options = webdriver.FirefoxOptions()
     options.add_argument("-headless")
     options.add_argument(f"--width={size[0]}")
     options.add_argument(f"--height={size[1]}")
 
-    driver = webdriver\
-        .Firefox(options=options,service=FirefoxService(GeckoDriverManager().install()))
+    driver = webdriver.Firefox(
+        options=options
+      , service=FirefoxService(GeckoDriverManager().install())
+    )
     driver.get(url)
     time.sleep(3)
 
@@ -110,9 +124,8 @@ def group_plotter(
   , background_color="#FFFFFF"
   , view:NG_View=NG_View.SVD
 ):
-    # Workaround if some meshes are missing
-    # #BLACKLIST = [30044, 30268, 28748, 30180, 23390, 539495, 32942, 45271]
-    # body_ids = [item for item in body_ids if item not in BLACKLIST]
+
+    assert _is_firefox_installed(), "Please install Firefox if you want to use this plotter."
 
     cachedir = Path(find_dotenv()).parent / "cache" / "webdriver"
     cachedir.mkdir(parents=True, exist_ok=True)
@@ -189,45 +202,6 @@ def group_plotter(
           , scales=[8,8,8])
         s.relative_display_scales = {'x':1,'y':1,'z':1}
 
-
-    # # DEBUG
-    # with viewer.txn() as s:
-    #     s.layers['annotation'] = neuroglancer.AnnotationLayer()
-    #     annotations = s.layers['annotation'].annotations
-
-    #     pt = neuroglancer.PointAnnotation(point=[18389, 49238, 33224], id='point A')
-    #     annotations.append(pt)
-
-    # with viewer.txn() as s:
-    #     a = np.zeros((3, 100, 100, 100), dtype=np.uint8)
-    #     ix, iy, iz = np.meshgrid(*[np.linspace(0, 1, n) for n in a.shape[1:]], indexing='ij')
-    #     a[0, :, :, :] = np.abs(np.sin(4 * (ix + iy))) * 255
-    #     a[1, :, :, :] = np.abs(np.sin(4 * (iy + iz))) * 255
-    #     a[2, :, :, :] = np.abs(np.sin(4 * (ix + iz))) * 255
-    #     import trimesh
-    #     mesh = trimesh.Trimesh(vertices=[[0, 0, 0], [0, 0, 10000], [0, 10000, 0]],
-    #                    faces=[[0, 1, 2]])
-    #     #s.layers['mesh'] = neuroglancer.SingleMeshLayer()
-    #     #seg2 = s.layers['mesh'].segments
-    #     #obj, _ = trimesh.exchange.obj.export_obj(mesh)
-    #     s.layers.append(
-    #         name='aa',
-    #         layer=neuroglancer.LocalVolume(
-    #             data=mesh.export('obj'),
-    #             dimensions=neuroglancer.CoordinateSpace(
-    #                 names=['c', 'x', 'y', 'z'],
-    #                 units=['', 'nm', 'nm', 'nm'],
-    #                 scales=[1, 10, 10, 10],
-    #             ),
-    #             voxel_offset=(0, 20, 30, 15),
-    #         )
-    #     )
-
-    #     #neuroglancer.LocalVolume(data)
-
-    # # /DEBUG
-
-
     # view center and zoom calculation
     if view is NG_View.SVD:
         s_xyz = skels[['x', 'y', 'z']]
@@ -240,7 +214,10 @@ def group_plotter(
         skel_dimension_v = np.sort(s_rn.max() - s_rn.min())[1]
         with viewer.txn() as state:
             state.voxel_coordinates = skels_cobb
-            view_rotation = Rotation.from_matrix(v.T)   # TODO: double check this viewing rotation.
+            rot_v = v.T
+            if np.linalg.det(rot_v) < 0:
+                rot_v[1,:] *= -1 
+            view_rotation = Rotation.from_matrix(rot_v)   # TODO: double check this viewing rotation.
             state.projection_orientation = view_rotation.as_quat()
             state.projection_background_color = background_color
             state.projection_scale =  skel_dimension_v*camera_distance + 3000
@@ -261,8 +238,6 @@ def group_plotter(
         options=options
       , service=FirefoxService(GeckoDriverManager().install())
     ) as driver:
-        #link = format_nglink("https://clio-ng.janelia.org", viewer.state.to_json())
-        #link = neuroglancer.to_url(viewer.state, prefix='https://clio-ng.janelia.org')
         link = neuroglancer.to_url(viewer.state, prefix='https://clio-ng.janelia.org')
         driver.get(viewer.get_viewer_url())
         scr_rpl = viewer.screenshot()

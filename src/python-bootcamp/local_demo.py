@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -18,25 +18,19 @@
 # In this notebook, we show basic functionality for one of our central classes, the `OLNeuron`. The notebook should run without the connection to `neuPrint` and should create an interactive plot for the skeleton and another interactive plot of the mesh for an Mi1 neuron. The Mi1 we use in the example does not exist in our data release, yet it is very similar to the neuron with the bodyId 56564 near the center of the medulla.
 
 # %% [markdown]
-# The following Jupyter cell contains the boiler plate code we use at the beginning of all notebooks. It defines the location of the `PROJECT_ROOT` and adds the directory `src` to the path. This is a workaround to having to install our package and runs directly on the source file. 
-
-# %%
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-from utils import olc_client
-c = olc_client.connect()
-
-# %% [markdown]
 # Import the necessary components to run this notebook. Notably this is the external ["**N**euron **A**nalysis and **Vis**ualization (NAVis)"](https://navis.readthedocs.io/) library and our class "OLNeuron".
 
 # %%
 import navis
 from utils.ol_neuron import OLNeuron
+
+# %% [markdown]
+# Import the helper script `olc_client` and use the `connect()` function to connect to neuPrint.
+
+# %%
+from utils import olc_client
+
+c = olc_client.connect()
 
 # %% [markdown]
 # The next Jupyter cell instanciates our `OLNeuron` class with the bodyId `5000`. This body ID does not exist in neuPrint, instead we provide a local copy of the relevant files with the code to run this file.

@@ -1,7 +1,7 @@
 jobs: '400'
 executor: lsf
 restart-times: 7
-cores: 15
+cores: 64
 default-resources:
     lsf_project: 'reiser'
     lsf_queue: 'local'
@@ -16,3 +16,5 @@ set-threads:
     - render_galleries_blend=pow(2, attempt-1)
     - render_galleries=pow(2, attempt-1)
     - pin_creation=4
+    - get_one_page=pow(2, attempt-1)
+    - generate_website_scatter=48

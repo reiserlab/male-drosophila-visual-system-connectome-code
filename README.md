@@ -1,6 +1,6 @@
 # Optic Lobe Connectome
 
-This repository is a collection of code for analyzing the optic lobe in the new Male Brain dataset ([Janelia FlyEM](https://neuprint-cns.janelia.org/?dataset=cns&qt=findneurons)). At this point it is only intended for internal use -- if you can see the repository, the [Reiser lab](https://www.janelia.org/lab/reiser-lab/) has invited you to contribute to the effort.
+This repository is a collection of code for analyzing the optic lobe in the new male brain dataset ([Janelia FlyEM](https://neuprint.janelia.org/?dataset=optic-lobe%3Av1.1&qt=findneurons)).
 
 ## Infrastructure
 

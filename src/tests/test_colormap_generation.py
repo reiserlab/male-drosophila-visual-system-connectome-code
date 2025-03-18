@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,15 +13,6 @@
 # ---
 
 # %%
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-import pandas as pd
-
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-
 import numpy as np
 from utils.column_plotting_functions import ticks_from_max
 import plotly.graph_objects as go

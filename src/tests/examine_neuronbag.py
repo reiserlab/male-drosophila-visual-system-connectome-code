@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: .venv
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -18,15 +18,9 @@
 #
 
 # %%
-# %load_ext autoreload
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
 from utils import olc_client
+from utils.ol_types import OLTypes
+
 c = olc_client.connect()
 
 # %% [markdown]
@@ -35,9 +29,6 @@ c = olc_client.connect()
 # For the example C2, this should currently be 78453
 
 # %%
-# %autoreload 2
-
-from utils.ol_types import OLTypes
 olt = OLTypes()
 
 all = olt.get_neuron_list(side='both')

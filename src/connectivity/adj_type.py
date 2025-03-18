@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -25,52 +25,21 @@
 # ### init setup
 
 # %%
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
-# %%
+import pandas as pd
+import numpy as np
 import neuprint
-print(neuprint.__version__)
-
-# %% Import libraries
-from neuprint import fetch_neurons, fetch_synapses,  fetch_adjacencies, connection_table_to_matrix, merge_neuron_properties
-from neuprint import NeuronCriteria as NC, SynapseCriteria as SC
-
-# This library wasn't installed before, you might need to rerun library installation
-import navis
-import navis.interfaces.neuprint as navnp
-
-
-# %%
+from neuprint import fetch_adjacencies, connection_table_to_matrix, merge_neuron_properties
+from neuprint.queries import fetch_all_rois, fetch_roi_hierarchy
+from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances, fetch_ol_complete
+from neuprint import NeuronCriteria as NC
+import matplotlib.pyplot as plt
 from utils import olc_client
+
+pd.options.display.float_format = '{:.2f}'.format
+print(neuprint.__version__)
 c = olc_client.connect(verbose=True)
 
 # %%
-import plotly.io as pio
-
-import matplotlib.pyplot as plt
-
-import pandas as pd
-pd.options.display.float_format = '{:.2f}'.format
-
-import numpy as np
-
-# %%
-from neuprint.queries import fetch_all_rois, fetch_roi_hierarchy
-
 # # Show the ROI hierarchy, with primary ROIs marked with '*'
 # print(fetch_roi_hierarchy(include_subprimary=True, mark_primary=True, format='text'))
 
@@ -81,7 +50,6 @@ print(fetch_all_rois())
 # ### get all cell types in OL, and some histograms
 
 # %%
-from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances, fetch_ol_complete
 ol_type = fetch_ol_types(client=c)
 print(ol_type)
 # ol_type_inst = fetch_ol_types_and_instances(client=c)
@@ -116,16 +84,6 @@ neuron_types_rois_df, conn_types_rois_df = fetch_adjacencies(NC(type=cell_types)
 
 # neuron_types_rois_df, conn_types_rois_df = fetch_adjacencies(NC(type=cell_types), NC(type=cell_types))
 
-
-# %%
-# # save and load csv
-# base_dir = PROJECT_ROOT / 'results' / 'connectivity'
-
-# neuron_types_rois_df.to_csv(base_dir / 'neuron_types_rois_df.csv')
-# conn_types_rois_df.to_csv(base_dir / 'conn_types_rois_df.csv')
-
-# neuron_types_rois_df= pd.read_csv(base_dir / 'neuron_types_rois_df.csv')
-# conn_types_rois_df= pd.read_csv(base_dir / 'conn_types_rois_df.csv')
 
 # %%
 conn_df = merge_neuron_properties(neuron_types_rois_df, conn_types_rois_df, 'type')

@@ -5,38 +5,19 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
-
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-
-load_dotenv()
-
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-print(f"Project root directory: {PROJECT_ROOT}")
-
+from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances
+from utils.neuron_bag import NeuronBag
+from utils.ol_types import OLTypes
 from utils import olc_client
 c = olc_client.connect(verbose=True)
-
-# %%
-from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances
 
 # %%
 fetch_ol_types_and_instances(side='both')
@@ -111,18 +92,11 @@ df[df["type"] == cell_type]
 # ### Testing neuron_bag.py functions
 
 # %%
-from utils.neuron_bag import NeuronBag
-
-
-# %%
 abag = NeuronBag('LPT57', side='L')
 abag.get_body_ids(cell_count=20)
 
 # %% [markdown]
 # ### OLTypes
-
-# %%
-from utils.ol_types import OLTypes
 
 # %%
 olt = OLTypes()

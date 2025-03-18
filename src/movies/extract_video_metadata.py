@@ -11,9 +11,8 @@ import click
 import sys
 import warnings
 import time
-import datetime
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+from dotenv import find_dotenv
 
 
 from apiclient.discovery import build
@@ -21,14 +20,7 @@ from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
-from oauth2client.tools import argparser, run_flow
-
-from dotenv import load_dotenv, find_dotenv
-
-load_dotenv()
-PROJECT_ROOT = Path(
-    find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
+from oauth2client.tools import run_flow
 
 from utils.ol_types import OLTypes
 from utils.instance_summary import InstanceSummary

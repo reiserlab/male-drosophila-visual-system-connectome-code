@@ -5,21 +5,14 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
-#     name: ol-connectome
+#     name: python3
 # ---
 
 # %%
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
 from utils import olc_client
 c = olc_client.connect(verbose=True)
 
@@ -27,6 +20,9 @@ c = olc_client.connect(verbose=True)
 from utils.align_mi1_t4 import create_alignment
 
 # %%
+# Creates file `results/eyemap/mi1_t4_alignment.xlsx`
 create_alignment()
 
-# Expected run time: 12 min
+# Expected run time: 20 min
+
+# %%

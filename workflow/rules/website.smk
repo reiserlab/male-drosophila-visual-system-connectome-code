@@ -1,3 +1,5 @@
+include: "../scripts/website.py"
+
 rule generate_website_cover:
     output:
         touch("cache/html_pages/done/cover.done"),
@@ -17,18 +19,16 @@ rule generate_website_scatter:
         jupyter execute --kernel_name='python3' src/html_pages/make_scatterplot_html_pages.ipynb
         """
 
-rule generate_website_individual:
-    output:
-        touch("cache/html_pages/done/websites.done")
-    threads: 48
-    shell: 
-        """
-        jupyter execute --kernel_name='python3' src/html_pages/generate_html-pages_from_scratch.ipynb
-        """
-
 rule generate_website:
     input:
-        "cache/html_pages/done/cover.done",
-        "cache/html_pages/done/scatter.done",
-        "cache/html_pages/done/websites.done"
+        cover = "cache/html_pages/done/cover.done",
+        scatter = "cache/html_pages/done/scatter.done",
+        website = get_all_neurons
 
+rule get_one_page:
+    input:
+        scatter = "cache/html_pages/done/scatter.done"
+    output:
+        html="results/html_pages/{instance}.html"
+    run:
+        shell("python src/html_pages/make_single_page.py {wildcards.instance}")

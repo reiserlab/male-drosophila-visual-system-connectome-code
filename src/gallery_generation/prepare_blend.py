@@ -6,25 +6,18 @@ either a config file or a body ID.
 """
 
 from pathlib import Path
-import json
-import sys
 import os
 import argparse
 import warnings
-from dotenv import load_dotenv, find_dotenv
+from dotenv import find_dotenv
 
 import navis
 import cloudvolume
 from trimesh.exchange.export import export_mesh
 
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-
 from utils import olc_client
 from utils.plotter import get_roi
 from utils.ol_neuron import OLNeuron
-from utils.helper import slugify
 from utils.plot_config import PlotConfig
 from utils.plot_roi import PlotRoi
 

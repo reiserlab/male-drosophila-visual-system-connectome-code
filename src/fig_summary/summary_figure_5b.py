@@ -5,24 +5,16 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
 from pathlib import Path
-import sys
-from IPython.display import display
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
+from dotenv import find_dotenv
 from utils import olc_client
 from utils.instance_summary import InstanceSummary
 from utils.summary_plotter import SummaryPlotter
@@ -32,7 +24,7 @@ c = olc_client.connect(verbose=True)
 
 # %%
 # directory to save result figure
-result_dir = PROJECT_ROOT / 'results' / 'fig_summary'
+result_dir = Path(find_dotenv()).parent / 'results' / 'fig_summary'
 result_dir.mkdir(parents=True, exist_ok=True)
 
 # %%
@@ -58,11 +50,11 @@ sp = SummaryPlotter(
 )
 fig = sp.plot()
 
-file_name = f"Figure-5b.pdf"
+file_name = "Figure-5b.pdf"
 fig.write_image(
     result_dir / file_name
-  , width = 8.5*96 # inch * ppi
-  , height = 11*96
+  , width=8.5 * 96 # inch * ppi
+  , height=11 * 96
 )
 
 # %%

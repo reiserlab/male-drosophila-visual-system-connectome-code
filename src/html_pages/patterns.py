@@ -1,7 +1,10 @@
 import warnings
 import os
+import concurrent.futures
+import multiprocessing as mp
 
 from functools import partial
+from itertools import repeat
 
 from pathlib import Path
 
@@ -11,6 +14,8 @@ import numpy as np
 import pandas as pd
 import jinja2
 
+from dotenv import find_dotenv
+
 from neuprint import NeuronCriteria as NC, fetch_neurons
 
 from utils.helper import num_expand
@@ -19,14 +24,19 @@ from utils.ol_types import OLTypes
 from utils.ol_color import OL_COLOR
 from utils.ol_instance import OLInstance
 from utils.helper import slugify
+from utils.olc_client import get_server, get_dataset
 
 from html_pages.make_spatial_coverage_plots_for_webpages import\
-    plot_synapses_per_column, plot_cells_per_column
+    plot_synapses_per_column, plot_cells_per_column, make_spatial_coverage_plots_for_webpages
 from html_pages.plotting_to_html import get_dynamic_plot
-from html_pages.webpage_functions import get_meta_data, get_youtube_link, get_last_database_edit, get_formatted_now
+from html_pages.webpage_functions import\
+    get_meta_data, get_youtube_link\
+  , get_last_database_edit, get_formatted_now
 
+from queries.completeness import fetch_ol_types_and_instances
 from queries.webpage_queries import\
     get_layer_synapses, get_roi_synapses, get_io_table, consensus_nt_for_instance
+
 
 def shorten_nt_name(
     nt_name:str
@@ -157,7 +167,9 @@ def convert_pkl_to_html_with_layers(
         return False
 
     # Jinja template
-    environment = jinja2.Environment(loader=jinja2.FileSystemLoader(''))
+    environment = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(Path(find_dotenv()).parent / 'src' / 'html_pages')
+    )
     template = environment.get_template(template)
 
     olt = OLTypes()
@@ -280,8 +292,13 @@ def convert_pkl_to_html_with_layers(
     out_styled.bar(color="#9bdfed", subset=['%'], vmax=1, height=95)
 
     # Connectivity table to html
-    in_styled_html = in_styled.to_html(index=False)
-    out_styled_html = out_styled.to_html(index=False)
+    
+    in_styled_html = in_styled\
+        .set_uuid(f"in_{oli.slug}")\
+        .to_html(index=False)
+    out_styled_html = out_styled\
+        .set_uuid(f"out_{oli.slug}")\
+        .to_html(index=False)
 
     ## LAYER STATISTICS tables
     # Function to turn hex color to RGBA
@@ -292,8 +309,7 @@ def convert_pkl_to_html_with_layers(
         rgb_n = ', '.join(str(int(hex_color[i:i + lv // 3], 16)) for i in range(0, lv, lv // 3))
         return f"rgba({rgb_n}, {alpha})"
 
-
-    def style_dataframe(df, precision=1, remove_index=False, neuropil=None):
+    def style_dataframe(df, neuropil, precision=1, remove_index=False):
     # Define a mapping from neuropil names to their corresponding colors using hex values
         color_mapping = {
             'ME': OL_COLOR.OL_NEUROPIL.hex[0]
@@ -317,45 +333,38 @@ def convert_pkl_to_html_with_layers(
 
         if remove_index:
             df = df.reset_index(drop=True)
-
         return df.style.format(precision=precision)\
             .set_table_styles(styles)\
+            .set_uuid(f'{neuropil.lower()}{precision}')\
             .to_html(index=False, escape=False)
-
 
     # Apply styling and other operations to each DataFrame
     lay_stats_la_html = style_dataframe(
         get_layer_stats(instance=oli.name, roi_str='LA(R)')
-      , precision=1
       , neuropil='LA'
     )
     lay_stats_me_html = style_dataframe(
         get_layer_stats(instance=oli.name, roi_str='ME(R)')
-      , precision=1
-      , remove_index=True
       , neuropil='ME'
+      , remove_index=True
     )
     lay_stats_lo_html = style_dataframe(
         get_layer_stats(instance=oli.name, roi_str='LO(R)')
-      , precision=1
       , neuropil='LO'
     )
     lay_stats_lop_html = style_dataframe(
         get_layer_stats(instance=oli.name, roi_str='LOP(R)')
-      , precision=1
       , neuropil='LOP'
     )
     lay_stats_ame_html = style_dataframe(
         get_layer_stats(instance=oli.name, roi_str='AME(R)')
-      , precision=1
-      , remove_index=True
       , neuropil='AME'
+      , remove_index=True
     )
     lay_stats_cb_html = style_dataframe(
         get_layer_stats(instance=oli.name, roi_str='non-OL')
-      , precision=1
-      , remove_index=True
       , neuropil='CB'
+      , remove_index=True
     )
 
     image_tags = []
@@ -375,17 +384,17 @@ def convert_pkl_to_html_with_layers(
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2934 793" preserveAspectRatio="xMinYMin meet">
             <image width="2834" height="793" xlink:href="img/{fig_syn_fn.name}" />
             <g class="hover_group" opacity="0.0">
-                <a xlink:href="scatterplots/scatterplots-LOP.html">
+                <a xlink:href="scatterplots-LOP.html">
                     <circle opacity="0.2" style="fill:#ffffff" cx="2225" cy="395" r="375" />
                 </a>
             </g>
             <g class="hover_group" opacity="0.0">
-                <a xlink:href="scatterplots/scatterplots-LO.html">
+                <a xlink:href="scatterplots-LO.html">
                     <circle opacity="0.2" style="fill:#ffffff" cx="1325" cy="395" r="375" />
                 </a>
             </g>
             <g class="hover_group" opacity="0.0">
-                <a xlink:href="scatterplots/scatterplots-ME.html">
+                <a xlink:href="scatterplots-ME.html">
                     <circle opacity="0.2" style="fill:#ffffff" cx="395" cy="395" r="375" />
                 </a>
             </g>
@@ -408,26 +417,46 @@ def convert_pkl_to_html_with_layers(
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2934 793" preserveAspectRatio="xMinYMin meet">
             <image width="2834" height="793" xlink:href="img/{fig_cell_fn.name}" />
             <g class="hover_group" opacity="0">
-                <a xlink:href="scatterplots/scatterplots-LOP.html">
+                <a xlink:href="scatterplots-LOP.html">
                     <circle opacity="0.2" style="fill:#ffffff" cx="2225" cy="395" r="375" />
                 </a>
             </g>
             <g class="hover_group" opacity="0">
-                <a xlink:href="scatterplots/scatterplots-LO.html">
+                <a xlink:href="scatterplots-LO.html">
                     <circle opacity="0.2" style="fill:#ffffff" cx="1325" cy="395" r="375" />
                 </a>
             </g>
             <g class="hover_group" opacity="0">
-                <a xlink:href="scatterplots/scatterplots-ME.html">
+                <a xlink:href="scatterplots-ME.html">
                     <circle opacity="0.2" style="fill:#ffffff" cx="395" cy="395" r="375" />
                 </a>
             </g>
+            </svg>
         </figure>
         '''
     )
 
-    # COVERAGE CARD DATA
-    def load_and_filter_coverage_data(coverage_image_dir, instance_type):
+    def load_and_filter_coverage_data(
+        coverage_image_dir:Path
+      , instance_type:str
+    ):
+        """
+        Generate coverage card data
+
+        Parameters
+        ----------
+        coverage_image_dir : Path
+            path of cache data files
+
+        instance_type : str
+            name of the instance
+
+        Returns
+        -------
+        coverage_data : dict
+            TODO: Describe
+
+        """
         neuropils = ['ME', 'LO', 'LOP']
         expected_keys = [
             'cell_type', 'n_pre', 'n_post', 'n_output_conn', 'coverage_factor_trim'
@@ -504,10 +533,11 @@ def convert_pkl_to_html_with_layers(
         'Lobula Plate': OL_COLOR.OL_NEUROPIL.hex[2],
     }
 
+    neuprint_link = f"https://{get_server()}/?dataset={get_dataset()}"
     # NEUPRINT LINK
     # Base URL (up to the point before 'cellType')
     dynamic_param = f"&qr[0][pm][neuron_name]={oli.type}"
-    neuprint_url = f"https://{os.environ.get('NEUPRINT_SERVER_URL')}/"\
+    neuprint_deep_link = f"https://{os.environ.get('NEUPRINT_SERVER_URL')}/"\
         f"{os.environ.get('NEUPRINT_BASE_URL')}{dynamic_param}"
 
     fig_3d = get_dynamic_plot(oli.name, resample_precision=oli.resample_precision)
@@ -537,8 +567,8 @@ def convert_pkl_to_html_with_layers(
     rendered_template = template.render(
         oli=oli
       , n_cell_types=n_cell_types
-      , nt_prediction = nt_prediction
-      , color_mapping_regions = color_mapping_regions
+      , nt_prediction=nt_prediction
+      , color_mapping_regions=color_mapping_regions
       , lay_stats_ME_html=lay_stats_me_html
       , lay_stats_LO_html=lay_stats_lo_html
       , lay_stats_LOP_html=lay_stats_lop_html
@@ -553,11 +583,12 @@ def convert_pkl_to_html_with_layers(
       , image_tags=image_tags
       , threeD_image_script=three_d_image_script
       , youtube_link=youtube_link
-      , neuprint_deep_link=neuprint_url
+      , neuprint_deep_link=neuprint_deep_link
       , meta=meta
       , lastDataBaseEdit=last_database_edit
       , formattedDate=formatted_date
       , available_tags=available_tags
+      , neuprint_link=neuprint_link
     )
 
     # Save the rendered template to an HTML file
@@ -566,3 +597,81 @@ def convert_pkl_to_html_with_layers(
 
     print(f"HTML page generated successfully for {oli.name}.")
     return True
+
+
+def generate_single_page(
+    instance_name:str
+  , available_tags:list[str]
+  , linked_instance:set[str]) -> bool:
+    """
+    Helper function to generate a webpage from a single instance name
+
+    Parameters
+    ----------
+    instance_name : str
+        existing instance name, e.g. Mi1_R
+    available_tags : list[str]
+        names of instance that exist in the whole data set and that can
+        be a search target
+    linked_instance : set[str]
+        set of instance names that are potential links for the input / output
+    
+    Returns
+    -------
+    success : bool
+        page generation was successful?
+    """
+    # Output path to results
+    output_path_results = Path(Path(find_dotenv()).parent, 'results', 'html_pages')
+    output_path_results.mkdir(parents=True, exist_ok=True)
+
+    # Coverage and completeness
+    input_path_coverage = Path(Path(find_dotenv()).parent, 'cache', 'complete_metrics')
+    input_path_coverage.mkdir(parents=True, exist_ok=True)
+
+    oli = OLInstance(instance_name)
+
+    print(f"Coverage for {instance_name}")
+    make_spatial_coverage_plots_for_webpages(instance=instance_name)
+
+    print(f"HTML for {instance_name}")
+    success = convert_pkl_to_html_with_layers(
+        oli=oli
+      , valid_neuron_names=linked_instance
+      , template="html-pages-jinja.html.jinja"
+      , input_path_coverage=input_path_coverage
+      , output_path=output_path_results
+      , available_tags=available_tags
+    )
+    return success
+
+
+def generate_pages(df:pd.DataFrame, linked_instance:set):
+    """
+    Helper function to generate webpages from a list of neurons.
+    """
+    # Create available tags for the search bar
+    neuron_names = fetch_ol_types_and_instances(side='both')
+
+    # Collect available tags
+
+    # Create a reverse lookup dictionary from filename to main group
+    # Make an html page for each
+    available_tags = []
+    for _, row in neuron_names.iterrows():
+        link_to_instance = row['instance']
+        filename = f"{row['type']} ({link_to_instance[-1]})"
+        tag = {"value": filename, "url": f"{link_to_instance}.html"}
+        if tag not in available_tags:
+            available_tags.append(tag)
+
+    # Generate page per instance
+    success_df = []
+    with concurrent.futures.ProcessPoolExecutor(max_workers=3, mp_context=mp.get_context('fork')) as executor:
+        for success in executor.map(
+            generate_single_page
+          , df['instance'].to_list()
+          , available_tags
+          , repeat(linked_instance)
+        ):
+            success_df.append(success)

@@ -70,12 +70,6 @@ def _get_in_com(
     nid_pre = pd.unique(syn_df['bodyId_pre']).astype(int)
     neuron_criteria  = NC(bodyId=nid_pre)
     neuron_pre_df , _ = fetch_neurons(neuron_criteria)
-    comb_df = pd.concat([
-            neuron_df[['bodyId', 'type', 'somaLocation']],
-            neuron_pre_df[['bodyId', 'type', 'somaLocation']]])\
-        .drop_duplicates(subset='bodyId')\
-        .reset_index(drop=True)
-    rel_syn_df = merge_neuron_properties(comb_df, syn_df, ['type', 'somaLocation'])
 
     com_df = syn_df\
             .groupby('bodyId_post')[['x_post', 'y_post', 'z_post']]\
@@ -316,11 +310,11 @@ def create_alignment() -> None:
     data_path = get_data_path(reason='data')
     table_fn = data_path / "mi1_t4_alignment.xlsx"
     table_df = mi1_t4_align_df.rename(
-                columns={
-                    'mi1_bid': 'Mi1'
-                  , 't4a_bid': 'T4a'
-                  , 't4b_bid': 'T4b'
-                  , 't4c_bid': 'T4c'
-                  , 't4d_bid': 'T4d'}
-        )
-    table_df.to_excel(table_fn,index=False)
+        columns={
+            'mi1_bid': 'Mi1'
+          , 't4a_bid': 'T4a'
+          , 't4b_bid': 'T4b'
+          , 't4c_bid': 'T4c'
+          , 't4d_bid': 'T4d'}
+    )
+    table_df.to_excel(table_fn, index=False)

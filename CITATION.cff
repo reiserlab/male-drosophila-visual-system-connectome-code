@@ -1,0 +1,299 @@
+cff-version: 1.2.0
+message: Please cite the following works when using this software.
+authors:
+  - family-names: Loesche
+    given-names: Frank
+    orcid: https://orcid.org/0000-0002-7780-6438
+  - family-names: Koskela
+    given-names: Sanna
+    orcid: https://orcid.org/0000-0002-0496-5016
+  - family-names: Burnett
+    given-names: Laura E
+    orcid: https://orcid.org/0000-0002-8937-410X  
+  - family-names: Rogers
+    given-names: Edward M
+    orcid: https://orcid.org/0000-0002-8275-1830
+  - family-names: Hoeller
+    given-names: Judith
+    orcid: https://orcid.org/0009-0004-7261-4156
+  - family-names: Gruntman
+    given-names: Eyal
+    orcid: https://orcid.org/0000-0003-1383-7347
+  - family-names: Longden
+    given-names: Kit D
+    orcid: https://orcid.org/0000-0002-7686-6447
+  - family-names: Zhao
+    given-names: Arthur
+    orcid: https://orcid.org/0000-0003-2869-4393
+  - family-names: Seenivasan
+    given-names: Pavithraa
+    orcid: https://orcid.org/0000-0002-1527-208X
+  - family-names: Dreher
+    given-names: Marisa
+    orcid: https://orcid.org/0000-0002-0041-9229
+  - family-names: Berg
+    given-names: Stuart
+    orcid: https://orcid.org/0000-0002-0766-0488
+  - family-names: Nern
+    given-names: Aljoscha
+    orcid: https://orcid.org/0000-0002-3822-489X
+  - family-names: Reiser
+    given-names: Michael B
+    orcid: https://orcid.org/0000-0002-4108-4517
+title: "Supplemental source code for 'Connectome-driven neural inventory of a complete visual system'"
+version: 1.0
+doi: 10.5281/zenodo.13633521
+date-released: 2025-03-12
+url: "https://github.com/reiserlab/male-drosophila-visual-system-connectome-code"
+preferred-citation:
+  abstract: >-
+    <jats:p>Vision provides animals with detailed information about their
+    surroundings, conveying diverse features such as color, form, and movement
+    across the visual scene. Computing these parallel spatial features requires
+    a large and diverse network of neurons, such that in animals as distant as
+    flies and humans, visual regions comprise half the brain's volume. These
+    visual brain regions often reveal remarkable structure-function
+    relationships, with neurons organized along spatial maps with shapes that
+    directly relate to their roles in visual processing. To unravel the stunning
+    diversity of a complex visual system, a careful mapping of the neural
+    architecture matched to tools for targeted exploration of that circuitry is
+    essential. Here, we report a new connectome of the right optic lobe from a
+    male Drosophila central nervous system FIB-SEM volume and a comprehensive
+    inventory of the fly's visual neurons. We developed a computational
+    framework to quantify the anatomy of visual neurons, establishing a basis
+    for interpreting how their shapes relate to spatial vision. By integrating
+    this analysis with connectivity information, neurotransmitter identity, and
+    expert curation, we classified the ~53,000 neurons into 727 types, about
+    half of which are systematically described and named for the first time.
+    Finally, we share an extensive collection of split-GAL4 lines matched to our
+    neuron type catalog. Together, this comprehensive set of tools and data
+    unlock new possibilities for systematic investigations of vision in
+    Drosophila, a foundation for a deeper understanding of sensory
+    processing.</jats:p>
+  authors:
+    - family-names: Nern
+      given-names: Aljoscha
+      orcid: https://orcid.org/0000-0002-3822-489X
+    - family-names: Loesche
+      given-names: Frank
+      orcid: https://orcid.org/0000-0002-7780-6438
+    - family-names: Takemura
+      given-names: Shin-ya
+      orcid: https://orcid.org/0000-0003-2400-6426
+    - family-names: Burnett
+      given-names: Laura E
+      orcid: https://orcid.org/0000-0002-8937-410X
+    - family-names: Dreher
+      given-names: Marisa
+      orcid: https://orcid.org/0000-0002-0041-9229
+    - family-names: Gruntman
+      given-names: Eyal
+      orcid: https://orcid.org/0000-0003-1383-7347
+    - family-names: Hoeller
+      given-names: Judith
+      orcid: https://orcid.org/0009-0004-7261-4156
+    - family-names: Huang
+      given-names: Gary B
+      orcid: https://orcid.org/0000-0002-9606-3510
+    - family-names: Januszewski
+      given-names: Michal
+      orcid: https://orcid.org/0000-0002-3480-2744
+    - family-names: Klapoetke
+      given-names: Nathan C
+      orcid: https://orcid.org/0000-0002-3270-1966
+    - family-names: Koskela
+      given-names: Sanna
+      orcid: https://orcid.org/0000-0002-0496-5016
+    - family-names: Longden
+      given-names: Kit D
+      orcid: https://orcid.org/0000-0002-7686-6447
+    - family-names: Lu
+      given-names: Zhiyuan
+      orcid: https://orcid.org/0000-0002-4128-9774
+    - family-names: Preibisch
+      given-names: Stephan
+      orcid: https://orcid.org/0000-0002-0276-494X
+    - family-names: Qiu
+      given-names: Wei
+      orcid: https://orcid.org/0009-0008-1764-5928
+    - family-names: Rogers
+      given-names: Edward M
+      orcid: https://orcid.org/0000-0002-8275-1830
+    - family-names: Seenivasan
+      given-names: Pavithraa
+      orcid: https://orcid.org/0000-0002-1527-208X
+    - family-names: Zhao
+      given-names: Arthur
+      orcid: https://orcid.org/0000-0003-2869-4393
+    - family-names: Bogovic
+      given-names: John
+      orcid: https://orcid.org/0000-0002-4829-9457
+    - family-names: Canino
+      given-names: Brandon S
+      orcid: https://orcid.org/0000-0002-8454-865X
+    - family-names: Clements
+      given-names: Jody
+      orcid: https://orcid.org/0000-0003-3932-8188
+    - family-names: Cook
+      given-names: Michael
+      orcid: https://orcid.org/0000-0002-7892-6845
+    - family-names: Finley-May
+      given-names: Samantha
+      orcid: https://orcid.org/0000-0002-8086-206X
+    - family-names: Flynn
+      given-names: Miriam A
+      orcid: https://orcid.org/0000-0002-3314-4823
+    - family-names: Fragniere
+      given-names: Alexandra MC
+    - family-names: Hameed
+      given-names: Imran
+      orcid: https://orcid.org/0000-0001-5431-9162
+    - family-names: Hayworth
+      given-names: Kenneth J
+      orcid: https://orcid.org/0000-0002-6467-7024
+    - family-names: Hopkins
+      given-names: Gary Patrick
+      orcid: https://orcid.org/0000-0002-6918-1589
+    - family-names: Hubbard
+      given-names: Philip M
+      orcid: https://orcid.org/0000-0002-6746-5035
+    - family-names: Katz
+      given-names: William T
+      orcid: https://orcid.org/0000-0002-9417-6212
+    - family-names: Kovalyak
+      given-names: Julie
+      orcid: https://orcid.org/0000-0001-7864-7734
+    - family-names: Lauchie
+      given-names: Shirley A
+      orcid: https://orcid.org/0000-0001-8223-9522
+    - family-names: Leonard
+      given-names: Meghan
+      orcid: https://orcid.org/0009-0005-4678-8213
+    - family-names: Lohff
+      given-names: Alanna
+      orcid: https://orcid.org/0000-0002-1242-1836
+    - family-names: Maldonado
+      given-names: Charli A
+      orcid: https://orcid.org/0000-0002-0151-3719
+    - family-names: Mooney
+      given-names: Caroline
+      orcid: https://orcid.org/0000-0003-4938-532X
+    - family-names: Okeoma
+      given-names: Nneoma
+      orcid: https://orcid.org/0000-0001-8829-5007
+    - family-names: Olbris
+      given-names: Donald J
+      orcid: https://orcid.org/0009-0008-8581-0550
+    - family-names: Ordish
+      given-names: Christopher
+      orcid: https://orcid.org/0000-0001-8439-9714
+    - family-names: Paterson
+      given-names: Tyler
+      orcid: https://orcid.org/0000-0002-9297-5504
+    - family-names: Phillips
+      given-names: Emily M
+      orcid: https://orcid.org/0000-0001-7615-301X
+    - family-names: Pietzsch
+      given-names: Tobias
+      orcid: https://orcid.org/0000-0002-9477-3957
+    - family-names: Rivas Salinas
+      given-names: Jennifer
+      orcid: https://orcid.org/0009-0005-4244-793X
+    - family-names: Rivlin
+      given-names: Patricia K
+      orcid: https://orcid.org/0000-0002-3435-1955
+    - family-names: Schlegel
+      given-names: Philipp
+      orcid: https://orcid.org/0000-0002-5633-1314
+    - family-names: Scott
+      given-names: Ashley L
+      orcid: https://orcid.org/0000-0002-1835-5016
+    - family-names: Scuderi
+      given-names: Louis A
+      orcid: https://orcid.org/0009-0002-6238-5789
+    - family-names: Takemura
+      given-names: Satoko
+      orcid: https://orcid.org/0000-0002-2863-0050
+    - family-names: Talebi
+      given-names: Iris
+      orcid: https://orcid.org/0000-0002-0173-8053
+    - family-names: Thomson
+      given-names: Alexander
+      orcid: https://orcid.org/0000-0001-8462-2090
+    - family-names: Trautman
+      given-names: Eric T
+      orcid: https://orcid.org/0000-0001-8588-0569
+    - family-names: Umayam
+      given-names: Lowell
+      orcid: https://orcid.org/0000-0002-0255-1522
+    - family-names: Walsh
+      given-names: Claire
+      orcid: https://orcid.org/0000-0002-6774-7307
+    - family-names: Walsh
+      given-names: John J
+      orcid: https://orcid.org/0000-0002-7176-4708
+    - family-names: Xu
+      given-names: C Shan
+      orcid: https://orcid.org/0000-0002-8564-7836
+    - family-names: Yakal
+      given-names: Emily A
+      orcid: https://orcid.org/0000-0002-4467-124X
+    - family-names: Yang
+      given-names: Tansy
+      orcid: https://orcid.org/0000-0003-1131-0410
+    - family-names: Zhao
+      given-names: Ting
+      orcid: https://orcid.org/0000-0002-8053-412X
+    - family-names: Funke
+      given-names: Jan
+      orcid: https://orcid.org/0000-0003-4388-7783
+    - family-names: George
+      given-names: Reed
+    - family-names: Hess
+      given-names: Harald F
+      orcid: https://orcid.org/0000-0003-3000-1533
+    - family-names: Jefferis
+      given-names: Gregory S X E
+      orcid: https://orcid.org/0000-0002-0587-9355
+    - family-names: Knecht
+      given-names: Christopher
+      orcid: https://orcid.org/0000-0002-9230-2772
+    - family-names: Korff
+      given-names: Wyatt
+      orcid: https://orcid.org/0000-0001-8396-1533
+    - family-names: Plaza
+      given-names: Stephen M
+      orcid: https://orcid.org/0000-0001-7425-8555
+    - family-names: Romani
+      given-names: Sandro
+      orcid: https://orcid.org/0000-0002-4727-4207
+    - family-names: Saalfeld
+      given-names: Stephan
+      orcid: https://orcid.org/0000-0002-4106-1761
+    - family-names: Scheffer
+      given-names: Louis K
+      orcid: https://orcid.org/0000-0002-3289-6564
+    - family-names: Berg
+      given-names: Stuart
+      orcid: https://orcid.org/0000-0002-0766-0488
+    - family-names: Rubin
+      given-names: Gerald M
+      orcid: https://orcid.org/0000-0001-8762-8703
+    - family-names: Reiser
+      given-names: Michael B
+      orcid: https://orcid.org/0000-0002-4108-4517
+  doi: 10.1101/2024.04.16.589741
+  identifiers:
+    - type: doi
+      value: 10.1101/2024.04.16.589741
+    - type: url
+      value: http://dx.doi.org/10.1101/2024.04.16.589741
+  title: Connectome-driven neural inventory of a complete visual system
+  url: http://dx.doi.org/10.1101/2024.04.16.589741
+  database: Crossref
+  date-published: 2024-04-18
+  year: 2024
+  month: 4
+  publisher:
+    name: Cold Spring Harbor Laboratory
+  type: article

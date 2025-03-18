@@ -10,6 +10,8 @@ import jinja2
 from neuprint import fetch_meta
 from utils.scatterplot_functions import make_covcompl_scatterplot
 from utils.ol_types import OLTypes
+from utils.olc_client import get_server, get_dataset
+from queries.completeness import fetch_ol_types_and_instances
 
 
 def get_meta_data() -> dict:
@@ -137,14 +139,37 @@ def create_scatter_html(
     meta = get_meta_data()
     last_database_edit = get_last_database_edit()
     formatted_date = get_formatted_now()
+    neuprint_url = f"https://{get_server()}/?dataset={get_dataset()}"
+
+
+    # Fetch unique instances and their types
+    neuron_names = fetch_ol_types_and_instances(side='both')
+
+    # # Initialize list for available tags
+    available_tags = []
+
+    # Iterate over rows in the DataFrame
+    for index, row in neuron_names.iterrows():
+        # Determine filename based on presence of multiple instances
+        link_to_instance = row['instance']
+        filename = row['type'] + f" ({link_to_instance[-1]})"
+        tag = {"value": filename, "url": f"{link_to_instance}.html"}
+
+        # Add tag to available_tags if not already present
+        if tag not in available_tags:
+            available_tags.append(tag)
+
 
     # all data dict
     scatter_data_dict = {
         'roi_str': roi_str
       , 'scatter_dict': scatter_list
+      , 'available_tags': available_tags
+
       , 'meta': meta
       , 'formattedDate': formatted_date
       , 'lastDataBaseEdit': last_database_edit
+      , 'neuprint_url': neuprint_url
     }
 
     # render and save
@@ -159,7 +184,7 @@ def create_all_scatter_html() -> None:
     """
     Create interactive scatterplot html pages for ME(R), LO(R) and LOP(R)
     """
-    output_path = Path(find_dotenv()).parent / "results" / "html_pages"  / "scatterplots"
+    output_path = Path(find_dotenv()).parent / "results" / "html_pages"
     output_path.mkdir(parents=True, exist_ok=True)
 
     scatter_list = [

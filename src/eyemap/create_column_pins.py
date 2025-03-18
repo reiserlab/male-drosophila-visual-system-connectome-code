@@ -5,25 +5,14 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: .venv
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
-import os, datetime
-from pathlib import Path
-import sys
-
-import plotly.graph_objects as go
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-
 from utils.ROI_columns import create_center_column_pins, smooth_center_columns_w_median
 from utils.ROI_calculus import load_pins
 from utils.hex_hex import all_hex

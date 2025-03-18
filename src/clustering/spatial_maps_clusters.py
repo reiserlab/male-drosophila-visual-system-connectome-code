@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,33 +13,23 @@
 # ---
 
 # %%
-import sys
 from pathlib import Path
-
 import pandas as pd
-
 from neuprint import NeuronCriteria as NC, merge_neuron_properties
 from neuprint.queries import fetch_neurons, fetch_adjacencies
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
+from dotenv import find_dotenv
 from utils.clustering_functions import \
     set_pca_for_projections \
   , generate_clustering_data
-
 from utils.clustering_plotting_functions import \
     make_spatialmap_two_clusters_fig \
   , make_spatialmap_three_clusters_fig
-
 from utils import olc_client
 
-# %%
 c = olc_client.connect(verbose=True)
+PROJECT_ROOT = Path(find_dotenv()).parent
 
+# %%
 data_dir = PROJECT_ROOT / "results" / "clustering"
 cache_dir = PROJECT_ROOT / "cache" / "clustering"
 

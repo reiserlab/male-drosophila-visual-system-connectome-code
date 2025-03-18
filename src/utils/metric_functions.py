@@ -6,6 +6,7 @@ lobe.
 
 from pathlib import Path
 import concurrent.futures
+import multiprocessing as mp
 from dotenv import find_dotenv
 import pandas as pd
 
@@ -86,7 +87,7 @@ def get_metrics_df(
         # generate a pickle file containing the metrics data frame for each cell type instance.
         # These data frames will contain separate rows for the synapses of that instance type in
         # the ME(R), LO(R) and LOP(R) if necessary.
-        with concurrent.futures.ProcessPoolExecutor(max_workers=48) as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=48, mp_context=mp.get_context('fork')) as executor:
             for instance_df in executor.map(get_completeness_metrics, all_cell_types.to_list()):
                 data_frames.append(instance_df)
 

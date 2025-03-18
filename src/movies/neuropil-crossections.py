@@ -1,17 +1,14 @@
 # %%
 from pathlib import Path
-import sys
 import warnings
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import find_dotenv
 
 import navis.interfaces.neuprint as neu
 
 from utils import olc_client
 c = olc_client.connect()
+PROJECT_ROOT = Path(find_dotenv()).parent
+print(f"Project root directory: {PROJECT_ROOT}")
 
 
 # %%

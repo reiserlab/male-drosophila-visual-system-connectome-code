@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import numpy as np
 
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from utils.ROI_calculus import load_depth_bins, load_layer_thre
@@ -45,7 +44,7 @@ def order_confusion_matrix(
         array of indices that orders the clusters if order_clusters=True
     """
     assert confusion_matrix.shape[0]==len(types_unique),\
-        f"Number of rows of confusion matrix should match number of cell types"    
+        "Number of rows of confusion matrix should match number of cell types"    
 
     if order_types:
         types_ordered = np.array(['Cm1', 'Cm2', 'Cm3', 'Cm4', 'Cm5', 'Cm6', 'Cm7', 'Cm8', 'Cm9', 'Cm10', 'Cm11a', 'Cm11b', 'Cm11c', 'Cm12', 'Cm13', 'Cm14', 'Cm15', 'Cm16', 'Cm17', 'Cm18', \
@@ -55,7 +54,7 @@ def order_confusion_matrix(
         types_ordered = types_ordered[np.isin(types_ordered, types_unique)]
         ind_ordered = np.array([np.where(types_unique==types_ordered[i])[0][0] for i in range(len(types_ordered))])
         assert ind_ordered.shape[0]==types_ordered.shape[0],\
-            f"Type ordering can currently only be done for subsets of the exemplary 68 ME-intrinsic cell types"    
+            "Type ordering can currently only be done for subsets of the exemplary 68 ME-intrinsic cell types"    
         confusion_matrix = confusion_matrix[ind_ordered]
     else:
         types_ordered = types_unique

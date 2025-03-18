@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -18,31 +18,14 @@
 # See "..\queries\completeness.py" for the exact definition. 
 
 # %% Project setup
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
 from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
-# %% Imports
-
-from utils import olc_client
 from utils.excel_exporter import ExcelExporter
 from queries.completeness import fetch_ol_stats
-
-
-# %% Create client and fetch list of comp
+from dotenv import find_dotenv
+from utils import olc_client
 c = olc_client.connect(verbose=True)
+
+PROJECT_ROOT = Path(find_dotenv()).parent
 
 # %% Get the aggregated statistics directly out of the database.
 neuron_types_stats = fetch_ol_stats()

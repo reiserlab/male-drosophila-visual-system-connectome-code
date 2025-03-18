@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -15,15 +15,12 @@
 # %%
 import shutil
 from pathlib import Path
-import sys
 import os
 import fitz
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import find_dotenv
 
+PROJECT_ROOT = Path(find_dotenv()).parent
+print(f"Project root directory: {PROJECT_ROOT}")
 
 # %% [markdown]
 # Helper notebook to generate the Catalog from single pages.

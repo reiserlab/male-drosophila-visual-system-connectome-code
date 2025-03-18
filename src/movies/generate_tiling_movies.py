@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,14 +13,6 @@
 # ---
 
 # %%
-import sys
-from pathlib import Path
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-
 from utils.neuron_bag import NeuronBag
 from utils.movie_maker import generate_tiling_movie_json
 from utils.metric_functions import get_completeness_metrics

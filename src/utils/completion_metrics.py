@@ -2,13 +2,13 @@ from time import sleep
 from random import random
 
 import concurrent.futures
+import multiprocessing as mp
 from pathlib import Path
 from textwrap import dedent
 
 from dotenv import find_dotenv
 import pandas as pd
 from neuprint import fetch_all_rois, fetch_custom
-from utils import olc_client
 
 from utils.column_features_helper_functions import find_neuropil_hex_coords
 
@@ -169,7 +169,7 @@ def fetch_cxns_per_col(
             print('neurons')
 
     mydf = pd.DataFrame()
-    with concurrent.futures.ProcessPoolExecutor(max_workers=48) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=48, mp_context=mp.get_context('fork')) as executor:
         for r0 in executor.map(call_fun, col_hex_ids['column'].to_list()):
             mydf = pd.concat([mydf, r0])
 
@@ -221,7 +221,6 @@ def fetch_info_for_column(
         downstream : int
             number of downstream connections
     """
-    olc_client.connect(verbose=False)
     assert seg_or_neu in ['Segment', 'Neuron'], "Must be Segment or Neuron"
     fname = Path(find_dotenv()).parent / 'cache' / 'completeness'\
         / f'cxn_df_{column}_{seg_or_neu}.pickle'

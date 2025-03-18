@@ -5,44 +5,25 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.5
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
-# %load_ext autoreload
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
 from pathlib import Path
-import sys
-import csv
-
-import numpy as np
 import pandas as pd
-
 from IPython.display import display, HTML
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-print(f"Project root directory: {PROJECT_ROOT}")
-
+from dotenv import find_dotenv
 from utils.neuroglancer_plotter import image_saver, group_plotter as ng_group_plotter
-
 from utils.ng_view import NG_View
-
 from utils import olc_client
+
 c = olc_client.connect(verbose=True)
+PROJECT_ROOT = Path(find_dotenv()).parent
+print(f"Project root directory: {PROJECT_ROOT}")
 
 # %%
 res_df = pd.DataFrame(data={'hex1_id':[], 'hex2_id':[]})

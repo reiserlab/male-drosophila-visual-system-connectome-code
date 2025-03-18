@@ -139,18 +139,30 @@ class OLInstance(ABC):
         Instance specific resample rate based on the file sizes for the dynamic plots. Larger 
         neurons are resampled at a worse rate.
 
+        Returns
+        -------
+        sample_rate : float
+            downsampling rate for navis
+
         TODO: move this to a `/params/*` file
         """
-        rtn = 0.2
-        if self.name in [ # 0.2 resampling >= 75MB
-            'OA-AL2i1_R', 'DNp27_L', 'Li32_R', 'MeVC11_L', 'MeVPOL1_L', 'MeVPOL1_R', 'Li33_R'
-          , 'Pm12_R', 'Li38_L', 'Cm34_R', 'Cm31b_R', 'LPi4b_R', 'LoVCLo3_L', 'MeVC25_R', 'LT33_L'
-          , 'LoVCLo3_R', 'LT56_R', 'MeVC1_L']:
-          rtn = 0.05
+        rtn = 0.08
+        if self.name in [
+            'Cm31a_R', 'Cm31b_R', 'Cm35_R', 'DNp27_L', 'DNp27_R', 'LPi2b_R', 'LPi4b_R'
+          , 'LT1b_R', 'LT33_L', 'LT56_R', 'LT79_R', 'Li33_R', 'Li38_L', 'LoVCLo3_L'
+          , 'LoVCLo3_R', 'MeVC11_L', 'MeVC1_L', 'MeVC23_R', 'MeVC25_R', 'MeVPOL1_L'
+          , 'MeVPOL1_R', 'Mi19_R', 'OA-AL2i1_R', 'Pm12_R']:
+            rtn = 0.02
         elif self.name in [
-            'MeVCMe1_R', 'MeVCMe1_L', 'LPi12_R', 'CT1_L', 'DCH_L', 'DNpe053_L', 'DNpe053_R'
-          , 'LoVC16_R', 'OA-AL2i2_R',  'DNp30_R', 'DNp30_L', 'VCH_L', 'OLVC5_R', 'aMe17e_R'
-          , 'H2_R', 'LT11_R', 'MeVPLp1_R', 'Pm11_R', 'OA-AL2i3_R', 'LT58_R', 'Li16_R'
-          , 'Pm13_R', 'MeVPLp1_L']:
-          rtn = 0.1
+            '5-HTPMPV03_L', '5-HTPMPV03_R', 'Cm34_R', 'DCH_L', 'DNp30_L', 'DNp30_R'
+          , 'DNpe053_L', 'DNpe053_R', 'H2_R', 'LPi12_R', 'LT11_R', 'LT58_R', 'Li16_R', 'Li32_R'
+          , 'LoVC16_R', 'MeVCMe1_L', 'MeVCMe1_R', 'MeVPLp1_L', 'MeVPLp1_R', 'OA-AL2i2_R'
+          , 'OA-AL2i3_R', 'OLVC5_R', 'Pm11_R', 'Pm13_R', 'VCH_L', 'aMe17a_R', 'aMe17e_R']:
+            rtn = 0.01
+        elif self.name in [
+            'Am1_R', 'Li39_L', 'LPi21_R' ]:
+            rtn = 0.005
+        elif self.name in [
+            'CT1_L']:
+            rtn = 0.0007
         return rtn

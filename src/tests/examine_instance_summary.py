@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: .venv
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -20,24 +20,10 @@
 # The class might be useful for other applications and here we explain how to access the data.
 
 # %%
-# %load_ext autoreload
-# %autoreload 2
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
-# %%
-# %autoreload 2
-from neuprint import NeuronCriteria as NC
-
-import navis
-import navis.interfaces.neuprint as neu
-
 from utils import olc_client
+from utils.instance_summary import InstanceSummary
+import plotly.graph_objects as go
+import scipy
 
 c = olc_client.connect(verbose=True)
 
@@ -46,12 +32,7 @@ c = olc_client.connect(verbose=True)
 #
 
 # %%
-# %autoreload 2
-
-from utils.instance_summary import InstanceSummary
-
 insum = InstanceSummary('Mi1_R', connection_cutoff=None, per_cell_cutoff=1.0)
-
 
 # %% [markdown]
 # Basic descriptions of the instance are available, including a cell count:
@@ -80,8 +61,6 @@ print(f"Consensus NT: {insum.consensus_nt}")
 # Get the top 5 connecting upstream and downstream instance names:
 
 # %%
-
-
 print(f"Top 5 Upstream: {insum.top5_upstream}")
 
 print(f"Top 5 Downstream: {insum.top5_downstream}")
@@ -91,36 +70,24 @@ print(f"Top 5 Downstream: {insum.top5_downstream}")
 # Get all synapses and their depth
 
 # %%
-
 print(f"columns: {insum.columns}")
-
 
 # %% [markdown]
 # Retrieve the synapses and their depth for each cell.
 
 # %%
-
 print(f"synapses: {insum.synapses}")
-
-
 
 # %% [markdown]
 # Get the column innervation
 
 # %%
-
 print(f"Innervation: {insum.innervation}")
-
 
 # %% [markdown]
 # Simple examples for innervation plots
 
 # %%
-# fig = go.Figure()
-import plotly.graph_objects as go
-import scipy
-
-
 for roi in ['ME(R)', 'LO(R)', 'LOP(R)']:
 
     inn = insum.innervation[insum.innervation['roi']==roi]

@@ -1,10 +1,23 @@
-# Created by https://www.toptal.com/developers/gitignore/api/python,dotenv,visualstudiocode,macos,windows,linux,juputernotebooks,r
-# Edit at https://www.toptal.com/developers/gitignore?templates=python,dotenv,visualstudiocode,macos,windows,linux,juputernotebooks,r
+# Created by https://www.toptal.com/developers/gitignore/api/python,dotenv,visualstudiocode,macos,windows,linux,jupyternotebooks,r
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,dotenv,visualstudiocode,macos,windows,linux,jupyternotebooks,r
 
 ### dotenv ###
 .env
 
-#!! ERROR: juputernotebooks is undefined. Use list command to see defined gitignore types !!#
+### JupyterNotebooks ###
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/
+
 
 ### Linux ###
 *~
@@ -303,7 +316,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/python,dotenv,visualstudiocode,macos,windows,linux,juputernotebooks,r
+# End of https://www.toptal.com/developers/gitignore/api/python,dotenv,visualstudiocode,macos,windows,linux,jupyternotebooks,r
 
 
 ### autoenv
@@ -311,6 +324,7 @@ $RECYCLE.BIN/
 
 ### private files not to share on github
 private/
+.client_secret.json
 
 ### markdown files inside docs overwrite 
 !docs/*md
@@ -327,7 +341,9 @@ results/fig_summary
 results/eyemap
 results/gallery
 results/cov_compl
+results/summary_plots
 results/html_pages
+results/nt
 
 ### NeuVid Mesh Cache
 neuVidNeuronMeshes/
@@ -350,3 +366,10 @@ params/\~.*
 .snakemake
 workflow/.*
 logs/*
+
+### YP upload
+.client_secret.json
+
+# pixi environments
+.pixi
+*.egg-info

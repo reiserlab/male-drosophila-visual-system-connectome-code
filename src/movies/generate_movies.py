@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,18 +13,6 @@
 # ---
 
 # %%
-import sys
-from pathlib import Path
-
-import pandas as pd
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
-from queries.completeness import fetch_ol_types
 from utils.neuron_bag import NeuronBag
 from utils.movie_maker import generate_movie_json
 from utils.ol_types import OLTypes

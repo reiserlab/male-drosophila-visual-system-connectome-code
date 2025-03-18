@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,13 +13,6 @@
 # ---
 
 # %%
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-
 from utils.ROI_plots import plot_pin_assignment\
   , find_max_pin_length\
   , find_max_pin_deviation\
@@ -87,6 +80,8 @@ plot_specs['cmax'] = find_max_pin_volume()
 fig = plot_pin_volume_subplot(cfg.style, sizing, plot_specs)
 fig.show()
 
+# Expected run time: 15m
+
 # %% [markdown]
 # Plot the number of `pre` and `post` synapses for all cells from all cell types that innervate the right optic lobe across the depths of the columns, within each main optic lobe region (ME, LO, LOP).
 
@@ -117,8 +112,13 @@ fig = plot_synapses_per_depth(
 )
 fig.show()
 
+# Expected run time: 45m
+
 # %% [markdown]
 # Create plots showing synapse assignments to columns (for specific cell-types depending on the neuropil).
 
 # %%
+# generate results/eyemap/[ME|LO|LOP]_column_assignment.pdf
 plot_pin_assignment()
+
+# Expected run time: 20m

@@ -1,177 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
 <head>
-    <title>Cell Type Explorer Cover Page</title>
+    <title>Start Page .:. Cell Type Explorer .:. Connectome-driven neural inventory of a complete visual system</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="styles/jquery-3.7.1.min.js"></script>
+    <script src="styles/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="styles/jquery-ui.min.css">
     <link rel="stylesheet" href="styles/chota.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <style>
-
-            /* Center the main content and add maximum width */
-        body > .container {
-            max-width: 1400px; /* or any other max-width you prefer */
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 1rem; /* This adds some padding within the container */
-            padding-right: 1rem; /* This adds some padding within the container */
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .images-row {
-            display: flex;
-            justify-content: center; /* Adjust this if you want to align images differently */
-            flex-wrap: nowrap; /* Prevents the images from wrapping */
-            overflow-x: auto; /* Allows scrolling on small screens */
-         }
-
-        .images-row img {
-            height: auto; /* Maintains the aspect ratio of the images */
-        }
-
-        .images-row img:nth-child(3) {
-            margin-left: 10px;
-            padding: 45px;
-            flex: 1; /* Assigns a flex grow factor to the first and last images */
-            max-width: 30%; /* Adjusts maximum width as necessary */
-        }
-
-        .images-row img:nth-child(2){
-            flex: 1; /* Assigns a flex grow factor to the first and last images */
-            max-width: 30%; /* Adjusts maximum width as necessary */
-        }
-
-        .images-row img:nth-child(1){
-            padding: 70px;
-            flex: 1; /* Assigns a flex grow factor to the first and last images */
-            max-width: 35%; /* Adjusts maximum width as necessary */
-        }
-
-        .search-bar-container {
-            display: flex;
-            justify-content: center; /* Aligns items to the start of the container */
-            margin-top: 5rem;
-        }
-        .ui-widget {
-            margin-right: 10px; /* Adds some space between the search bar and the help icon */
-            justify-content: center;
-        }
-        #lines {
-            width: 300px; /* Makes the search bar narrower */
-            justify-content: center;
-        }
-        .help {
-            cursor: pointer;
-            display: inline-block; /* Ensures the question mark is treated as inline for alignment */
-            margin-left: -150px; /* Adjust the space between the search bar and the question mark */
-            vertical-align: middle; /* Aligns the question mark with the middle of the search bar */
-        }
-        .example-text {
-            margin-top: 2rem;
-            text-align: center; 
-        }
-
-        .nav-right a:link, .nav-right a:visited {
-            color: #007bff; /* Blue color for links */
-            text-decoration: none; /* Optional: removes underline from links */
-        }
-
-        .nav-right a:hover {
-            color: #0056b3; /* Darker blue color on hover */
-            text-decoration: underline; /* Optional: adds underline on hover */
-        }
-
-        .nav-right a:active {
-            color: #004299; /* Even darker blue color when the link is clicked */
-        }
-        .h1-divider {margin-top: 5rem}
-        footer{position:fixed;bottom:0;}
-
-    </style>
-</head>
-<body>
-
+    <link rel="stylesheet" href="styles/ol_connectome.css">
+    <script>
+    $(document).ready(function() {
+        $(function() {
+            var availableTags = {{ available_tags | tojson }};
+            $("#lines").autocomplete({
+                source: availableTags,
+                select: function(event, ui) {
+                    window.location = ui.item.url;
+                }
+            });
+            $("#menulines").autocomplete({
+                source: availableTags,
+                select: function(event, ui) {
+                    window.location = ui.item.url;
+                }
+            });
+        });
+    });
+    </script>
+    </head>
+    <body>
     <div class="container">
         <nav class="nav">
-                <div class="nav-right">
-                    <a href="index.html">Home</a>
+            <div class="nav-left">
+                    <a class="active" href="index.html">Home</a>
                     <a href="cell_types.html">Cell Types</a>
+                    <details class="dropdown">
+                        <summary>Coverage</summary>
+                        <div class=card>
+                            <p><a href="scatterplots-ME.html">Spatial Coverage Medulla</a></p>
+                            <p><a href="scatterplots-LO.html">Spatial Coverage Lobula</a></p>
+                            <p><a href="scatterplots-LOP.html">Spatial Coverage Lobula Plate</a></p>
+                        </div>
+                    </details>
                     <a href="webpages_glossary.html">Glossary</a>
-                    <a href="https://www.youtube.com/@HHMIJanelia/featured">YouTube</a>
-                    <a href="https://neuprint.janelia.org/?dataset=optic-lobe:v1.0">neuPrint</a>
-                </div>
+                    </div>
+            <div class="nav-center">
+                <a class="brand">Cell Type Catalog</a>
+            </div>
+            <div class="nav-right">
+                <form class="col"><input id="menulines" type="text" placeholder="cell type name" /></form>
+                <a href="https://github.com/reiserlab/male-drosophila-visual-system-connectome-code"><img src="https://icongr.am/simple/github.svg?size=32&amp;color=333333" alt="icon"></a>
+                <a href="https://www.youtube.com/@ReiserLab"><img src="https://icongr.am/simple/youtube.svg?size=32&amp;color=cc0000" alt="icon"></a>
+                <a href="{{neuprint_link}}">neuPrint</a>
+            </div>
         </nav>
-
-       <header class="row">
+        <header class="row">
             <div class="col">
-                <h1 class="is-center"><b>Male <i>Drosophila</i> Visual System Connectome - Cell Type Explorer</b></h1>
+                <h1 class="text-center">Male <i>Drosophila</i> Visual System Connectome</h1>
             </div>
         </header>
-
-        <!-- Image Section -->
-        <div class="images-row">
-            <img src="images/OL_layers_EM.png" width="500" height="500" alt="EM data with layer outlines overlaid">
-            <img src="images/rois_shell.png" width="500" height="500" alt="Shell outline of drosophila brain and optic lobe regions">
-            <img src="images/im12_LCs.png" width="500" height="500" alt="Image of reconstructed LPC and LLPC neuron types from the drosophila right optic lobe connectome">
+        <div class="row">
+            <div class="col is-center hide-md hide-sm hide-xs"><img src="images/OL_layers_EM.png" width="500" height="500" alt="EM data with layer outlines overlaid"></div>
+            <div class="col is-center"><img src="images/rois_shell.png" width="500" height="500" alt="Shell outline of drosophila brain and optic lobe regions"></div>
+            <div class="col is-center hide-sm hide-xs"><img src="images/im12_LCs.png" width="500" height="500" alt="Image of reconstructed LPC and LLPC neuron types from the drosophila right optic lobe connectome"></div>
         </div>
-
-        <!-- Search Bar Section -->
-        <div class="search-bar-container">
-            <div class="ui-widget">
-                <label for="lines"><strong>Search by cell type:</strong></label>
-                <input id="lines">
-                <label for="lines"><em>e.g. Tm2, LPT7, Dm9</em></label>
+        <div class="row">
+            <div class="col-4 card">
+                    <h3>Navigate List</h3>
+                    <p>View <a href="cell_types.html">list of all available cell types</a>, grouped by <a href="cell_types.html#OL_intrinsic">Optic Neuropil Intrinsic Neurons (ONIN)</a>, <a href="cell_types.html#OL_connecting">Optic Neuropil Connecting Neurons (ONCN)</a>, <a href="cell_types.html#VPN">Visual Projection Neurons (VPN)</a>, <a href="cell_types.html#VCN"> Visual Centrifugal Neurons (VCN)</a>, and <a href="cell_types.html#other">other neurons</a>.</p>
+            </div>
+            <div class="col-4 card">
+                <h3>Find Cell Type</h3>
+                <label for="lines">Search by cell type:</label>
+                <input id="lines" type="text" placeholder="cell type name" />
+                <p class="text-dark"><em>e.g. <a href="Tm2_R.html">Tm2 (R)</a>, <a href="LPT60_R.html">LPT60 (R)</a>, <a href="Dm9_R.html">Dm9 (R)</a></em></p>
+            </div>
+            <div class="col-4 card">
+                    <h3>Spatial Coverage</h3>
+                    <p>View spatial coverage interactive plots:
+                    <ul>
+                        <li><a href="scatterplots-ME.html">Medulla</a></li>
+                        <li><a href="scatterplots-LO.html">Lobula</a></li>
+                        <li><a href="scatterplots-LOP.html">Lobula Plate</a></li>
+                    </ul>
+                    </p>
             </div>
         </div>
-
-        <div class="example-text">
-            <p><a href="cell_types.html"><b>View list of all available cell types here</b></a></p>
-        </div>
-
-        <div>
-            <p class="is-center"><b>View spatial coverage interactive plots:&nbsp;</b>
-            {% set links = {
-                'Medulla': 'scatterplots/scatterplots-ME.html',
-                'Lobula': 'scatterplots/scatterplots-LO.html',
-                'Lobula Plate': 'scatterplots/scatterplots-LOP.html'
-            } -%}
-            {%- for name, url in links.items() -%}
-                <a href="{{ url }}"><b> {{ name }}</b></a>{%- if not loop.last -%},&nbsp;{% endif -%}
-            {%- endfor -%}
-            </p>
-        </div>
-
-        <div class="example-text">
-            <a href="https://doi.org/10.1101/2024.04.16.589741"><b>Read the manuscript here</b></a>
-        </div>
-
-        <script>
-            $(function() {
-                var availableTags = {{ available_tags | tojson }};
-                $("#lines").autocomplete({
-                    source: availableTags,
-                    select: function(event, ui) {
-                        window.location = ui.item.url;
-                    }
-                });
-            });
-            </script>
-                    
-                    
-        
-        <footer class="row">
-            <div class="col">
-                <em>Pages Updated {{ formattedDate }}</em> | 
-                <em>Source</em>: {{ meta['dataset'] }} with UUID {{ meta['uuid'] }} | 
-                <em>Last database edit</em> {{ lastDataBaseEdit }}
+        <div class="row">
+            <div class="col card">
+                <h3>Manuscript</h3>
+                <p>Read the current manuscript at <a href="https://doi.org/10.1101/2024.04.16.589741">bioRxiv</a> (also <a href="https://www.biorxiv.org/content/10.1101/2024.04.16.589741v1">v1</a>).</a></p>
             </div>
-        </footer>
+            <div class="col card">
+                <h3>Source Code</h3>
+                <p>Follow the <a href="https://github.com/reiserlab/male-drosophila-visual-system-connectome-code">source code</a> to generate most panels or look at the <a href="https://github.com/reiserlab/male-drosophila-visual-system-connectome">resources for this website</a>.</p>
+            </div>
+        </div>
     </div>
+    <footer class="container">
+        <div class="row">
+            <div class="col text-center">
+                <hr />
+                <p><em>Pages Updated {{ formattedDate }}</em> | 
+                <em>Source</em>: {{ meta['dataset'] }} with UUID {{ meta['uuid'] }} | 
+                <em>Last database edit</em> {{ lastDataBaseEdit }}</p>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </body>
 </html>
-

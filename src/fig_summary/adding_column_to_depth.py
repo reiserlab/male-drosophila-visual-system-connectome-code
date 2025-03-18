@@ -5,35 +5,22 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.15.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
-#     name: ol-connectome
+#     name: python3
 # ---
 
 # %%
-from pathlib import Path
-import sys
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
 import numpy as np
-
 import plotly.graph_objects as go
 import pandas as pd
-
-# %%
 # load some helper functions
 from utils.ROI_calculus import find_depth, find_hex_ids
 from utils.celltype_conn_by_roi import CelltypeConnByRoi
 from utils import olc_client
 
-
-# %%
 c = olc_client.connect(verbose=True)
 
 # %%
@@ -84,7 +71,6 @@ syn_out_w_coldep['syn_type'] = 'output'
 syn_inp_w_coldep['syn_type'] = 'input'
 
 # %%
-
 inp_out_w_coldep = pd.concat([syn_inp_w_coldep[['bodyId', 'bodyId_conn', 'syn_type', 'depth', 'col_id', 'M_layers']], syn_out_w_coldep[['bodyId', 'bodyId_conn', 'syn_type', 'depth', 'col_id', 'M_layers']]])
 
 # %%

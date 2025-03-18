@@ -40,20 +40,11 @@ function arguments and options.
 """
 
 
-import sys
 from pathlib import Path
-
 import click
-
 import fitz
-
 import pandas as pd
-from dotenv import load_dotenv, find_dotenv
-
-load_dotenv()
-PROJECT_ROOT = Path(
-    find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
+from dotenv import find_dotenv
 
 from utils.ol_types import OLTypes
 from utils.summary_plotter import SummaryPlotter
@@ -167,8 +158,8 @@ def plot(group, per_page, main_group):
     you can see which instance will be included by running the `get` command. Note that the group
     is a 0-based count.
     """
-    my_client = olc_client.connect()
-    result_dir = PROJECT_ROOT / 'results' / 'fig_summary'
+    _ = olc_client.connect()
+    result_dir = Path(find_dotenv()).parent / 'results' / 'fig_summary'
     result_dir.mkdir(parents=True, exist_ok=True)
     assert group >= 0 ,\
         f"group must be >0, not {group}"

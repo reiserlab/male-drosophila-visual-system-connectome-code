@@ -5,28 +5,25 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-c-kernel
+#     display_name: default
 #     language: python
-#     name: ol-c-kernel
+#     name: python3
 # ---
 
 # %%
 from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
+from dotenv import find_dotenv
+
+import pandas as pd
+from utils.morpho_clustering_functions import create_morpho_data, cluster_morpho_data, create_morpho_confusion_matrix, find_clustering_scores
+from utils.plotting_functions import plot_confusion_matrix_w_colors, plot_morpho_feature_vectors
 
 from utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%
-import pandas as pd
-from utils.morpho_clustering_functions import create_morpho_data, cluster_morpho_data, create_morpho_confusion_matrix, find_clustering_scores
-from utils.plotting_functions import plot_confusion_matrix_w_colors, plot_morpho_feature_vectors
 
 # %%
 #number of clusters

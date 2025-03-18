@@ -1,0 +1,5 @@
+restart-times: 2
+cores: 5
+executor: local
+set-threads:
+    - get_one_page=2

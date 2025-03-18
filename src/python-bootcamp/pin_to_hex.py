@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -17,7 +17,6 @@ from pathlib import Path
 import pandas as pd
 
 from dotenv import find_dotenv
-
 
 def convert_pin_pickle_to_csv(roi_str:str, remove_empty:bool=False):
     """

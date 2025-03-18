@@ -5,37 +5,24 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: 'Python 3.11.5 (''.venv'': venv)'
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
-
-# %%
-# %load_ext autoreload
-"""
-This cell does the initial project setup.
-"""
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
 
 # %%
 """ Imports related to data loading """
 from neuprint import NeuronCriteria as NC
 from neuprint import fetch_neurons
 
-
-from utils import olc_client
-c = olc_client.connect(verbose=True)
-
 from utils.neuron_bag import NeuronBag
 from utils.ol_neuron import OLNeuron
+
+from utils import olc_client
+
+c = olc_client.connect(verbose=True)
 
 # %% [markdown]
 # ## This notebook shows how to get column and layer rois for the star neuron
@@ -66,7 +53,6 @@ a_bag.get_body_ids(a_bag.size)
 # ### Defining the star neuron as the first item in the list of sorted bodyIds – the closest bodyId to the central (18,18) column in the ME(R) (in this case)
 
 # %%
-
 neuron = OLNeuron(a_bag.first_item)
 
 star_neuron = neuron.get_body_id()

@@ -5,51 +5,32 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.15.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
-#     name: ol-connectome
+#     name: python3
 # ---
 
 # %%
-# %load_ext autoreload
-
 from pathlib import Path
-import sys
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import find_dotenv
 import numpy as np
-
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
-
-
-# %%
-
-# %autoreload 2
 # load some helper functions
 from utils.celltype_conn_by_roi import CelltypeConnByRoi
 from utils import olc_client
-
-# %%
-
 c = olc_client.connect(verbose=True)
 
 # %%
 # directory to save results
-result_dir = PROJECT_ROOT / 'results' / 'fig_summary'
+result_dir = Path(find_dotenv()).parent / 'results' / 'fig_summary'
 result_dir.mkdir(parents=True, exist_ok=True)
 
 # %%
-
 mi1_obj = CelltypeConnByRoi('Mi1', 'ME(R)')
-
 
 # %%
 t4_names = ['T4a', 'T4b', 'T4c', 'T4d']

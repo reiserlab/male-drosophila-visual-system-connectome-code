@@ -6,23 +6,17 @@ import warnings
 
 from pathlib import Path
 import pickle
-import trimesh
 import pandas as pd
 import numpy as np
 from dotenv import find_dotenv
-from trimesh.transformations import \
-    quaternion_from_euler, quaternion_multiply\
-  , translation_matrix, quaternion_matrix, quaternion_inverse
 
 import navis
 import navis.interfaces.neuprint as neu
-from navis.transforms.affine import AffineTransform
 from neuprint import fetch_neurons, NeuronCriteria as NC
 
 from queries.ol_neuron import \
     fetch_ol_rois_distance, fetch_ol_rois_synapses, fetch_ol_rois_assigned
 
-from utils.ng_view import NG_View
 
 class OLNeuron(ABC):
 

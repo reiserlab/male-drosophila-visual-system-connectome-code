@@ -31,8 +31,7 @@ def plot_rois(
     """
     for roi in roi_list:
         roi_data = get_roi(roi, ignore_cache=True)
-        # FIXME: This currently breaks. NAVIS issue?
-        # navis.simplify_mesh(roi_data, F=resample_precision, inplace=True)
+        navis.simplify_mesh(roi_data, F=resample_precision, inplace=True)
         f_roi = navis.plot3d(roi_data, inline=False)
         if f_roi.data:
             fig.add_trace(f_roi.data[0])
@@ -63,9 +62,7 @@ def get_dynamic_plot(
     --------
     fig : go.Figure
         Representation of the figure.
-
     """
-
     assert 0 < resample_precision <= 1, "Resampling must be >0 and <=1"
 
     cachedir = Path(find_dotenv()).parent / "cache" / "html_pages" / "three_d"
@@ -79,22 +76,19 @@ def get_dynamic_plot(
         star_neuron = olt.get_star(instance_str=instance)
 
         mesh = get_mesh(body_id=star_neuron)
-        # FIXME: this currently breaks. NAVIS issue?
-        # navis.downsample_neuron(mesh, downsampling_factor=1.0/resample_precision, inplace=True)
+        navis.downsample_neuron(mesh, downsampling_factor=1.0/resample_precision, inplace=True)
         fig = go.Figure()
 
-        # colr = (227/255, 66/255, 52/255, 0.7)  # Convert to 0-1 scale for RGB
         m_g = olt.get_main_group(instance[:-2])
         clr_map = {'OL_intrinsic':0, 'OL_connecting':1, 'VPN':2, 'VCN':3, 'other':4}
         colr = OL_COLOR.OL_TYPES.rgba[clr_map[m_g]][:3]
-
 
         # Plot the region ROIs
         roi_list = ['ME(R)', 'LO(R)', 'LOP(R)']
         plot_rois(
             fig=fig
           , roi_list=roi_list
-          , resample_precision=0.05
+          , resample_precision=0.005
         )
 
         # Plot the cell
@@ -106,7 +100,6 @@ def get_dynamic_plot(
             trace.name = cell_type + f" ({instance[-1]})"
             fig.add_trace(trace)
 
-        # Update the layout:
         fig.update_layout(
             margin={'l': 0, 'r': 0, 'b': 10, 't': 0}
           , showlegend=True

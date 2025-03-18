@@ -48,7 +48,7 @@ def generate_flipbook_title():
         outfh.write("duration 7\n")
 
 def generate_traditional_flipbook_title():
-    outfile = Path("cache/movies/flipbook.txt")
+    outfile = Path("cache/movies/flipbook_trad.txt")
     with open(outfile, "w") as outfh:
         outfh.write("file 'flipbook_title.png'\n")
         outfh.write("duration 7\n")

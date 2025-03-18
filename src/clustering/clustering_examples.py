@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,32 +13,20 @@
 # ---
 
 # %%
-import sys
 from pathlib import Path
-
 import pandas as pd
-
 from IPython.display import display
-
-from dotenv import load_dotenv, find_dotenv
-
+from dotenv import find_dotenv
 from neuprint import NeuronCriteria as NC, merge_neuron_properties
 from neuprint.queries import fetch_neurons, fetch_adjacencies
+from utils.clustering_functions import cluster_neurons, generate_clustering_data
+from utils import olc_client
 
-
-load_dotenv()
+c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent
-
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
 print(f"Project root directory: {PROJECT_ROOT}")
 
-from utils import olc_client
-from utils.clustering_functions import cluster_neurons, generate_clustering_data
-
-
 # %%
-c = olc_client.connect(verbose=True)
-
 data_dir = PROJECT_ROOT / 'results' / 'clustering' / 'clustering_results_for_figures'
 cache_dir = PROJECT_ROOT / 'cache' / 'clustering'
 
@@ -121,7 +109,6 @@ cells_per_cluster_by_type = cluster_neurons(
     type_selection=type_selection
   , bid_type=bid_type
   , exclude_from_clustering=exclude_from_clustering
-  , exclude=False
   , fragment_type_dict=fragment_type_dict
   , input_df=conn_df_inputs
   , output_df=conn_df_targets
@@ -160,7 +147,6 @@ cells_per_cluster_by_type = cluster_neurons(
     type_selection=type_selection
   , bid_type=bid_type
   , exclude_from_clustering=exclude_from_clustering
-  , exclude=False
   , fragment_type_dict=fragment_type_dict
   , input_df=conn_df_inputs
   , output_df=conn_df_targets
@@ -185,24 +171,33 @@ type_selections = [
   , ['Tm5a', 'Tm29'], ['Tm29', 'Tm5b']
   , ['Dm8a', 'Dm8b']
 ]
-exclude_R7_R8_Tm5ab_Dm8ab = ['No', 'Yes', 'Yes', 'Yes', 'Yes']
+exclude_R7_R8_Tm5ab_Dm8ab = [False, True, True, True, True]
 
 
 combined_results = pd.DataFrame()
 
 for type_selection, exclude in zip(type_selections, exclude_R7_R8_Tm5ab_Dm8ab):
+
+    type_exclude = exclude_from_clustering
+    if exclude:
+        type_exclude = exclude_from_clustering \
+          + ['R8p', 'R7p', 'R8y', 'R8y', 'R8d', 'R7d', 'Dm8a', 'Dm8b', 'Tm5a', 'Tm5b']
     cells_per_cluster_by_type = cluster_neurons(
         type_selection=type_selection
       , bid_type=bid_type
-      , exclude_from_clustering=exclude_from_clustering
-      , exclude=exclude
+      , exclude_from_clustering=type_exclude
       , fragment_type_dict=fragment_type_dict
       , input_df=conn_df_inputs
       , output_df=conn_df_targets
       , number_of_clusters=2
     )
+    cells_per_cluster_by_type['cell_types'] = ", ".join(type_selection)
+    cells_per_cluster_by_type['R7R8_Tm5b_Dm8ab_connections_excluded'] = exclude
     combined_results = pd.concat([combined_results, cells_per_cluster_by_type])
+
 
 combined_results.to_csv(data_dir / 'clustering_ED_Fig5.csv')
 
 display(combined_results)
+
+# %%

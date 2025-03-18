@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -14,15 +14,8 @@
 
 # %%
 # Import optic lobe components
-import sys
 from pathlib import Path
-import jinja2
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-
+from dotenv import find_dotenv
 
 from queries.completeness import fetch_ol_types_and_instances
 from html_pages.webpage_functions import \
@@ -34,6 +27,7 @@ from utils.ol_color import OL_COLOR
 
 from utils import olc_client
 c = olc_client.connect(verbose=True)
+PROJECT_ROOT = Path(find_dotenv()).parent
 
 
 # %%
@@ -82,18 +76,21 @@ color_mapping_groups = {
 meta = get_meta_data()
 lastDataBaseEdit = get_last_database_edit()
 formattedDate = get_formatted_now()
+neuprint_link = f"{c.server}/?dataset={c.dataset}"
 
 # %%
 output_path = PROJECT_ROOT / 'results' / 'html_pages'
 
 # Data for the index page
 index_data_dict = {
-    'mylist': mylist,
-    'full_group_names': full_group_names,
-    'meta': meta,
-    'formattedDate' : formattedDate,
-    'lastDataBaseEdit' : lastDataBaseEdit,
-    'color_mapping_groups' : color_mapping_groups
+    'mylist': mylist
+  , 'full_group_names': full_group_names
+  , 'available_tags': available_tags
+  , 'meta': meta
+  , 'formattedDate' : formattedDate
+  , 'lastDataBaseEdit' : lastDataBaseEdit
+  , 'color_mapping_groups' : color_mapping_groups
+  , 'neuprint_link': neuprint_link
 }
 
 render_and_save_templates(
@@ -110,6 +107,7 @@ cover_data_dict = {
   , 'meta': meta
   , 'lastDataBaseEdit' : lastDataBaseEdit
   , 'formattedDate' : formattedDate
+  , 'neuprint_link': neuprint_link
 }
 render_and_save_templates(
     "index.html.jinja"
@@ -120,6 +118,14 @@ render_and_save_templates(
 # %%
 render_and_save_templates(
     "webpages_glossary.html.jinja"
-  , {}
+  , {
+      'neuprint_link': neuprint_link
+    , 'available_tags': available_tags
+    , 'formattedDate' : formattedDate
+    , 'lastDataBaseEdit' : lastDataBaseEdit
+    , 'meta': meta
+  }
   , output_path / "webpages_glossary.html"
 )
+
+# %%

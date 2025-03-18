@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
@@ -23,23 +23,6 @@
 #
 # Many modern Python libraries ([plotting](https://matplotlib.org/), [machine learning](https://scikit-learn.org/), other [scientific libraries](https://scipy.org/)) are compatible with pandas. Pandas are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen) in [neuprint-python](https://github.com/connectome-neuprint/neuprint-python). Below I show how to navigate pandas DataFrames and some basic operations.
 
-# %% Project setup
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
 # %% [markdown]
 # ## Download data from Neuprint
 #
@@ -54,12 +37,11 @@ import pandas as pd
 from neuprint import NeuronCriteria as NC, fetch_neurons
 from utils import olc_client
 
-
 c = olc_client.connect(verbose=True)
 
 medula_criteria = NC(rois="ME(R)")
 
-neuron_me_df, roi_counts_df = fetch_neurons(medula_criteria, client=c)
+neuron_me_df, roi_counts_df = fetch_neurons(medula_criteria)
 
 # %% [markdown]
 # The next step is not really necessary since pandas is automatically imported by `neuprint-python`, but I want to map the 6-character name `pandas` to the much shorter alias `pd`. This is almost considered a standard for using pandas…

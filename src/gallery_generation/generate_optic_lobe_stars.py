@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -16,18 +16,10 @@
 # ## Fill and save the template
 
 # %%
-import sys
 import os
 import warnings
 import math
-from pathlib import Path
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
+from dotenv import load_dotenv
 from utils.neuron_bag import NeuronBag
 from utils.gallery_filler import generate_gallery_json
 from utils.rend_params import get_rend_params
@@ -35,6 +27,7 @@ from utils import olc_client
 from utils.ol_types import OLTypes
 from utils.ol_color import OL_COLOR
 
+load_dotenv()
 c = olc_client.connect(verbose=True)
 
 # %%

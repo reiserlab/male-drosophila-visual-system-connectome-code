@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,25 +13,13 @@
 # ---
 
 # %%
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
-import sys
 from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-
+from dotenv import find_dotenv
 from utils import olc_client
-c = olc_client.connect(verbose=True)
-
 from utils.coverage_metric_functions import plot_coverage_metric_histogram
+
+c = olc_client.connect(verbose=True)
+PROJECT_ROOT = Path(find_dotenv()).parent
 
 # %% metadata={}
 style = {

@@ -2,18 +2,8 @@
 # # Make neurotransmitter related plots
 
 # %%
-"""
-This cell does the initial project setup.
-If you start a new script or notebook, make sure to copy & paste this part.
-
-A script with this code uses the location of the `.env` file as the anchor for
-the whole project (= PROJECT_ROOT). Afterwards, code inside the `src` directory
-are available for import.
-"""
 import re
-import sys
 import math
-from pathlib import Path
 
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -26,21 +16,18 @@ from scipy.optimize import curve_fit
 
 from statsmodels.formula.api import ols
 
-from dotenv import load_dotenv, find_dotenv
-
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
 from utils.plotting_functions import plot_heatmap
 from utils.metric_functions import get_metrics_df
 from utils.ol_color import OL_COLOR
 from utils.neurotransmitter import get_special_neuron_list, get_nt_for_bid
 
-# %%
+from dotenv import find_dotenv
+from pathlib import Path
 from utils import olc_client
 c = olc_client.connect(verbose=True)
+
+PROJECT_ROOT = Path(find_dotenv()).parent
+print(f"Project root directory: {PROJECT_ROOT}")
 
 # %%
 # set dirs

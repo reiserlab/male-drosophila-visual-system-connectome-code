@@ -17,11 +17,11 @@ Here we provide a quick connection between figure panels and the script that pro
 | Fig 2a      | `gallery_generation/generate_optic_lobe_neurons_of_interest.ipynb`                                               |
 | Fig 2b(1)   | (no script)                                                                                                      |
 | Fig 2b(2)   | `gallery_generation/generate_optic_lobe_neurons_of_interest.ipynb`                                               |
-| Fig 2c      | `clustering/spatial_maps_clustering.ipynb`                                                                       |
+| Fig 2c      | `clustering/spatial_maps_clusters.ipynb`                                                                         |
 | Fig 2d      | `clustering/clustering_examples.ipynb`                                                                           |
 | Fig 2e      | `gallery_generation/generate_optic_lobe_neurons_of_interest.ipynb`                                               |
 | Fig 2f      |                                                                                                                  |
-| Fig 2g,h    | `clustering/spatial_maps_clustering.ipynb`                                                                       |
+| Fig 2g,h    | `clustering/spatial_maps_clusters.ipynb`                                                                         |
 | Fig 2i      | `summary_plots/plot_fig1_ed_fig2_panels.ipynb`                                                                   |
 | Fig 3a      |                                                                                                                  |
 | Fig 3b      |                                                                                                                  |
@@ -49,15 +49,14 @@ Here we provide a quick connection between figure panels and the script that pro
 | Fig 5f(1)   | `column_features/plot_cov_compl_scatter_plots.ipynb`                                                             |
 | Fig 5f(2,3) | `gallery_generation/generate_optic_lobe_neurons_of_interest.ipynb`                                               |
 | Fig 6       | `gallery_generation/generate_full_brain_groups_non_ol.ipynb`                                                     |
-| Fig 7       | `gallery_generation/generate_full_brain_groups_non_ol.ipynb`                                                     |
-| Fig 8       | manual                                                                                                           |
-| Fig 8e,f    | `fig_summary/summary_figure_8ef.ipynb` [^3]                                                                      |
-| Fig 9a      |                                                                                                                  |
-| Fig 9b      |                                                                                                                  |
+| Fig 7a…g    | manual                                                                                                           |
+| Fig 7e,f    | `fig_summary/summary_7ef_ed14a.ipynb` [^3]                                                                       |
+| Fig 7h      |                                                                                                                  |
+| Fig 7i      | manual                                                                                                           |
 
 [^1]: for Fig 1b(1): import meshes, Camera anterior to the animal {location: {X:48572, Y: 50608: Z: 24976}, rotation: {X:270°, Y:0°, Z:-2°}}; Fig 1b(2): view from ventral to dorsal along dorsoventral axis; Fig 1b(3): lateral view
 [^2]: Neuroglancer states are also stored in the `params` folder as json (you can copy&paste into Neuroglancer's "Edit JSON state").
-[^3]: Synapse distribution by depth from the summary file is manually copied to Fig. 8e,f
+[^3]: Synapse distribution by depth from the summary file is manually copied to Fig. 7e,f
 
 
 ## Extended Figures
@@ -75,15 +74,14 @@ Here we provide a quick connection between figure panels and the script that pro
 | ED 2e         | (screenshot https://neuroglancer-demo.appspot.com/#!gs://flyem-user-links/short/Nern-et-al_FigED2e.json, [^2]) |
 | ED 3a         |                                                                                                                |
 | ED 3b         | manual                                                                                                         |
-| ED 4a…e       | `clustering/spatial_maps_clustering.ipynb`                                                                     |
-| ED 5a         |                                                                                                                |
-| ED 5b         |                                                                                                                |
+| ED 4a…e       | `clustering/spatial_maps_clusters.ipynb`                                                                     |
+| ED 5a,b       | `pale_yellow/plot_pale_yellow.ipynb`                                                                           |
 | ED 5c         |                                                                                                                |
-| ED 5d         | `clustering/spatial_maps_clustering.ipynb`, `clustering/clustering_examples.ipynb`                             |
+| ED 5d         | `clustering/spatial_maps_clusters.ipynb`, `clustering/clustering_examples.ipynb`                               |
 | ED 5e         | `gallery_generation/generate_optic_lobe_neurons_of_interest.ipynb`                                             |
-| ED 5f         |                                                                                                                |
-| ED 6a         |                                                                                                                |
-| ED 6b         |                                                                                                                |
+| ED 5f         | `pale_yellow/plot_pale_yellow.ipynb`                                                                           |
+| ED 6a         | `eyemap/plot_pin_assignment.ipynb`                                                                             |
+| ED 6b         | `eyemap/plot_mi1_t4_alignment.ipynb`                                                                           |
 | ED 6c,d       | `snakemake generate_optic_lobe_custom` [^4]                                                                    |
 | ED 7a,b       | `eyemap/plot_pin_assignment.ipynb`                                                                             |
 | ED 8a         |                                                                                                                |
@@ -94,9 +92,10 @@ Here we provide a quick connection between figure panels and the script that pro
 | ED 10e        | `column_features/make_coverage_factor_hist.ipynb`                                                              |
 | ED 11         | `gallery_generation/generate_full_brain_types_dorsal_rim.ipynb`                                                |
 | ED 12         | `gallery_generation/generate_full_brain_types_ame.ipynb`                                                       |
-| ED 13a(2,4,6) |                                                                                                                |
-| ED 14a        |                                                                                                                |
-| ED 14b,c      |                                                                                                                |
+| ED 13         | `gallery_generation/generate_full_brain_groups_non_ol.ipynb`                                                   |
+| ED 14         | `fig_summary/summary_7ef_ed14a.ipynb` [^3]                                                                     |
+| ED 15         | manual                                                                                                         |
+| ED 16         | manual                                                                                                         |
 
 
 [^4]: The description JSON files are in `src/gallery_generation`, the `snakemake` target copies the files to `results/gallery-description`, so it gets rendered with all the other optic lobe descriptions (see Methods section).
@@ -107,7 +106,8 @@ The extended data table is genrerate from this script:
 
 | Table         | script                                                                                                         |
 | ------------- | -------------------------------------------------------------------------------------------------------------- |
-| ET 1          |`tables/get_table1_celltypelist.ipynb`                                                                          |
+| ET 1          | `tables/get_table1_celltypelist.ipynb`                                                                         |
+| ET 4          | `eyemap/create_mi1_t4_alignment.ipynb`                                                                         |
 
 
 ## Supplemental Figures
@@ -130,7 +130,7 @@ The extended data table is genrerate from this script:
 
 | Table         | script                                                                                                         |
 | ------------- | -------------------------------------------------------------------------------------------------------------- |
-| Sup Table 1   |                                                                                                                |
+| Sup Table 1   | `tables/get_table1_celltypelist.ipynb`                                                                         |
 | Sup Table 2   |                                                                                                                |
 | Sup Table 3   | `eyemap/assign_columnar_types_to_hex.ipynb`                                                                    |
 | Sup Table 4   |                                                                                                                |
@@ -144,4 +144,4 @@ The extended data table is genrerate from this script:
 
 Videos on YouTube are produces via this script:
 
-The Website is generated via this script: `html_pages/generate_html-pages_from_scratch.ipynb`
+The Website is generated via this script: `snakemake generate_website`

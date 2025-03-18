@@ -5,11 +5,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.15.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
-#     name: ol-connectome
+#     name: python3
 # ---
 
 # %% [markdown]
@@ -17,13 +17,7 @@
 
 # %%
 from pathlib import Path
-import sys
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import find_dotenv
 import numpy as np
 import plotly.graph_objects as go
 import pandas as pd
@@ -35,7 +29,7 @@ from utils.hex_hex import \
 
 # %%
 # directory to save results
-result_dir = PROJECT_ROOT / 'results' / 'fig_ME_col_occupancy'
+result_dir = Path(find_dotenv()).parent / 'results' / 'fig_ME_col_occupancy'
 result_dir.mkdir(parents=True, exist_ok=True)
 
 # %%
@@ -191,4 +185,6 @@ fig.show()
 
 # %%
 # save figure
-# fig.write_image(result_dir / 'column_celltypes_v2.pdf')
+fig.write_image(result_dir / 'column_celltypes_v2.pdf')
+
+# %%

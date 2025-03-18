@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 import argparse
 from dotenv import find_dotenv
-sys.path.append(str(Path(find_dotenv()).parent.joinpath('src')))
 from utils.plot_config import PlotConfig
 from utils.pdf_maker import PDFMaker
 

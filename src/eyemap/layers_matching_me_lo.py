@@ -5,22 +5,14 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.5
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
-from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-
 import pandas as pd
 
 from utils import olc_client
@@ -248,13 +240,11 @@ plot_med_lob(
 # Plot Lobula Layer "Rainbow"
 
 plot_layers({
-    'Lo1:Tm1-T5': Tm1_T5, 'Lo2:tm2-LC4': tm2_LC4, 'Lo3:T3-LC11': T3_LC11
-  , 'Lo4:Tm4-LC4': tm4_LC4, 'Lo4:Tm6/14-LC4': tm614_LC11
-  , 'Lo5B:Tm20-LC16': tm20_LC16, 'Lo5B:Tm20-LPLC1': tm20_LPLC1
-  , 'Lo5B:Tm20-LPLC2': tm20_LPLC2
-})
-
-
+        'Lo1:Tm1-T5': Tm1_T5, 'Lo2:tm2-LC4': tm2_LC4, 'Lo3:T3-LC11': T3_LC11
+      , 'Lo4:Tm4-LC4': tm4_LC4, 'Lo4:Tm6/14-LC4': tm614_LC11
+      , 'Lo5B:Tm20-LC16': tm20_LC16, 'Lo5B:Tm20-LPLC1': tm20_LPLC1
+      , 'Lo5B:Tm20-LPLC2': tm20_LPLC2}
+  , colormap_name="colorbrewer:Paired")
 
 # %%
 # Lobula Layer 1

@@ -1,20 +1,13 @@
 """
 Functions for generating the 'striped' Dm3 videos in 'src/movies/generate_json_Dm3.ipynb'
 """
-import sys
 from pathlib import Path
 import jinja2
 import pandas as pd
 import numpy as np
 from cmap import Color
 
-
-from dotenv import load_dotenv, find_dotenv
-
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import find_dotenv
 
 from utils.ol_neuron import OLNeuron
 from utils.neuron_bag import NeuronBag
@@ -162,7 +155,7 @@ def generate_movie_description(
     assert (len(central_hex_column) > number_of_neighbors),\
         "reconsider your number of neighbors"
 
-    template_path = f"{PROJECT_ROOT}/src/movies"
+    template_path = Path(find_dotenv()).parent / "src" / "movies"
     environment = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))
     template = environment.get_template(template)
 

@@ -967,7 +967,7 @@ def ticks_from_max(maxval:int) -> tuple[np.array, int, list]:
     cmapp = Colormap("reds_5").lut()
 
     # Assert that x is an integer
-    assert isinstance(maxval, int), f"Expected an integer, got {type(maxval).__name__}."
+    assert maxval.is_integer(), f"Expected an integer, got {type(maxval).__name__}."
     assert maxval >= 0, f"number must be unsigned integer (>=0), not {maxval}."
 
     # Create the colormap based on the maxval.

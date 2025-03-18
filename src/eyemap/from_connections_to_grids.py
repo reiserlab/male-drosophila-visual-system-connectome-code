@@ -5,33 +5,28 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.5
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: ol-connectome
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
 from pathlib import Path
-import sys
-
 import pandas as pd
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
-data_path = Path(PROJECT_ROOT, 'results', 'eyemap')
-
+from dotenv import find_dotenv
 from utils.layer_tools import\
     fetch_neuron_pairs\
   , hexify_med_lob\
   , merge_and_color\
   , get_com_and_hex
-
 from utils import olc_client
+
+PROJECT_ROOT = Path(find_dotenv()).parent
+print(f"Project root directory: {PROJECT_ROOT}")
+data_path = PROJECT_ROOT / 'results' / 'eyemap'
+
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]
@@ -39,6 +34,8 @@ c = olc_client.connect(verbose=True)
 
 # %%
 layers = {'ME2':['L2', 'Tm1'], 'ME10': ['Mi1', 'T4[abcd]']}
+
+data_path.mkdir(parents=True, exist_ok=True)
 
 for layer, neurons in layers.items():
     hexgrid = get_com_and_hex(neurons[0], neurons[1], pickle_path=data_path)

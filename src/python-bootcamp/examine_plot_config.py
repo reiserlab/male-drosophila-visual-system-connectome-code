@@ -5,34 +5,23 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: .venv
+#     display_name: default
 #     language: python
 #     name: python3
 # ---
 
 # %%
-# %load_ext autoreload
 from pathlib import Path
-import sys
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath("src")))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import find_dotenv
 
-
-# %%
-# %autoreload 2
 from utils.plot_config import PlotConfig
 
 # %%
-data_path = Path(find_dotenv()).parent / "results" / "gallery-descriptions"
+data_path = Path(find_dotenv()).parent / "src" / "gallery_generation"
 
-# pcfg = PlotConfig(data_path / "Group_HS_cells.json")
-
-pcfg = PlotConfig(data_path / "Optic-Lobe_OLi_C2.json")
+pcfg = PlotConfig(data_path / "Optic-Lobe_OLi_Fig1_LoVC16_darker.json")
 
 # %%
 pcfg.name
@@ -47,4 +36,31 @@ pcfg.bid_dict
 pcfg.camera
 
 # %%
-pcfg.rois
+for roi in pcfg.rois:
+    print(roi.is_visible)
+
+# %%
+for neuron in pcfg.neurons:
+    for sl in neuron.slicers:
+        print(sl.is_named)
+
+# %%
+pcfg.text_dict
+
+# %%
+pcfg.directory
+
+# %%
+pcfg.basename
+
+# %%
+pcfg.max_slice
+
+# %%
+pcfg.scalebar
+
+# %%
+if pcfg.scalebar:
+    print("has scalebar")
+else:
+    print("has no scalebar")

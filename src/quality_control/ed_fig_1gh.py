@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,31 +13,23 @@
 # ---
 
 # %%
-import sys
 import re
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-
 from IPython.display import display
-
 from neuprint import NeuronCriteria as NC, merge_neuron_properties, NotNull
 from neuprint.queries import fetch_adjacencies, fetch_all_rois
+from dotenv import find_dotenv
+from utils.column_plotting_functions import plot_per_col_simple
+from utils import olc_client
 
-from dotenv import load_dotenv, find_dotenv
-
-load_dotenv()
+c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
 print(f"Project root directory: {PROJECT_ROOT}")
 
-from utils import olc_client
-from utils.column_plotting_functions import plot_per_col_simple
-
 # %%
-c = olc_client.connect(verbose=True)
 
 data_dir = PROJECT_ROOT / "results" / "quality_control_figure"
 cache_dir = PROJECT_ROOT / "cache" / "quality_control_figure"
@@ -384,7 +376,7 @@ fig.show()
 
  # saving the plot (used in ED Fig1g) as .html version (interactive) and pdf
 output_dir = data_dir / 'plots'
-output_dir.mkdir(exist_ok=True)
+output_dir.mkdir(exist_ok=True, parents=True)
 fig.write_html(output_dir / "ED_Fig1g.html")
 fig.write_image(output_dir / "ED_Fig1g.pdf", width=700, height=700)
 

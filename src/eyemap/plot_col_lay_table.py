@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -13,23 +13,12 @@
 # ---
 
 # %%
-from pathlib import Path
-import sys
-
 import numpy as np
 import pandas as pd
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-    
-from utils import olc_client
-c = olc_client.connect(verbose=True)
-
-# %%
 from utils.ROI_calculus import load_pins, load_layer_thre
 from utils.helper import get_data_path
+from utils import olc_client
+c = olc_client.connect(verbose=True)
 
 # %%
 conv_to_um = 8/1000

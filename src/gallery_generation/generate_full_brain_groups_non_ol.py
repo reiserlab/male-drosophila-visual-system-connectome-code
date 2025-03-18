@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.4
+#       jupytext_version: 1.16.7
 #   kernelspec:
 #     display_name: default
 #     language: python
@@ -16,15 +16,8 @@
 # ## Fill and save the template
 
 # %%
-import sys
 import os
-from pathlib import Path
-
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-PROJECT_ROOT = Path(find_dotenv()).parent
-sys.path.append(str(PROJECT_ROOT.joinpath('src')))
-print(f"Project root directory: {PROJECT_ROOT}")
+from dotenv import load_dotenv
 
 from utils.neuron_bag import NeuronBag
 from utils.gallery_filler import generate_gallery_json
@@ -34,6 +27,7 @@ from utils.ol_color import OL_COLOR
 from utils.ol_types import OLTypes
 
 c = olc_client.connect(verbose=True)
+load_dotenv()
 
 # %%
 olt = OLTypes()
@@ -83,7 +77,7 @@ for group_name, n_types_in_group in groups_by_types.groupby('figure_group'):
         camera_dict = get_rend_params('camera', the_view)
         scalebar_dict = get_rend_params('scalebar', the_view)
 
-        a_bag = NeuronBag(cell_type=row['type'], side='R-dominant')
+        a_bag = NeuronBag(cell_type=row['type'], side=row['hemisphere'])
 
         sorted_body_ids = a_bag.get_body_ids(a_bag.size)
         body_id_list = sorted_body_ids.tolist()
