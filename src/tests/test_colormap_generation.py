@@ -14,7 +14,7 @@
 
 # %%
 import numpy as np
-from utils.column_plotting_functions import ticks_from_max
+from madvisc.utils.column_plotting_functions import ticks_from_max
 import plotly.graph_objects as go
 
 # %% [markdown]

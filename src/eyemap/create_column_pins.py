@@ -13,11 +13,11 @@
 # ---
 
 # %%
-from utils.ROI_columns import create_center_column_pins, smooth_center_columns_w_median
-from utils.ROI_calculus import load_pins
-from utils.hex_hex import all_hex
+from madvisc.utils.ROI_columns import create_center_column_pins, smooth_center_columns_w_median
+from madvisc.utils.ROI_calculus import load_pins
+from madvisc.utils.hex_hex import all_hex
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

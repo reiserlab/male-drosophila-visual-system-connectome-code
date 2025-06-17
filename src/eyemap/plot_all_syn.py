@@ -13,8 +13,8 @@
 # ---
 
 # %% metadata={}
-from utils import olc_client
-from utils.ROI_plots import plot_all_syn
+from madvisc.utils import olc_client
+from madvisc.utils.ROI_plots import plot_all_syn
 
 c = olc_client.connect(verbose=True)
 

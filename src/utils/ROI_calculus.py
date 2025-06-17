@@ -4,9 +4,9 @@ from scipy import spatial
 import navis
 import warnings
 
-from utils.hex_hex import all_hex
-from utils.helper import get_data_path
-from queries.coverage_queries import fetch_pin_points
+from madvisc.utils.hex_hex import all_hex
+from madvisc.utils.helper import get_data_path
+from madvisc.queries.coverage_queries import fetch_pin_points
 
 def find_per_columnbin_spanned_no_cols(
     syn_df
@@ -629,6 +629,6 @@ def create_column_pins():
 
 
 # Needs to be at the end because of circular import
-from utils.ROI_layers import create_ol_layer_boundaries, make_large_mesh
-from utils.ROI_columns import create_center_column_pins, smooth_center_columns_w_median
+from madvisc.utils.ROI_layers import create_ol_layer_boundaries, make_large_mesh
+from madvisc.utils.ROI_columns import create_center_column_pins, smooth_center_columns_w_median
 

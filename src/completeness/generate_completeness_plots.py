@@ -13,8 +13,8 @@
 # ---
 
 # %%
-from utils.completeness_plots import generate_completeness_plots
-from utils import olc_client
+from madvisc.utils.completeness_plots import generate_completeness_plots
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

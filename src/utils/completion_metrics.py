@@ -10,7 +10,7 @@ from dotenv import find_dotenv
 import pandas as pd
 from neuprint import fetch_all_rois, fetch_custom
 
-from utils.column_features_helper_functions import find_neuropil_hex_coords
+from madvisc.utils.column_features_helper_functions import find_neuropil_hex_coords
 
 
 def get_upstream_downstream_connections(roi_str:list=None) -> pd.DataFrame:

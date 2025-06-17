@@ -7,8 +7,8 @@ import pandas as pd
 from neuprint import \
     fetch_neurons, merge_neuron_properties, fetch_adjacencies, NeuronCriteria as NC
 
-from utils.ol_types import OLTypes
-from utils.ol_color import OL_COLOR
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.ol_color import OL_COLOR
 
 
 def add_color_group(

@@ -15,10 +15,10 @@
 # %%
 from IPython.display import display
 
-from utils import olc_client
-from utils.ol_types import OLTypes
+from madvisc.utils import olc_client
+from madvisc.utils.ol_types import OLTypes
 
-from utils.overall_summary_queries import \
+from madvisc.utils.overall_summary_queries import \
     make_ncell_nconn_nsyn_data\
   , make_ncell_nconn_data\
   , make_connectivity_sufficiency_data

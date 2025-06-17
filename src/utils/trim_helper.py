@@ -4,8 +4,8 @@ import numpy as np
 
 import kneed
 
-from utils.column_features_functions import hex_from_col
-from queries.coverage_queries import fetch_syn_per_col_for_instance
+from madvisc.utils.column_features_functions import hex_from_col
+from madvisc.queries.coverage_queries import fetch_syn_per_col_for_instance
 
 class TrimHelper(ABC):
 

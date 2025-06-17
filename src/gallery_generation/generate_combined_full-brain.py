@@ -13,9 +13,9 @@
 # ---
 
 # %%
-from utils.pdf_figure_functions import generate_group_pdf, check_for_imgs, check_for_jsons
+from madvisc.utils.pdf_figure_functions import generate_group_pdf, check_for_imgs, check_for_jsons
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

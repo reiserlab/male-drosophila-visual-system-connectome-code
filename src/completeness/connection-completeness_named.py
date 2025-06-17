@@ -19,10 +19,10 @@
 
 # %% Project setup
 from pathlib import Path
-from utils.excel_exporter import ExcelExporter
-from queries.completeness import fetch_ol_stats
+from madvisc.utils.excel_exporter import ExcelExporter
+from madvisc.queries.completeness import fetch_ol_stats
 from dotenv import find_dotenv
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 PROJECT_ROOT = Path(find_dotenv()).parent

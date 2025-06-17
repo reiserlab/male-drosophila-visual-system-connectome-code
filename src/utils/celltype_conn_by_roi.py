@@ -8,7 +8,7 @@ from neuprint import fetch_neurons, fetch_synapse_connections\
   , merge_neuron_properties, fetch_all_rois, fetch_mean_synapses
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC
 
-from utils.helper import slugify
+from madvisc.utils.helper import slugify
 
 class CelltypeConnByRoi(ABC):
     """

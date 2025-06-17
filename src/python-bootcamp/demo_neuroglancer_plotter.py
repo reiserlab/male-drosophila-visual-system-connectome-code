@@ -23,14 +23,14 @@
 from pathlib import Path
 from dotenv import find_dotenv
 
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent
 print(f"Project root directory: {PROJECT_ROOT}")
 
 # %%
-from utils.neuroglancer_plotter import url_plotter, image_saver
+from madvisc.utils.neuroglancer_plotter import url_plotter, image_saver
 #from IPython.display import Image
 
 # %%

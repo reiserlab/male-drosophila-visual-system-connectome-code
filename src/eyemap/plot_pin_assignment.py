@@ -13,7 +13,7 @@
 # ---
 
 # %%
-from utils.ROI_plots import plot_pin_assignment\
+from madvisc.utils.ROI_plots import plot_pin_assignment\
   , find_max_pin_length\
   , find_max_pin_deviation\
   , find_max_pin_volume\
@@ -22,9 +22,9 @@ from utils.ROI_plots import plot_pin_assignment\
   , plot_pin_volume_subplot\
   , plot_synapses_per_depth
 
-from utils.hex_plot_config import HexPlotConfig
+from madvisc.utils.hex_plot_config import HexPlotConfig
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

@@ -15,11 +15,11 @@ import navis
 import cloudvolume
 from trimesh.exchange.export import export_mesh
 
-from utils import olc_client
-from utils.plotter import get_roi
-from utils.ol_neuron import OLNeuron
-from utils.plot_config import PlotConfig
-from utils.plot_roi import PlotRoi
+from madvisc.utils import olc_client
+from madvisc.utils.plotter import get_roi
+from madvisc.utils.ol_neuron import OLNeuron
+from madvisc.utils.plot_config import PlotConfig
+from madvisc.utils.plot_roi import PlotRoi
 
 
 def download_neuron_mesh(

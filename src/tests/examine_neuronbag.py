@@ -18,8 +18,8 @@
 #
 
 # %%
-from utils import olc_client
-from utils.ol_types import OLTypes
+from madvisc.utils import olc_client
+from madvisc.utils.ol_types import OLTypes
 
 c = olc_client.connect()
 
@@ -81,7 +81,7 @@ olt.get_star('C2')
 # … and list all the body IDs
 
 # %%
-from utils.neuron_bag import NeuronBag
+from madvisc.utils.neuron_bag import NeuronBag
 c2bag = NeuronBag('C2')
 c2bag.get_body_ids()
 

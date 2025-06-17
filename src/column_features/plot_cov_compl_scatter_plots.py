@@ -13,11 +13,11 @@
 # ---
 
 # %%
-from utils.scatterplot_functions import make_scatterplot_with_star_cells
-from utils.column_features_helper_functions import find_neuropil_hex_coords
-from utils.scatter_plot_config import ScatterConfig
+from madvisc.utils.scatterplot_functions import make_scatterplot_with_star_cells
+from madvisc.utils.column_features_helper_functions import find_neuropil_hex_coords
+from madvisc.utils.scatter_plot_config import ScatterConfig
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

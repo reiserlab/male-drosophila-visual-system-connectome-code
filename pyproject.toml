@@ -1,7 +1,7 @@
 [project]
-name = "male-drosophila-visual-system-connectome-code"
-version = "1.0-rc.1"
-description = "Supplemental source code for Nern et al. 2024: 'Connectome-driven neural inventory of a complete visual system'"
+name = "male_drosophila_visual_system_connectome_code"
+version = "1.0"
+description = "Supplemental source code for Nern et al. 2025: 'Connectome-driven neural inventory of a complete visual system'. For python imports use the abbreviated name 'madvisc'."
 authors = [
     {name = "Frank Loesche", email = "loeschef@janelia.hhmi.org"},
     {name = "Sanna Koskela", email = "koskelas@janelia.hhmi.org"},
@@ -19,6 +19,18 @@ authors = [
 ]
 requires-python = ">= 3.12"
 dependencies = ["navis>=1.7.0,<2", "kaleido>=0.2.1,<0.3", "snakemake>=8.20.3,<9", "pymupdf>=1.24.10,<2", "snakemake-executor-plugin-lsf>=0.2.6,<0.3", "cloud-volume>=10.4.0,<11", "google-cloud-storage>=2.18.2,<3", "fastcluster>=1.2.6,<2", "neuprint-python>=0.5,<0.6", "neuroglancer>=2.40.1,<3"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+    "madvisc", 
+    "madvisc.utils",
+    "madvisc.queries"
+]
+package-dir = {"madvisc" = "src"}
 
 [tool.pylint.FORMAT]
 max-line-length=99

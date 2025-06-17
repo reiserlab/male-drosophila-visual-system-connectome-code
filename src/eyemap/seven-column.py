@@ -17,9 +17,9 @@ from pathlib import Path
 import pandas as pd
 from IPython.display import display, HTML
 from dotenv import find_dotenv
-from utils.neuroglancer_plotter import image_saver, group_plotter as ng_group_plotter
-from utils.ng_view import NG_View
-from utils import olc_client
+from madvisc.utils.neuroglancer_plotter import image_saver, group_plotter as ng_group_plotter
+from madvisc.utils.ng_view import NG_View
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent
@@ -62,7 +62,7 @@ for clms in [(3,8), (2,8), (4,8), (5,8)]:#, (2,8), (4,8), (3,7), (3,9), (4,7), (
 
 # %%
 # %autoreload 2
-from utils.neuroglancer_plotter import image_saver, group_plotter as ng_group_plotter
+from madvisc.utils.neuroglancer_plotter import image_saver, group_plotter as ng_group_plotter
 colors = [
     (0.48, 0.22, 0.28), (0.55, 0.27, 0.20), (0.62, 0.38, 0.17), (0.71, 0.54, 0.22)
   , (0.81, 0.74, 0.40), (0.83, 0.86, 0.61), (0.73, 0.88, 0.76), (0.55, 0.80, 0.81)

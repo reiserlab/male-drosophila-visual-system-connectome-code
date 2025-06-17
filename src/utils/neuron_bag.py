@@ -6,8 +6,8 @@ import pandas as pd
 
 from neuprint import fetch_neurons, fetch_custom, NeuronCriteria as NC
 
-from utils.ol_types import OLTypes
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.ol_neuron import OLNeuron
 
 class NeuronBag(ABC):
     """

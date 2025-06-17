@@ -17,10 +17,10 @@
 from neuprint import NeuronCriteria as NC
 from neuprint import fetch_neurons
 
-from utils.neuron_bag import NeuronBag
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.neuron_bag import NeuronBag
+from madvisc.utils.ol_neuron import OLNeuron
 
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

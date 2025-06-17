@@ -18,23 +18,23 @@ from dotenv import find_dotenv
 
 from neuprint import NeuronCriteria as NC, fetch_neurons
 
-from utils.helper import num_expand
-from utils.ol_types import OLTypes
+from madvisc.utils.helper import num_expand
+from madvisc.utils.ol_types import OLTypes
 
-from utils.ol_color import OL_COLOR
-from utils.ol_instance import OLInstance
-from utils.helper import slugify
-from utils.olc_client import get_server, get_dataset
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.ol_instance import OLInstance
+from madvisc.utils.helper import slugify
+from madvisc.utils.olc_client import get_server, get_dataset
 
-from html_pages.make_spatial_coverage_plots_for_webpages import\
+from madvisc.utils.website_spatial_coverage import\
     plot_synapses_per_column, plot_cells_per_column, make_spatial_coverage_plots_for_webpages
-from html_pages.plotting_to_html import get_dynamic_plot
-from html_pages.webpage_functions import\
+from madvisc.utils.website_plotting import get_dynamic_plot
+from madvisc.utils.website_functions import\
     get_meta_data, get_youtube_link\
   , get_last_database_edit, get_formatted_now
 
-from queries.completeness import fetch_ol_types_and_instances
-from queries.webpage_queries import\
+from madvisc.queries.completeness import fetch_ol_types_and_instances
+from madvisc.queries.webpage_queries import\
     get_layer_synapses, get_roi_synapses, get_io_table, consensus_nt_for_instance
 
 

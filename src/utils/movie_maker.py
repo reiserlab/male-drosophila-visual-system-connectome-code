@@ -4,7 +4,7 @@ from pathlib import Path
 import jinja2
 from dotenv import find_dotenv
 
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.ol_neuron import OLNeuron
 
 
 def generate_movie_json(

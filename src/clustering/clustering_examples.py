@@ -19,8 +19,8 @@ from IPython.display import display
 from dotenv import find_dotenv
 from neuprint import NeuronCriteria as NC, merge_neuron_properties
 from neuprint.queries import fetch_neurons, fetch_adjacencies
-from utils.clustering_functions import cluster_neurons, generate_clustering_data
-from utils import olc_client
+from madvisc.utils.clustering_functions import cluster_neurons, generate_clustering_data
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

@@ -21,13 +21,13 @@ This cell does the initial project setup for the Jupyter notebook.
 """
 from pathlib import Path
 from dotenv import find_dotenv
-from utils import olc_client
+from madvisc.utils import olc_client
 
 PROJECT_ROOT = Path(find_dotenv()).parent
 c = olc_client.connect()
 
 # %%
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.ol_neuron import OLNeuron
 
 # %% [markdown]
 # ## Define a neuron by bodyId

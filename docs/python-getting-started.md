@@ -24,6 +24,11 @@ Setting the plotting backend for navis via the environment is convenient as well
 NAVIS_JUPYTER_PLOT3D_BACKEND=plotly
 ```
 
+## Utility functions
+
+This repository contains a number of utility functions and classes that we used across notebooks. They are also exposed as a python package called `madvisc` for MAle Drosophila VIsual System Connectome. There is currently no detailed documentation for this packages and you will either have to look through the `src/utils` and `src/queries` folders or find the usage in our notebooks and scripts. Anything that is imported via `from madvisc.utils import …` or `from madvisc.queries import …` is part of this package. In a new project, you should be able to import these functions in pixi via `pixi add --pypi 'madvisc @ https://github.com/reiserlab/male-drosophila-visual-system-connectome-code.git'` as a dependency.
+
+
 ## Run the analysis
 
 Now you should be able to run the first analysis by executing `pixi run python src/completeness/connection-completeness_named.py` (if you started a pixi shell before, it is sufficient to run `python src/completeness/connection-completeness_named.py`). Fairly quickly you should see some output describing your configuration and database connection. The analysis takes some time, but after a few minutes the whole output might look like this:

@@ -8,11 +8,11 @@ from cmap import Colormap
 import pandas as pd
 import numpy as np
 
-from utils.column_features_helper_functions import find_neuropil_hex_coords
-from utils.ol_types import OLTypes
-from utils.ol_color import OL_COLOR
-from utils.completion_metrics import fetch_cxn_df
-from utils.metric_functions import get_metrics_df
+from madvisc.utils.column_features_helper_functions import find_neuropil_hex_coords
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.completion_metrics import fetch_cxn_df
+from madvisc.utils.metric_functions import get_metrics_df
 
 
 def load_and_process_df(

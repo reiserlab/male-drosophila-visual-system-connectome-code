@@ -15,13 +15,13 @@
 # %%
 from IPython.display import display
 
-from utils import olc_client
-from utils.trim_helper import TrimHelper
-from utils.column_features_functions import hex_from_col, cov_compl_calc
-from utils.metric_functions import get_completeness_metrics
+from madvisc.utils import olc_client
+from madvisc.utils.trim_helper import TrimHelper
+from madvisc.utils.column_features_functions import hex_from_col, cov_compl_calc
+from madvisc.utils.metric_functions import get_completeness_metrics
 
-from queries.completeness import fetch_ol_types_and_instances
-from queries.coverage_queries import fetch_cells_synapses_per_col
+from madvisc.queries.completeness import fetch_ol_types_and_instances
+from madvisc.queries.coverage_queries import fetch_cells_synapses_per_col
 
 c = olc_client.connect(verbose=True)
 

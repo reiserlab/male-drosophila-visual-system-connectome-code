@@ -16,8 +16,8 @@
 from pathlib import Path
 import pandas as pd
 from dotenv import find_dotenv
-from utils import olc_client
-from utils.ol_neuron import OLNeuron
+from madvisc.utils import olc_client
+from madvisc.utils.ol_neuron import OLNeuron
 
 c = olc_client.connect()
 PROJECT_ROOT = Path(find_dotenv()).parent

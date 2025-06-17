@@ -16,10 +16,10 @@
 from pathlib import Path
 from dotenv import find_dotenv
 
-from utils.instance_summary import InstanceSummary
-from utils.summary_plotter import SummaryPlotter
-from utils.ROI_layers import load_roi_layer_params
-from utils import olc_client
+from madvisc.utils.instance_summary import InstanceSummary
+from madvisc.utils.summary_plotter import SummaryPlotter
+from madvisc.utils.ROI_layers import load_roi_layer_params
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

@@ -13,8 +13,8 @@
 # ---
 
 # %%
-from html_pages.webpage_functions import create_all_scatter_html
-from utils import olc_client
+from madvisc.utils.website_functions import create_all_scatter_html
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

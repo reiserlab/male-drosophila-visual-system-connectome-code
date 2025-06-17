@@ -20,10 +20,10 @@
 # This used to be an issue in the past, this automatic check verifies correctness.
 
 # %%
-from utils.hex_hex import get_hex_df
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.hex_hex import get_hex_df
+from madvisc.utils.ol_neuron import OLNeuron
 import pandas as pd
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

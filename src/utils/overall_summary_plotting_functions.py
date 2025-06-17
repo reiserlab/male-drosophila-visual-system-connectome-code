@@ -8,9 +8,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.io as pio
-from utils.ol_color import OL_COLOR
-from utils.overall_summary_queries import add_color_group
-from utils.overall_summary_table_plotting_functions import \
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.overall_summary_queries import add_color_group
+from madvisc.utils.overall_summary_table_plotting_functions import \
     plot_group_summary_table\
   , plot_neuropil_group_table\
   , plot_neuropil_group_celltype_table\

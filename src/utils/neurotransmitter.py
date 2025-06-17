@@ -6,9 +6,9 @@ import pandas as pd
 from dotenv import find_dotenv
 from neuprint import fetch_neurons, NeuronCriteria as NC
 
-from utils.ol_types import OLTypes
+from madvisc.utils.ol_types import OLTypes
 
-from queries.synapses import fetch_nt_win_synapses
+from madvisc.queries.synapses import fetch_nt_win_synapses
 
 
 def get_nt_for_bid(

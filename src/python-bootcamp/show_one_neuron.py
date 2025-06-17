@@ -25,7 +25,7 @@ from neuprint import NeuronCriteria as NC
 import navis
 import navis.interfaces.neuprint as neu
 
-from utils import olc_client
+from madvisc.utils import olc_client
 
 
 # %% connect to the client and set up search criteria

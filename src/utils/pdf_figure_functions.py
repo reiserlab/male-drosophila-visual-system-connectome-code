@@ -9,9 +9,9 @@ import warnings
 from dotenv import find_dotenv
 from PIL import Image, ImageDraw
 
-from utils.pdf_maker import PDFMaker
-from utils.plot_config import PlotConfig
-from utils.ol_types import OLTypes
+from madvisc.utils.pdf_maker import PDFMaker
+from madvisc.utils.plot_config import PlotConfig
+from madvisc.utils.ol_types import OLTypes
 
 def generate_group_pdf(plot_type:str, pdf_specs:dict):
     """

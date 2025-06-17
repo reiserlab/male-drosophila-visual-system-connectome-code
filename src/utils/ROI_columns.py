@@ -11,9 +11,9 @@ from scipy import interpolate
 import navis.interfaces.neuprint as neu
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_synapses
 
-from utils.hex_hex import get_hex_df
-from utils.align_mi1_t4 import create_alignment
-from utils.helper import get_data_path
+from madvisc.utils.hex_hex import get_hex_df
+from madvisc.utils.align_mi1_t4 import create_alignment
+from madvisc.utils.helper import get_data_path
 
 def find_holes(pts_all, pts):
     """

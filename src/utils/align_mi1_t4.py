@@ -3,7 +3,7 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC
 
-from utils.helper import get_data_path
+from madvisc.utils.helper import get_data_path
 from neuprint import fetch_neurons, fetch_synapse_connections,\
     merge_neuron_properties
 

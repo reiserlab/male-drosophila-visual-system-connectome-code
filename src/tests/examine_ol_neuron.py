@@ -14,9 +14,9 @@
 
 # %%
 import pandas as pd
-from utils import olc_client
-from utils.neuron_bag import NeuronBag
-from utils.ol_neuron import OLNeuron
+from madvisc.utils import olc_client
+from madvisc.utils.neuron_bag import NeuronBag
+from madvisc.utils.ol_neuron import OLNeuron
 
 c = olc_client.connect()
 

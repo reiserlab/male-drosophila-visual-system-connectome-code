@@ -15,8 +15,8 @@
 # %%
 from pathlib import Path
 from dotenv import find_dotenv
-from utils import olc_client
-from utils.coverage_metric_functions import plot_coverage_metric_histogram
+from madvisc.utils import olc_client
+from madvisc.utils.coverage_metric_functions import plot_coverage_metric_histogram
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

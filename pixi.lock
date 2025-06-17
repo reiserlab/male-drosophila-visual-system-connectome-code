@@ -388,7 +388,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/77/44/b813873f367abf85c76cc16598e64c37d431609fe78357c77f293a816784/yte-1.7.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/fe/42/f8dbc2b9ad59e927940325a22d6d3931d630c3644dae7e2369ef5d9ba230/zope.event-5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/08/2103587ebc989b455cf05e858e7fbdfeedfc3373358320e9c513428290b1/zope.interface-7.2-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      - pypi: .
+      - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/alphashape-1.3.1-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/anyio-4.8.0-pyhd8ed1ab_0.conda
@@ -680,7 +680,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/bf/28/e73d3f585f2608f248d18289a3917598c93fca13b366fcf134625e427dce/deflate-0.7.0-cp312-cp312-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/8f/d7/9322c609343d929e75e7e5e6255e614fcc67572cfd083959cdef3b7aad79/docutils-0.21.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/05/d1/8952806fbf9583004ab479d8f58a9496c3d35f6b6009ddd458bdd9978eaf/dpath-2.2.0-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/9a/4c/d6c628f8f03875d790df8623b2a26ab3e5a91d6fe47879f0cbe02f25b508/dracopy-1.5.0-cp312-cp312-macosx_11_0_universal2.whl
+      - pypi: https://files.pythonhosted.org/packages/27/dd/0897d6f3b32f0644e4e6e6942e0428d6f340619f3837bc51eabb4226f3a6/dracopy-1.5.0-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/5d/b8/f143d907d93bd4a3dd51d07c4e79b37bedbfc2177f4949bfa0d6ba0af647/fastcluster-1.2.6.tar.gz
       - pypi: https://files.pythonhosted.org/packages/61/bf/fd60001b3abc5222d8eaa4a204cd8c0ae78e75adc688f33ce4bf25b7fafa/fasteners-0.19-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e4/b3/a09d34c01df58bbe96b34b20c89345974f7bd1525095b7c30524f915252e/fastremap-1.15.1-cp312-cp312-macosx_10_13_x86_64.whl
@@ -764,7 +764,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/77/44/b813873f367abf85c76cc16598e64c37d431609fe78357c77f293a816784/yte-1.7.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/fe/42/f8dbc2b9ad59e927940325a22d6d3931d630c3644dae7e2369ef5d9ba230/zope.event-5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/68/0b/c7516bc3bad144c2496f355e35bd699443b82e9437aa02d9867653203b4a/zope.interface-7.2-cp312-cp312-macosx_10_9_x86_64.whl
-      - pypi: .
+      - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/alphashape-1.3.1-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/anyio-4.8.0-pyhd8ed1ab_0.conda
@@ -1140,7 +1140,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/77/44/b813873f367abf85c76cc16598e64c37d431609fe78357c77f293a816784/yte-1.7.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/fe/42/f8dbc2b9ad59e927940325a22d6d3931d630c3644dae7e2369ef5d9ba230/zope.event-5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/a2/e9/1463036df1f78ff8c45a02642a7bf6931ae4a38a4acd6a8e07c128e387a7/zope.interface-7.2-cp312-cp312-macosx_11_0_arm64.whl
-      - pypi: .
+      - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_libavif_api-1.2.0-h57928b3_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -1515,7 +1515,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/77/44/b813873f367abf85c76cc16598e64c37d431609fe78357c77f293a816784/yte-1.7.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/fe/42/f8dbc2b9ad59e927940325a22d6d3931d630c3644dae7e2369ef5d9ba230/zope.event-5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/5f/c7/3c67562e03b3752ba4ab6b23355f15a58ac2d023a6ef763caaca430f91f2/zope.interface-7.2-cp312-cp312-win_amd64.whl
-      - pypi: .
+      - pypi: ./
 packages:
 - conda: https://conda.anaconda.org/conda-forge/win-64/_libavif_api-1.2.0-h57928b3_1.conda
   sha256: f76a0271a6606751ad1ee95dbf786b304cce4702de6bf4a7a814c67dded83ba2
@@ -2949,12 +2949,10 @@ packages:
   version: 2.2.0
   sha256: b330a375ded0a0d2ed404440f6c6a715deae5313af40bbb01c8a41d891900576
   requires_python: '>=3.7'
-- pypi: https://files.pythonhosted.org/packages/9a/4c/d6c628f8f03875d790df8623b2a26ab3e5a91d6fe47879f0cbe02f25b508/dracopy-1.5.0-cp312-cp312-macosx_11_0_universal2.whl
+- pypi: https://files.pythonhosted.org/packages/27/dd/0897d6f3b32f0644e4e6e6942e0428d6f340619f3837bc51eabb4226f3a6/dracopy-1.5.0-cp312-cp312-macosx_10_13_x86_64.whl
   name: dracopy
   version: 1.5.0
-  sha256: c2b3e95656e398c5b91558a492e02affdf1d89a44f2366a5fc0f167f0876e105
-  requires_dist:
-  - numpy
+  sha256: fac218b6de5d469ddb655e5af8c7003a98346731a846a39c688bd6f3858935aa
 - pypi: https://files.pythonhosted.org/packages/a2/4b/a6bc3350a44afeba23ed18d9eac82b451f8ae2dd303fc63c640166f6444c/dracopy-1.5.0-cp312-cp312-macosx_11_0_arm64.whl
   name: dracopy
   version: 1.5.0
@@ -7161,10 +7159,10 @@ packages:
   purls: []
   size: 142771
   timestamp: 1713516312465
-- pypi: .
+- pypi: ./
   name: male-drosophila-visual-system-connectome-code
-  version: 1.0rc1
-  sha256: 0657f889058b55152144b15f43810d4920269c889c02743fc9a5aeca35f55fab
+  version: '1.0'
+  sha256: dc0a2b4f8511340ab6f7442d9c3a1b3d2b914440c52efddd412e6b90795d198d
   requires_dist:
   - navis>=1.7.0,<2
   - kaleido>=0.2.1,<0.3

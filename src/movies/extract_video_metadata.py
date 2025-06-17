@@ -22,9 +22,9 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
-from utils.ol_types import OLTypes
-from utils.instance_summary import InstanceSummary
-from utils import olc_client
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.instance_summary import InstanceSummary
+from madvisc.utils import olc_client
 
 def get_authenticated_service(args):
     httplib2.RETRIES = 1

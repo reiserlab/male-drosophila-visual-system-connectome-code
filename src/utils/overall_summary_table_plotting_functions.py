@@ -4,9 +4,9 @@ from dotenv import find_dotenv
 import plotly.graph_objects as go
 import pandas as pd
 
-from utils.ol_color import OL_COLOR
+from madvisc.utils.ol_color import OL_COLOR
 
-from utils.make_overall_summary import\
+from madvisc.utils.make_overall_summary import\
     get_celltypes_groups_df\
   , get_neuropil_df\
   , get_neuropil_groups_celltypes_df\

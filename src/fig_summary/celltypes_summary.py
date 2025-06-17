@@ -20,7 +20,7 @@
 # This notebook is mostly for debugging, use the snakemake rule for parallel execution.
 
 # %%
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

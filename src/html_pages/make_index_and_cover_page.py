@@ -17,15 +17,16 @@
 from pathlib import Path
 from dotenv import find_dotenv
 
-from queries.completeness import fetch_ol_types_and_instances
-from html_pages.webpage_functions import \
+from madvisc.utils.ol_types import OLTypes
+from madvisc.queries.completeness import fetch_ol_types_and_instances
+from madvisc.utils.website_functions import \
     get_meta_data\
   , get_last_database_edit\
   , get_formatted_now\
   , render_and_save_templates
-from utils.ol_color import OL_COLOR
+from madvisc.utils.ol_color import OL_COLOR
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent
 
@@ -49,7 +50,6 @@ for index, row in neuron_names.iterrows():
         available_tags.append(tag)
 
 # %%
-from utils.ol_types import OLTypes
 olt = OLTypes()
 mylist = olt.get_neuron_list(side='both')
 

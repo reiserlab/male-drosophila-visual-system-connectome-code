@@ -17,10 +17,10 @@ from pathlib import Path
 from dotenv import find_dotenv
 
 import pandas as pd
-from utils.morpho_clustering_functions import create_morpho_data, cluster_morpho_data, create_morpho_confusion_matrix, find_clustering_scores
-from utils.plotting_functions import plot_confusion_matrix_w_colors, plot_morpho_feature_vectors
+from madvisc.utils.morpho_clustering_functions import create_morpho_data, cluster_morpho_data, create_morpho_confusion_matrix, find_clustering_scores
+from madvisc.utils.plotting_functions import plot_confusion_matrix_w_colors, plot_morpho_feature_vectors
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 import argparse
 from dotenv import find_dotenv
-from utils.plot_config import PlotConfig
-from utils.pdf_maker import PDFMaker
+from madvisc.utils.plot_config import PlotConfig
+from madvisc.utils.pdf_maker import PDFMaker
 
 
 def set_config(

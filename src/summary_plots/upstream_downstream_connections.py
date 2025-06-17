@@ -15,8 +15,8 @@
 # %%
 from neuprint import fetch_neurons, NeuronCriteria as NC
 
-from utils import olc_client
-from utils.completion_metrics import get_upstream_downstream_connections, get_completion_metrics
+from madvisc.utils import olc_client
+from madvisc.utils.completion_metrics import get_upstream_downstream_connections, get_completion_metrics
 c = olc_client.connect(verbose=True)
 
 

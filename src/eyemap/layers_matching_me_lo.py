@@ -15,8 +15,8 @@
 # %%
 import pandas as pd
 
-from utils import olc_client
-from utils.layer_tools import \
+from madvisc.utils import olc_client
+from madvisc.utils.layer_tools import \
     fetch_neuron_pairs\
     , merge_and_color, hexify_med_lob\
     , plot_med_lob, plot_layers

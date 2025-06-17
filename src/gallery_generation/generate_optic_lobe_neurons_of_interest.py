@@ -19,10 +19,10 @@
 import os
 import random
 from dotenv import load_dotenv
-from utils import olc_client
-from utils.rend_params import get_one_off_params
-from utils.gallery_filler import generate_one_off
-from utils.ol_color import OL_COLOR
+from madvisc.utils import olc_client
+from madvisc.utils.rend_params import get_one_off_params
+from madvisc.utils.gallery_filler import generate_one_off
+from madvisc.utils.ol_color import OL_COLOR
 
 load_dotenv()
 c = olc_client.connect(verbose=True)

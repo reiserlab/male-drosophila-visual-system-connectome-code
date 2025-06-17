@@ -6,8 +6,8 @@ import pandas as pd
 
 import requests
 
-from utils.ROI_calculus import find_hex_ids, find_col_names, find_mesh_layers
-from utils.helper import get_data_path
+from madvisc.utils.ROI_calculus import find_hex_ids, find_col_names, find_mesh_layers
+from madvisc.utils.helper import get_data_path
 
 def region_boxes(vol):
     """

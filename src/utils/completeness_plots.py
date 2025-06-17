@@ -7,9 +7,9 @@ from pathlib import Path
 from dotenv import find_dotenv
 from cmap import Colormap
 
-from utils.column_plotting_functions import plot_per_col_simple
-from utils.scatterplot_functions import make_completeness_scatter
-from utils.completion_metrics import fetch_cxn_df
+from madvisc.utils.column_plotting_functions import plot_per_col_simple
+from madvisc.utils.scatterplot_functions import make_completeness_scatter
+from madvisc.utils.completion_metrics import fetch_cxn_df
 
 
 def generate_completeness_plots(roi_str: str):

@@ -8,7 +8,7 @@ from scipy.cluster import hierarchy
 from sklearn.metrics.cluster import homogeneity_score, completeness_score
 
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_neurons, fetch_synapses
-from utils.ROI_calculus import \
+from madvisc.utils.ROI_calculus import \
     load_depth_bins, find_depth, find_per_columnbin_spanned_no_cols
 
 

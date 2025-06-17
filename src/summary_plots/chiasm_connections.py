@@ -24,11 +24,11 @@ are available for import.
 from pathlib import Path
 import pandas as pd
 from dotenv import find_dotenv
-from utils import olc_client
-from utils.ol_types import OLTypes
-from utils.ol_color import OL_COLOR
-from utils.overall_summary_queries import get_conn_ol_df
-from utils.chiasm_connectivity_plotting_function import plot_chiasm_connectivity
+from madvisc.utils import olc_client
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.overall_summary_queries import get_conn_ol_df
+from madvisc.utils.chiasm_connectivity_plotting_function import plot_chiasm_connectivity
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

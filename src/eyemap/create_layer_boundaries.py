@@ -13,9 +13,9 @@
 # ---
 
 # %%
-from utils.ROI_calculus import create_ol_layer_boundaries
+from madvisc.utils.ROI_calculus import create_ol_layer_boundaries
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

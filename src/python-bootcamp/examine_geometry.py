@@ -20,8 +20,8 @@ import plotly.graph_objects as go
 import numpy as np
 from cmath import pi
 
-from utils.geometry import cart2sph, sph2cart
-from utils.geometry import sph2Mercator
+from madvisc.utils.geometry import cart2sph, sph2cart
+from madvisc.utils.geometry import sph2Mercator
 
 # %% [markdown]
 # ### Transformation between Cartesian <-> spherical coordinates 
@@ -42,7 +42,7 @@ rtp = cart2sph(xyz)
 # https://mathworld.wolfram.com/MollweideProjection.html
 
 # %%
-from utils.geometry import sph2Mollweide
+from madvisc.utils.geometry import sph2Mollweide
 
 # define a few points in [theta, phi] in degree
 pts = np.array([[45,0], [90,0], [45,45], [90,45], [135,-135], [135,-45]])

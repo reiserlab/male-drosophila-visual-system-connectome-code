@@ -10,7 +10,7 @@ from cmap import Colormap
 
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_synapse_connections
 
-from utils.hex_hex import bid_to_hex
+from madvisc.utils.hex_hex import bid_to_hex
 
 def fetch_neuron_pairs(
     cell_type_1:str, cell_type_2:str

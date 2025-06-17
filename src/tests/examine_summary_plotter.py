@@ -16,9 +16,9 @@
 from pathlib import Path
 from dotenv import find_dotenv
 import fitz
-from utils import olc_client
-from utils.summary_plotter import SummaryPlotter
-from utils.instance_summary import InstanceSummary
+from madvisc.utils import olc_client
+from madvisc.utils.summary_plotter import SummaryPlotter
+from madvisc.utils.instance_summary import InstanceSummary
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

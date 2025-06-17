@@ -1,7 +1,7 @@
 import pandas as pd
 
-from utils.ol_types import OLTypes
-from utils.instance_summary import InstanceSummary
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.instance_summary import InstanceSummary
 
 
 def get_depth_df_all() -> pd.DataFrame:

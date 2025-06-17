@@ -14,7 +14,7 @@ import navis
 import navis.interfaces.neuprint as neu
 from neuprint import fetch_neurons, NeuronCriteria as NC
 
-from queries.ol_neuron import \
+from madvisc.queries.ol_neuron import \
     fetch_ol_rois_distance, fetch_ol_rois_synapses, fetch_ol_rois_assigned
 
 

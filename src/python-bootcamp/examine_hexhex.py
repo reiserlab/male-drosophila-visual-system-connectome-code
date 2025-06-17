@@ -17,15 +17,15 @@ from IPython.display import display
 import navis.interfaces.neuprint as navnp
 
 # load some helper functions
-from utils.hex_hex import \
+from madvisc.utils.hex_hex import \
     hex_to_bids\
   , bid_to_hex\
   , get_hex_df\
   , get_incomplete_hex\
   , get_overfull_hex
-from utils.plotter import group_plotter, show_figure
+from madvisc.utils.plotter import group_plotter, show_figure
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect()
 
 # %% [markdown]

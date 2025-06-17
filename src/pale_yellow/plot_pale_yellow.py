@@ -17,12 +17,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from neuprint import NeuronCriteria as NC
 from neuprint import fetch_adjacencies, merge_neuron_properties, fetch_neurons
-from queries.completeness import fetch_ol_types
+from madvisc.queries.completeness import fetch_ol_types
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from dotenv import find_dotenv
-from utils import olc_client
+from madvisc.utils import olc_client
 
 PROJECT_ROOT = Path(find_dotenv()).parent
 print(f"Project root directory: {PROJECT_ROOT}")

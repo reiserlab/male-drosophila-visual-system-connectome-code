@@ -20,8 +20,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 # load some helper functions
-from utils.celltype_conn_by_roi import CelltypeConnByRoi
-from utils import olc_client
+from madvisc.utils.celltype_conn_by_roi import CelltypeConnByRoi
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

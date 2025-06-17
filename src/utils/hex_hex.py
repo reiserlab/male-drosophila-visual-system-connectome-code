@@ -4,7 +4,7 @@ from typing import Union
 
 import pandas as pd
 
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.ol_neuron import OLNeuron
 
 #FIXME(@floesche): integrate results from align_mi1_t4.py
 

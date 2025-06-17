@@ -9,8 +9,8 @@ from cmap import Color
 
 from dotenv import find_dotenv
 
-from utils.ol_neuron import OLNeuron
-from utils.neuron_bag import NeuronBag
+from madvisc.utils.ol_neuron import OLNeuron
+from madvisc.utils.neuron_bag import NeuronBag
 
 
 def get_body_id_by_hex(

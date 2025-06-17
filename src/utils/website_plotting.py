@@ -6,10 +6,10 @@ import navis
 from dotenv import find_dotenv
 import plotly.graph_objects as go
 
-from utils.plotter import get_mesh, get_roi
-from utils.ol_types import OLTypes
-from utils.helper import slugify
-from utils.ol_color import OL_COLOR
+from madvisc.utils.plotter import get_mesh, get_roi
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.helper import slugify
+from madvisc.utils.ol_color import OL_COLOR
 
 
 def plot_rois(

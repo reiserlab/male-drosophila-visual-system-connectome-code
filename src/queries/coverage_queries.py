@@ -3,7 +3,7 @@
 import pandas as pd
 from neuprint import Client
 from neuprint.client import inject_client
-from queries.completeness import fetch_ol_types_and_instances, fetch_ol_types
+from madvisc.queries.completeness import fetch_ol_types_and_instances, fetch_ol_types
 
 @inject_client
 def fetch_cells_synapses_per_col(

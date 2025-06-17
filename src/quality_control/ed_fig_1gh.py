@@ -22,8 +22,8 @@ from IPython.display import display
 from neuprint import NeuronCriteria as NC, merge_neuron_properties, NotNull
 from neuprint.queries import fetch_adjacencies, fetch_all_rois
 from dotenv import find_dotenv
-from utils.column_plotting_functions import plot_per_col_simple
-from utils import olc_client
+from madvisc.utils.column_plotting_functions import plot_per_col_simple
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

@@ -30,10 +30,10 @@ import numpy as np
 import neuprint
 from neuprint import fetch_adjacencies, connection_table_to_matrix, merge_neuron_properties
 from neuprint.queries import fetch_all_rois, fetch_roi_hierarchy
-from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances, fetch_ol_complete
+from madvisc.queries.completeness import fetch_ol_types, fetch_ol_types_and_instances, fetch_ol_complete
 from neuprint import NeuronCriteria as NC
 import matplotlib.pyplot as plt
-from utils import olc_client
+from madvisc.utils import olc_client
 
 pd.options.display.float_format = '{:.2f}'.format
 print(neuprint.__version__)

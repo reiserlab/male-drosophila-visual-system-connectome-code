@@ -13,10 +13,10 @@
 # ---
 
 # %%
-from utils.trim_helper import TrimHelper
-from utils.column_plotting_functions import plot_per_col_subplot
+from madvisc.utils.trim_helper import TrimHelper
+from madvisc.utils.column_plotting_functions import plot_per_col_subplot
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

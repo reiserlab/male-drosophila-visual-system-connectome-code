@@ -15,9 +15,9 @@
 # %%
 import numpy as np
 import pandas as pd
-from utils.ROI_calculus import load_pins, load_layer_thre
-from utils.helper import get_data_path
-from utils import olc_client
+from madvisc.utils.ROI_calculus import load_pins, load_layer_thre
+from madvisc.utils.helper import get_data_path
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

@@ -13,10 +13,10 @@
 # ---
 
 # %%
-from utils import olc_client
-from utils.ol_types import OLTypes
-from utils.overall_summary_queries import add_color_group
-from utils.overall_summary_table_plotting_functions import \
+from madvisc.utils import olc_client
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.overall_summary_queries import add_color_group
+from madvisc.utils.overall_summary_table_plotting_functions import \
     plot_group_summary_table\
   , plot_neuropil_group_table\
   , plot_neuropil_group_celltype_table\

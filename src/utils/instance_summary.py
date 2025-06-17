@@ -8,7 +8,7 @@ from dotenv import find_dotenv
 from scipy.spatial import KDTree
 
 from neuprint import fetch_custom
-from utils.helper import slugify
+from madvisc.utils.helper import slugify
 
 class InstanceSummary(ABC):
 

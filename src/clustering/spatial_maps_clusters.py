@@ -18,13 +18,13 @@ import pandas as pd
 from neuprint import NeuronCriteria as NC, merge_neuron_properties
 from neuprint.queries import fetch_neurons, fetch_adjacencies
 from dotenv import find_dotenv
-from utils.clustering_functions import \
+from madvisc.utils.clustering_functions import \
     set_pca_for_projections \
   , generate_clustering_data
-from utils.clustering_plotting_functions import \
+from madvisc.utils.clustering_plotting_functions import \
     make_spatialmap_two_clusters_fig \
   , make_spatialmap_three_clusters_fig
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 PROJECT_ROOT = Path(find_dotenv()).parent

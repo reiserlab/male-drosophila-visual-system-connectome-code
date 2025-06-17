@@ -33,12 +33,12 @@ from IPython.display import display
 import navis
 import navis.interfaces.neuprint as neu
 
-from utils.hex_hex import hex_to_bids
-from utils.plotter import get_meshes, show_figure, alpha_plane, group_plotter
-from utils.ng_view import NG_View
-from utils.geometry import plane_square
+from madvisc.utils.hex_hex import hex_to_bids
+from madvisc.utils.plotter import get_meshes, show_figure, alpha_plane, group_plotter
+from madvisc.utils.ng_view import NG_View
+from madvisc.utils.geometry import plane_square
 
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

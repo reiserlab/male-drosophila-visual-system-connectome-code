@@ -10,11 +10,11 @@ import multiprocessing as mp
 from dotenv import find_dotenv
 import pandas as pd
 
-from utils.trim_helper import TrimHelper
-from utils.column_features_functions import hex_from_col, cov_compl_calc
-from utils.helper import slugify
-from queries.completeness import fetch_ol_types_and_instances
-from queries.coverage_queries import fetch_cells_synapses_per_col
+from madvisc.utils.trim_helper import TrimHelper
+from madvisc.utils.column_features_functions import hex_from_col, cov_compl_calc
+from madvisc.utils.helper import slugify
+from madvisc.queries.completeness import fetch_ol_types_and_instances
+from madvisc.queries.coverage_queries import fetch_cells_synapses_per_col
 
 
 def get_metrics_df(

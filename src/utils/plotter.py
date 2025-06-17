@@ -25,8 +25,8 @@ import navis
 import navis.interfaces.neuprint as neu
 import cloudvolume as cv
 
-from utils.ng_view import NG_View
-from utils.helper import slugify
+from madvisc.utils.ng_view import NG_View
+from madvisc.utils.helper import slugify
 
 logging.getLogger('navis').setLevel(logging.WARN)
 
@@ -844,7 +844,7 @@ def plot_cns(
 
     plotlist = []
     if show_skeletons:
-        plotlist += [get_skeletons(bodyid)] # from utils.plotter
+        plotlist += [get_skeletons(bodyid)] # from madvisc.utils.plotter
     if show_meshes:
         plotlist += [get_meshes(bodyid)]
     if show_shell:

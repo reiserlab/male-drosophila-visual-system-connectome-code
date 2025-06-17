@@ -22,13 +22,13 @@
 
 # %%
 import navis
-from utils.ol_neuron import OLNeuron
+from madvisc.utils.ol_neuron import OLNeuron
 
 # %% [markdown]
 # Import the helper script `olc_client` and use the `connect()` function to connect to neuPrint.
 
 # %%
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect()
 

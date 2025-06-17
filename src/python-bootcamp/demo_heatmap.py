@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from utils.plotting_functions import plot_heatmap
+from madvisc.utils.plotting_functions import plot_heatmap
 
 # %%
 # make up some data

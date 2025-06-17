@@ -4,10 +4,10 @@ import pandas as pd
 import numpy as np
 from dotenv import find_dotenv
 
-from utils.rend_params import get_rend_params
-from utils.ol_types import OLTypes
-from utils.ol_color import OL_COLOR
-from utils.hex_hex import hex_to_bids
+from madvisc.utils.rend_params import get_rend_params
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.hex_hex import hex_to_bids
 
 def generate_gallery_json(
     type_of_plot:str
@@ -156,7 +156,7 @@ def generate_one_off(
         stucture n_vis{'npil':*,'lay':*}
     neuropil_color : list
         assigns color to neuropil_layers; use new OL_COLOR.OL_NEUROPIL_LAYERS.rgba
-        from utils/ol_color.py
+        from madvisc.utils/ol_color.py
     directory : str
         folder output end up in
     the_view : str

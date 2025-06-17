@@ -6,9 +6,9 @@ import numpy as np
 
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from utils.ROI_calculus import load_depth_bins, load_layer_thre
+from madvisc.utils.ROI_calculus import load_depth_bins, load_layer_thre
 
-from utils.ol_color import OL_COLOR
+from madvisc.utils.ol_color import OL_COLOR
 
 
 def order_confusion_matrix(

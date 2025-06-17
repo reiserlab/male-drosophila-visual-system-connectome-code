@@ -19,9 +19,9 @@
 # Uses similar interface as the `neuroglancer_plotter`. Not used in the paper.
 
 # %%
-from utils.plotter import group_plotter, show_figure
-from utils.neuroglancer_plotter import group_plotter as ng_group_plotter
-from utils import olc_client
+from madvisc.utils.plotter import group_plotter, show_figure
+from madvisc.utils.neuroglancer_plotter import group_plotter as ng_group_plotter
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

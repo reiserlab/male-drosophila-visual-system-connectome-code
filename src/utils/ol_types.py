@@ -10,8 +10,8 @@ import pandas as pd
 
 from dotenv import find_dotenv
 
-from queries.completeness import fetch_ol_types_and_instances
-from utils.helper import num_expand
+from madvisc.queries.completeness import fetch_ol_types_and_instances
+from madvisc.utils.helper import num_expand
 
 class OLTypes(ABC):
 

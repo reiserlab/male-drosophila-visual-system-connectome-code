@@ -24,13 +24,13 @@ from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 
 from neuprint import NeuronCriteria as NC, fetch_neurons
 
-from utils import olc_client
+from madvisc.utils import olc_client
 
-from utils.ol_color import OL_COLOR
-from utils.ol_types import OLTypes
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.ol_types import OLTypes
 
-from queries.webpage_queries import consensus_nt_for_instance
-from html_pages.patterns import shorten_nt_name
+from madvisc.queries.webpage_queries import consensus_nt_for_instance
+from madvisc.utils.website_patterns import shorten_nt_name
 
 PROJECT_ROOT = Path(find_dotenv()).parent
 c = olc_client.connect(verbose=True)

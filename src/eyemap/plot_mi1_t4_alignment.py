@@ -13,8 +13,8 @@
 # ---
 
 # %%
-from utils.ROI_plots import plot_mi1_t4_alignment
-from utils import olc_client
+from madvisc.utils.ROI_plots import plot_mi1_t4_alignment
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

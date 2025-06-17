@@ -16,7 +16,7 @@
 from pathlib import Path
 from dotenv import find_dotenv
 
-from utils.plot_config import PlotConfig
+from madvisc.utils.plot_config import PlotConfig
 
 # %%
 data_path = Path(find_dotenv()).parent / "src" / "gallery_generation"

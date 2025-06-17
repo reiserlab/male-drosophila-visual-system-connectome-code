@@ -13,11 +13,11 @@
 # ---
 
 # %%
-from utils.neuron_bag import NeuronBag
-from utils.movie_maker import generate_tiling_movie_json
-from utils.metric_functions import get_completeness_metrics
+from madvisc.utils.neuron_bag import NeuronBag
+from madvisc.utils.movie_maker import generate_tiling_movie_json
+from madvisc.utils.metric_functions import get_completeness_metrics
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

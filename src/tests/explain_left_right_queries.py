@@ -13,10 +13,10 @@
 # ---
 
 # %%
-from queries.completeness import fetch_ol_types, fetch_ol_types_and_instances
-from utils.neuron_bag import NeuronBag
-from utils.ol_types import OLTypes
-from utils import olc_client
+from madvisc.queries.completeness import fetch_ol_types, fetch_ol_types_and_instances
+from madvisc.utils.neuron_bag import NeuronBag
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

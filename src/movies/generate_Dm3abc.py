@@ -13,8 +13,8 @@
 # ---
 
 # %%
-from utils.dm3_movie_functions import generate_movie_description, get_body_id_by_hex
-from utils import olc_client
+from madvisc.utils.dm3_movie_functions import generate_movie_description, get_body_id_by_hex
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

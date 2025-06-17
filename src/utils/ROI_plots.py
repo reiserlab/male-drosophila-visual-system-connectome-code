@@ -10,18 +10,18 @@ from cmap import Colormap
 from dotenv import find_dotenv
 
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_synapses
-from utils.ROI_calculus import \
+from madvisc.utils.ROI_calculus import \
     load_pins, find_hex_ids, find_straight_hex_ids\
   , load_depth_bins, load_layer_thre
-from utils.helper import get_data_path
-from utils.ROI_columns import load_hexed_body_ids
-from utils.ROI_voxels import voxelize_col_and_lay
-from utils.ol_color import OL_COLOR
-from utils.column_features_functions import hex_from_col, find_cmax_across_all_neuropils
-from utils.column_plotting_functions import plot_per_col
-from utils.column_features_helper_functions import find_neuropil_hex_coords
-from utils.all_syn_functions import get_depth_df_all
-from queries.coverage_queries import fetch_syn_all_types
+from madvisc.utils.helper import get_data_path
+from madvisc.utils.ROI_columns import load_hexed_body_ids
+from madvisc.utils.ROI_voxels import voxelize_col_and_lay
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.column_features_functions import hex_from_col, find_cmax_across_all_neuropils
+from madvisc.utils.column_plotting_functions import plot_per_col
+from madvisc.utils.column_features_helper_functions import find_neuropil_hex_coords
+from madvisc.utils.all_syn_functions import get_depth_df_all
+from madvisc.queries.coverage_queries import fetch_syn_all_types
 
 
 def plot_mi1_t4_alignment(

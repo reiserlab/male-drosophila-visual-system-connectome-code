@@ -9,15 +9,15 @@ from dotenv import find_dotenv
 import pandas as pd
 import plotly.graph_objects as go
 
-from utils.column_features_functions import\
+from madvisc.utils.column_features_functions import\
     find_cmax_across_all_neuropils, hex_from_col
-from utils.column_plotting_functions import plot_per_col
-from utils.hex_plot_config import HexPlotConfig
-from utils.helper import slugify
-from utils.trim_helper import TrimHelper
-from utils.metric_functions import get_metrics_df
+from madvisc.utils.column_plotting_functions import plot_per_col
+from madvisc.utils.hex_plot_config import HexPlotConfig
+from madvisc.utils.helper import slugify
+from madvisc.utils.trim_helper import TrimHelper
+from madvisc.utils.metric_functions import get_metrics_df
 
-from queries.coverage_queries import fetch_cells_synapses_per_col
+from madvisc.queries.coverage_queries import fetch_cells_synapses_per_col
 
 def plot_cells_per_column(
     instance:str

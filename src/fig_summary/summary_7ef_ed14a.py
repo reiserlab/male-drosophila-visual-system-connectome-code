@@ -15,9 +15,9 @@
 # %%
 from pathlib import Path
 from dotenv import find_dotenv
-from utils import olc_client
-from utils.instance_summary import InstanceSummary
-from utils.summary_plotter import SummaryPlotter
+from madvisc.utils import olc_client
+from madvisc.utils.instance_summary import InstanceSummary
+from madvisc.utils.summary_plotter import SummaryPlotter
 
 c = olc_client.connect(verbose=True)
 

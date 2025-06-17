@@ -23,15 +23,15 @@ are available for import.
 """
 from pathlib import Path
 from dotenv import find_dotenv
-from utils import olc_client
+from madvisc.utils import olc_client
 
-from utils.ol_types import OLTypes
-from utils.overall_summary_queries import \
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.overall_summary_queries import \
     add_color_group\
   , make_ncell_nconn_nsyn_data\
   , make_ncell_nconn_data\
   , make_connectivity_sufficiency_data
-from utils.overall_summary_plotting_functions import \
+from madvisc.utils.overall_summary_plotting_functions import \
     plot_ncells_nsyn_linked\
   , plot_summary_scatterplots\
   , make_circles_celltype_groups\

@@ -17,9 +17,9 @@ import numpy as np
 import plotly.graph_objects as go
 import pandas as pd
 # load some helper functions
-from utils.ROI_calculus import find_depth, find_hex_ids
-from utils.celltype_conn_by_roi import CelltypeConnByRoi
-from utils import olc_client
+from madvisc.utils.ROI_calculus import find_depth, find_hex_ids
+from madvisc.utils.celltype_conn_by_roi import CelltypeConnByRoi
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

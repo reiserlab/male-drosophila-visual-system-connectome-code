@@ -24,9 +24,9 @@
 # %%
 from pathlib import Path
 from dotenv import find_dotenv
-from utils.hex_hex import get_hex_df
+from madvisc.utils.hex_hex import get_hex_df
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%

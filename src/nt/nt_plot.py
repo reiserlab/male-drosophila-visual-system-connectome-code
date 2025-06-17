@@ -16,14 +16,14 @@ from scipy.optimize import curve_fit
 
 from statsmodels.formula.api import ols
 
-from utils.plotting_functions import plot_heatmap
-from utils.metric_functions import get_metrics_df
-from utils.ol_color import OL_COLOR
-from utils.neurotransmitter import get_special_neuron_list, get_nt_for_bid
+from madvisc.utils.plotting_functions import plot_heatmap
+from madvisc.utils.metric_functions import get_metrics_df
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.neurotransmitter import get_special_neuron_list, get_nt_for_bid
 
 from dotenv import find_dotenv
 from pathlib import Path
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 PROJECT_ROOT = Path(find_dotenv()).parent

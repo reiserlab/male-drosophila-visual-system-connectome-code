@@ -24,8 +24,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 import scipy
 from scipy.spatial.transform import Rotation
 
-from utils.ng_view import NG_View
-from utils.plotter import get_skeleton
+from madvisc.utils.ng_view import NG_View
+from madvisc.utils.plotter import get_skeleton
 
 
 def _set_ng_view(driver, set_3d=False, background_color='#FFFFFF'):

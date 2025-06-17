@@ -13,9 +13,9 @@ import plotly.io as pio
 
 from plotly.subplots import make_subplots
 
-from utils.ROI_calculus import load_layer_thre
-from utils.ol_color import OL_COLOR
-from utils.ol_types import OLTypes
+from madvisc.utils.ROI_calculus import load_layer_thre
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.ol_types import OLTypes
 
 class SummaryPlotter(ABC):
 

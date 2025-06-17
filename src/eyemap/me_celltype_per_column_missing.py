@@ -25,7 +25,7 @@ import pandas as pd
 from cmap import Colormap
 
 # load some helper functions
-from utils.hex_hex import \
+from madvisc.utils.hex_hex import \
     hex_to_bids\
   , get_hex_df
 

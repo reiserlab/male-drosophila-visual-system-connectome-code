@@ -6,9 +6,9 @@ from neuprint import NeuronCriteria as NC, SynapseCriteria as SC
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
-from utils.ol_color import OL_COLOR
+from madvisc.utils.ol_color import OL_COLOR
 
-from utils.clustering_functions import \
+from madvisc.utils.clustering_functions import \
    make_in_and_output_df \
   , get_row_linkage \
   , cluster_dict_from_linkage \
@@ -16,7 +16,7 @@ from utils.clustering_functions import \
   , cluster_with_type_names \
   , get_combined_synapses_with_stdev \
 
-from utils.clustering_functions import add_two_colors_to_df, add_three_colors_to_df
+from madvisc.utils.clustering_functions import add_two_colors_to_df, add_three_colors_to_df
 
 # global parameters
 CLUSTER1 = 1

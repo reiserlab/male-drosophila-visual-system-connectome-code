@@ -24,15 +24,15 @@ imports related cell selection and plotting
 if you modify any of the libraries, you will only need to rerun this cell, `autoreload` will
 reload your newest version of the code.
 """
-from utils.hex_hex import hex_to_bids
-from utils.plotter import group_plotter, show_figure, save_figure
-from utils.ng_view import NG_View
-from utils.neuron_bag import NeuronBag
+from madvisc.utils.hex_hex import hex_to_bids
+from madvisc.utils.plotter import group_plotter, show_figure, save_figure
+from madvisc.utils.ng_view import NG_View
+from madvisc.utils.neuron_bag import NeuronBag
 
 # %%
 # Imports related to data loading
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

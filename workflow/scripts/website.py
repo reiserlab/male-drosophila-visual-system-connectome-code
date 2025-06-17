@@ -1,7 +1,7 @@
-from utils.ol_types import OLTypes
+from madvisc.utils.ol_types import OLTypes
 
 def get_all_neurons(wildcards):
-    from utils import olc_client
+    from madvisc.utils import olc_client
     c = olc_client.connect(verbose=False)
     olt = OLTypes()
     cell_type_list = olt.get_neuron_list(side='both')

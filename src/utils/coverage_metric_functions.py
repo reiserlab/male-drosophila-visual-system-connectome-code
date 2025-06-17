@@ -2,8 +2,8 @@
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
-from utils.ol_color import OL_COLOR
-from utils.scatterplot_functions import load_and_process_df, get_axis_labels
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.scatterplot_functions import load_and_process_df, get_axis_labels
 
 def plot_coverage_metric_histogram(
     style:dict

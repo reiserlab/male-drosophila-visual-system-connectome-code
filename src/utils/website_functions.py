@@ -8,10 +8,10 @@ import pandas as pd
 import jinja2
 
 from neuprint import fetch_meta
-from utils.scatterplot_functions import make_covcompl_scatterplot
-from utils.ol_types import OLTypes
-from utils.olc_client import get_server, get_dataset
-from queries.completeness import fetch_ol_types_and_instances
+from madvisc.utils.scatterplot_functions import make_covcompl_scatterplot
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.olc_client import get_server, get_dataset
+from madvisc.queries.completeness import fetch_ol_types_and_instances
 
 
 def get_meta_data() -> dict:

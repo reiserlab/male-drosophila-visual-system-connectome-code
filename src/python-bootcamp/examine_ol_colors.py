@@ -28,7 +28,7 @@ from dotenv import find_dotenv
 
 from neuprint import fetch_neurons, NeuronCriteria as NC
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 PROJECT_ROOT = Path(find_dotenv()).parent
@@ -40,7 +40,7 @@ print(f"Project root directory: {PROJECT_ROOT}")
 
 # %%
 # import this to get our optic lobe color palette
-from utils.ol_color import OL_COLOR 
+from madvisc.utils.ol_color import OL_COLOR 
 
 # %%
 """

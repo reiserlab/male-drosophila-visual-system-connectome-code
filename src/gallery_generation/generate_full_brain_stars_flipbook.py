@@ -18,12 +18,12 @@
 # %%
 import os
 from dotenv import load_dotenv
-from utils.neuron_bag import NeuronBag
-from utils.gallery_filler import generate_gallery_json
-from utils.rend_params import get_rend_params
-from utils import olc_client
-from utils.ol_color import OL_COLOR
-from utils.ol_types import OLTypes
+from madvisc.utils.neuron_bag import NeuronBag
+from madvisc.utils.gallery_filler import generate_gallery_json
+from madvisc.utils.rend_params import get_rend_params
+from madvisc.utils import olc_client
+from madvisc.utils.ol_color import OL_COLOR
+from madvisc.utils.ol_types import OLTypes
 
 c = olc_client.connect(verbose=True)
 load_dotenv()

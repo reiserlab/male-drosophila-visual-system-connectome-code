@@ -6,7 +6,7 @@ import alphashape
 
 import navis.interfaces.neuprint as neu
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC, fetch_synapses
-from utils.helper import get_data_path
+from madvisc.utils.helper import get_data_path
 
 def create_edge_ids(
     roi_str = 'ME(R)'
@@ -572,5 +572,5 @@ def find_peak_thresholds(
 
 
 # Needs to be at the end because of circular import
-from utils.ROI_calculus import\
+from madvisc.utils.ROI_calculus import\
     find_depth, load_layer_thre, load_pins, load_depth_bins

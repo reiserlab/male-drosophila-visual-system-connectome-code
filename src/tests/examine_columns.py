@@ -22,11 +22,11 @@
 # %%
 import pandas as pd
 
-from utils.column_features_functions import\
+from madvisc.utils.column_features_functions import\
   find_cmax_across_all_neuropils\
   , cache_syn_df
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 pd.options.plotting.backend = "plotly"
 

@@ -19,9 +19,9 @@
 
 # %%
 from IPython.display import display
-from utils.neurotransmitter import get_special_neuron_list
-from utils.neurotransmitter import get_nt_for_bid
-from utils import olc_client
+from madvisc.utils.neurotransmitter import get_special_neuron_list
+from madvisc.utils.neurotransmitter import get_nt_for_bid
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %% [markdown]

@@ -9,7 +9,7 @@ from scipy.spatial import ConvexHull
 from neuprint import fetch_custom
 from dotenv import find_dotenv
 
-from utils.column_features_helper_functions import find_neuropil_hex_coords
+from madvisc.utils.column_features_helper_functions import find_neuropil_hex_coords
 
 
 def hex_from_col(df:pd.DataFrame) -> pd.DataFrame:

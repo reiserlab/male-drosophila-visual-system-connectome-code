@@ -1,9 +1,9 @@
 import click
 
-from html_pages.patterns import generate_single_page
+from madvisc.utils.website_patterns import generate_single_page
 
-from utils.ol_types import OLTypes
-from utils import olc_client
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils import olc_client
 
 
 @click.command()

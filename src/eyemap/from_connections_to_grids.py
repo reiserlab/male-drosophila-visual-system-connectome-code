@@ -16,12 +16,12 @@
 from pathlib import Path
 import pandas as pd
 from dotenv import find_dotenv
-from utils.layer_tools import\
+from madvisc.utils.layer_tools import\
     fetch_neuron_pairs\
   , hexify_med_lob\
   , merge_and_color\
   , get_com_and_hex
-from utils import olc_client
+from madvisc.utils import olc_client
 
 PROJECT_ROOT = Path(find_dotenv()).parent
 print(f"Project root directory: {PROJECT_ROOT}")

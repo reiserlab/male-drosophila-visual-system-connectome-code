@@ -39,7 +39,7 @@ import navis.interfaces.neuprint as neu
 
 from pathlib import Path
 from dotenv import find_dotenv
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 PROJECT_ROOT = Path(find_dotenv()).parent
@@ -54,7 +54,7 @@ result_dir.mkdir(parents=True, exist_ok=True)
 # find column, load cell of given type
 
 # %%
-from utils.plotter import get_mesh, get_skeletons, get_skeleton, get_meshes
+from madvisc.utils.plotter import get_mesh, get_skeletons, get_skeleton, get_meshes
 
 # %% [markdown]
 # ## Plot the cross section of a neuron for given plane(s)
@@ -71,7 +71,7 @@ from utils.plotter import get_mesh, get_skeletons, get_skeleton, get_meshes
 # neu_msh = get_mesh(id)
 
 # %%
-from utils.hex_hex import hex_to_bids
+from madvisc.utils.hex_hex import hex_to_bids
 
 # %%
 # exmaple L1 and Mi1 neurons, [18,18] is a good column for the current slicing planes
@@ -98,7 +98,7 @@ neu_df, roi_df = neu.fetch_neurons(NC(instance=types))
 neu_df[neu_df['inputRois'].apply(lambda x: True if 'ME_R_col_1818' in x else False)]
 
 # %%
-from utils.geometry import plane_square
+from madvisc.utils.geometry import plane_square
 
 vn = np.array([1, 2, 0]) # normal vector
 vn = vn / np.linalg.norm(vn) # normalize
@@ -169,7 +169,7 @@ for i in [1,3]:
 
 # %%
 # make alpha meshes for layers
-from utils.plotter import alpha_plane
+from madvisc.utils.plotter import alpha_plane
 
 ME_R_layer_m = [None] * 10
 ME_R_layer_bd = [None] * 10
@@ -363,8 +363,8 @@ fig.update_layout(
 fig.show()
 
 # %%
-from utils.plotter import show_figure
-from utils.neuroglancer_plotter import image_saver
+from madvisc.utils.plotter import show_figure
+from madvisc.utils.neuroglancer_plotter import image_saver
 from PIL import Image
 import io
 

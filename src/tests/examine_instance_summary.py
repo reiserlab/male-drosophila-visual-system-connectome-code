@@ -20,8 +20,8 @@
 # The class might be useful for other applications and here we explain how to access the data.
 
 # %%
-from utils import olc_client
-from utils.instance_summary import InstanceSummary
+from madvisc.utils import olc_client
+from madvisc.utils.instance_summary import InstanceSummary
 import plotly.graph_objects as go
 import scipy
 

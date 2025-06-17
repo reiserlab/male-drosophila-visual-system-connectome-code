@@ -46,10 +46,10 @@ import fitz
 import pandas as pd
 from dotenv import find_dotenv
 
-from utils.ol_types import OLTypes
-from utils.summary_plotter import SummaryPlotter
-from utils.instance_summary import InstanceSummary
-from utils import olc_client
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.summary_plotter import SummaryPlotter
+from madvisc.utils.instance_summary import InstanceSummary
+from madvisc.utils import olc_client
 
 def __from_notebook() -> bool:
     try:

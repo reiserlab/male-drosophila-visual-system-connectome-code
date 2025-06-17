@@ -15,8 +15,8 @@
 # %%
 from pathlib import Path
 from dotenv import find_dotenv
-from queries.hex_assigned import get_assigned_columnar_types
-from utils import olc_client
+from madvisc.queries.hex_assigned import get_assigned_columnar_types
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

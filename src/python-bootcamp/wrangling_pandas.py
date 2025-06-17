@@ -35,7 +35,7 @@
 # %%
 import pandas as pd
 from neuprint import NeuronCriteria as NC, fetch_neurons
-from utils import olc_client
+from madvisc.utils import olc_client
 
 c = olc_client.connect(verbose=True)
 

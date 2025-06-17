@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 from dotenv import find_dotenv
 
-from utils.ol_color import OL_COLOR
+from madvisc.utils.ol_color import OL_COLOR
 
 def get_one_off_params():
     """

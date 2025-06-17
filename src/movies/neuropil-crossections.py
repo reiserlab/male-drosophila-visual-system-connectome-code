@@ -5,7 +5,7 @@ from dotenv import find_dotenv
 
 import navis.interfaces.neuprint as neu
 
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect()
 PROJECT_ROOT = Path(find_dotenv()).parent
 print(f"Project root directory: {PROJECT_ROOT}")

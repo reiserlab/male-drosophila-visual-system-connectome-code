@@ -13,11 +13,11 @@
 # ---
 
 # %%
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%
-from utils.ROI_voxels import voxelize_col_and_lay
+from madvisc.utils.ROI_voxels import voxelize_col_and_lay
 
 # %%
 voxelize_col_and_lay()

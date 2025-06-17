@@ -18,9 +18,9 @@
 # Neuron Bag is a collection of neurons. Currently they can be found by providing a cell type (as shown below).
 
 # %%
-from utils.neuron_bag import NeuronBag
-from utils.ng_view import NG_View
-from utils import olc_client
+from madvisc.utils.neuron_bag import NeuronBag
+from madvisc.utils.ng_view import NG_View
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 a_bag = NeuronBag(cell_type='LC6')
@@ -31,7 +31,7 @@ a_bag.get_body_ids()
 # So if you wanted to plot the first 3 LC6, you could do this:
 
 # %%
-from utils.plotter import group_plotter, save_figure
+from madvisc.utils.plotter import group_plotter, save_figure
 
 group_plotter(
     a_bag.get_body_ids(3)

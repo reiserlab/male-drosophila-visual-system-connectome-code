@@ -1,7 +1,7 @@
 from abc import ABC
 import re
-from utils.ol_types import OLTypes
-from utils.helper import slugify
+from madvisc.utils.ol_types import OLTypes
+from madvisc.utils.helper import slugify
 
 class OLInstance(ABC):
 

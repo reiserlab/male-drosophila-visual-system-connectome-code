@@ -13,18 +13,18 @@
 # ---
 
 # %%
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%
 from neuprint import NeuronCriteria as NC, SynapseCriteria as SC
 from neuprint import fetch_synapse_connections
-from utils.hex_hex import get_hex_df, hex_to_bids
-from utils.ROI_columns import load_hexed_body_ids
-from utils.ROI_calculus import find_neuron_hex_ids
-from utils.plotter import group_plotter, show_figure
-from utils.hex_hex import bid_to_hex
-from utils.neuron_bag import NeuronBag
+from madvisc.utils.hex_hex import get_hex_df, hex_to_bids
+from madvisc.utils.ROI_columns import load_hexed_body_ids
+from madvisc.utils.ROI_calculus import find_neuron_hex_ids
+from madvisc.utils.plotter import group_plotter, show_figure
+from madvisc.utils.hex_hex import bid_to_hex
+from madvisc.utils.neuron_bag import NeuronBag
 
 # %%
 # Cells to resolve

@@ -15,11 +15,11 @@
 # %%
 from pathlib import Path
 from dotenv import find_dotenv
-from utils.ol_types import OLTypes
+from madvisc.utils.ol_types import OLTypes
 import pandas as pd
 from neuprint import fetch_custom
 import warnings
-from utils import olc_client
+from madvisc.utils import olc_client
 
 warnings.filterwarnings("error")
 c = olc_client.connect(verbose=True)

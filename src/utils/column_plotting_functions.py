@@ -10,7 +10,7 @@ from plotly.subplots import make_subplots
 from cmap import Colormap, Color
 import pandas as pd
 import numpy as np
-from utils.column_features_helper_functions import find_neuropil_hex_coords
+from madvisc.utils.column_features_helper_functions import find_neuropil_hex_coords
 
 
 def plot_per_col(

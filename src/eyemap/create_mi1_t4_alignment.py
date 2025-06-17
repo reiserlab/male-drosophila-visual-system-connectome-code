@@ -13,11 +13,11 @@
 # ---
 
 # %%
-from utils import olc_client
+from madvisc.utils import olc_client
 c = olc_client.connect(verbose=True)
 
 # %%
-from utils.align_mi1_t4 import create_alignment
+from madvisc.utils.align_mi1_t4 import create_alignment
 
 # %%
 # Creates file `results/eyemap/mi1_t4_alignment.xlsx`
